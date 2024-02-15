@@ -1,3 +1,11 @@
+
+# Introduction 
+
+# Methodology?
+## Data
+Description of the dataset source and variables selection.
+##
+
 # Load
 ```{r import dependencies, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -9,11 +17,19 @@ library(car)
 library(ICC)
 library(caret)
 library(pROC)
+library(naniar)
+library(ggmice)
+library(mice)
 ```
 
 ```{r load data}
 data <- readRDS("../data/data.rds") %>%
+  select("drink_regularly", "sex", "age", "ethnicity", "education", "marital", "household_income",  "dep1", "dep2", "dep3", "dep4", "dep5", "dep6", "dep7")%>%
   as_tibble()
+
+#Adding the depression score from the individual depression items, removing the items
+data1 <- mutate(data, dep_score = dep1 + dep2 + dep3 + dep4 + dep5 + dep6) %>%
+  select("drink_regularly", "sex", "age", "ethnicity", "education", "marital", "household_income",  "dep_score")
 ```
 
 # EDA
@@ -31,15 +47,54 @@ grid.arrange(ncol = 3,
     ggplot(data, aes(age)) + geom_histogram(stat = 'count'),
     ggplot(data, aes(ethnicity)) + geom_histogram(stat = 'count'),
     ggplot(data, aes(education)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(marital)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(household_size)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(weight)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(height)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(bmi)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(pulse)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count')
+    ggplot(data, aes(marital)) + geom_histogram(stat = 'count')
 )
 
 ```
+
+
+## Missing data and response Patterns
+Firstly, we investigate the overall distribution of missing data in our dataset:
+
+```{r mis_percentage}
+
+# Creates a graph displaying the % of data missing in each variable
+
+vis_miss(data)
+```
+
+As can be seen on the graph above, 8.2% of the data is missing. The missing values occur in the outcome variable 'drink_regularly' and in the responses to questions 'dep2', 'dep3', 'dep5' and 'dep6'that create the depression score variable. 15% of responses are missing for the predictor variable and 25% of the responses are missing for the individual depression questions. 
+
+We further investigate the missing data patterns by looking at the response patters:
+
+```{r res_pattern}
+
+#Creates a graph with all of the response patterns in the dataset and their frequency
+
+md.pattern(data, rotate = TRUE)
+```
+
+This figure reveals that there are four distinct response patterns in the dataset. The most frequent one is no missing entries, with 340 cases. Alternatively, either all four depression entries are missing (106 cases), the predictor variable is missing (54 cases) or both (25 cases). It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. Since the depression items are missing in this pattern, 25% of the overall depression score will be missing. 
+
+#### Testing dependency of missing values
+
+```{r is_mis_vectors}
+# Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
+
+mdrink <- is.na(data$drink_regularly)
+mdep <- is.na(data$dep2)
+
+# Testing dependency between missing value in var1 and values of var2. Null hypothesis: no dependency. 
+
+out1 <- t.test(age ~ mdrink, data = data)
+out1$statistic
+out1$p.value
+```
+
+```{r mcar_test}
+# Should this be on data1 or data?
+mcar_test(data1)
+```
+Thus, the missing values are definitelly not missing at random. 
+
+
