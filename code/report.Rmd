@@ -1,0 +1,45 @@
+# Load
+```{r import dependencies, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(fastDummies)
+library(kableExtra)
+library(gridExtra, exclude="combine")
+library(lubridate)
+library(car)
+library(ICC)
+library(caret)
+library(pROC)
+```
+
+```{r load data}
+data <- readRDS("../data/data.rds") %>%
+  as_tibble()
+```
+
+# EDA
+```{r summary}
+summary(data)
+
+str(data)
+
+```
+
+```{r dist}
+
+grid.arrange(ncol = 3,
+    ggplot(data, aes(sex)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(age)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(ethnicity)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(education)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(marital)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(household_size)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(weight)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(height)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(bmi)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(pulse)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count'),
+    ggplot(data, aes(bp_sys1)) + geom_histogram(stat = 'count')
+)
+
+```
