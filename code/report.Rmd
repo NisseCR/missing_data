@@ -49,6 +49,7 @@ We then create a sub-selection of variables that are of interest to our model.
 ```{r variable selection}
 data <- source %>%
   select(
+    id,
     drink_regularly, 
     sex, 
     age,
@@ -93,23 +94,64 @@ Finally, the `drink_regularly` variable was obtained from a an Alcohol Use quest
 
 # EDA
 
-- note: age < 20 is missing from data!!
+## Descriptive statistics
 
 ```{r data summary}
 summary(data)
+
+
+n_rows <- n_distinct(data$id)
 ```
+
+Notes:  
+- note: age < 20 is missing from data!!  
+- `r n_rows` unique rows / cases.  
+
+## Distributions
 
 ```{r dist}
 
-grid.arrange(ncol = 3,
-    ggplot(data, aes(sex)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(age)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(ethnicity)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(education)) + geom_histogram(stat = 'count'),
-    ggplot(data, aes(marital)) + geom_histogram(stat = 'count')
-)
+# Continuous
+ggplot(data, aes(age)) + geom_histogram(stat = 'count')
+
+# Categorical
+categorical_dist <- function(plot) {
+  plot +
+    geom_histogram(stat = 'count') +
+     theme(axis.text.x = element_blank())
+}
+
+ggplot(data, aes(drink_regularly, fill = drink_regularly)) %>% categorical_dist()
+ggplot(data, aes(sex, fill = sex)) %>% categorical_dist()
+ggplot(data, aes(ethnicity, fill = ethnicity)) %>% categorical_dist()
+ggplot(data, aes(education, fill = education)) %>% categorical_dist()
+ggplot(data, aes(marital, fill = marital)) %>% categorical_dist()
+ggplot(data, aes(household_income, fill = household_income)) %>% categorical_dist()
+
+# TODO depression data
 
 ```
+Notes:  
+- Age is not normally distributed, moreover might be unknowingly missing data < 20 and > 70?  
+- Missing data in outcome (and depression).  
+- Lots of married people compared to other marital statuses.
+
+## Outliers
+
+Can only check continuous variables, hence only `age`.
+
+```{r outlier plots}
+ggplot(data, aes(age)) +
+  geom_boxplot()
+```
+No outliers using IQR.
+
+## Relations
+
+```{r correlation plots}
+```
+
+
 
 
 ## Missing data and response Patterns
