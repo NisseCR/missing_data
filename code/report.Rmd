@@ -1,3 +1,15 @@
+---
+title: "Missing Data - Assignment 1"
+author: "Aga, Nisse, Ruben"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    number_sections: false
+    toc: true
+    toc_depth: 2
+    df_print: kable
+    highlight: tango
+---
 
 # Introduction 
 
