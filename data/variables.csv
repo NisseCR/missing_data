@@ -1,0 +1,17 @@
+Role;Variable;Name;Type;Characteristics;Target
+Outcome;Drink regularly;drink_regularly;Categorical;Binary, yes and no;m/f, age 20-150
+Predictor;Sex;sex;Categorical;Binary, male and female;m/f, age 0-150
+Predictor;Age;age;Numeric;Discrete;m/f, age 0-150
+Predictor;Ethnicity;ethnicity;Categorical;Nominal, 5 categories;m/f, age 0-150
+Predictor;Education;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
+Predictor;Marital;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
+Predictor;Household income;household_income;Categorical;Nominal, 12 categories;m/f, age 0-150
+Predictor;No interest in activity;dep1;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling depressed;dep2;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Sleeping issues;dep3;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling tired;dep4;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Eating issues;dep5;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling bad about yourself;dep6;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Concentrating issues;dep7;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Moving and speaking issues;dep8;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Suicidial thoughts;dep9;Categorical;Ordinal, 1-3 scale;m/f, age 18-150

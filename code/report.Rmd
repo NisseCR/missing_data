@@ -4,7 +4,7 @@ author: "Aga, Nisse, Ruben"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
-    number_sections: false
+    number_sections: true
     toc: true
     toc_depth: 2
     df_print: kable
@@ -14,11 +14,16 @@ output:
 # Introduction 
 
 # Methodology?
+
 ## Data
+
 Description of the dataset source and variables selection.
+
 ##
 
-# Load
+# Loading data
+
+We first specify our dependencies and read the data from the `data.rds` file.
 ```{r import dependencies, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(fastDummies)
@@ -35,21 +40,63 @@ library(mice)
 ```
 
 ```{r load data}
-data <- readRDS("../data/data.rds") %>%
-  select("drink_regularly", "sex", "age", "ethnicity", "education", "marital", "household_income",  "dep1", "dep2", "dep3", "dep4", "dep5", "dep6", "dep7")%>%
+source <- readRDS("../data/data.rds") %>%
   as_tibble()
-
-#Adding the depression score from the individual depression items, removing the items
-data1 <- mutate(data, dep_score = dep1 + dep2 + dep3 + dep4 + dep5 + dep6) %>%
-  select("drink_regularly", "sex", "age", "ethnicity", "education", "marital", "household_income",  "dep_score")
 ```
 
+We then create a sub-selection of variables that are of interest to our model.
+
+```{r variable selection}
+data <- source %>%
+  select(
+    drink_regularly, 
+    sex, 
+    age,
+    ethnicity, 
+    education, 
+    marital, 
+    household_income,
+    dep1,
+    dep2,
+    dep3,
+    dep4,
+    dep5,
+    dep6,
+    dep7,
+    dep8,
+    dep9
+  )
+```
+
+## Variables description
+
+```{r variable table, echo=FALSE}
+read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
+  as_tibble() %>%
+  kable(
+    # caption="Table with variable information."
+    )
+```
+
+The table above lists the variables used in our subset selection, which will be utilised for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. 
+The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
+
+- The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
+- The variable `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This is due to the fact that this question includes responses such as `AA degree` and `College Graduate`.
+- Similarly, the variable `marital` was also targeted at respondents of age `20` to `150`.
+- The variable `household_income` is ordinal, rather than continuous.
+
+As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age `0` to `150`.  
+
+Finally, the `drink_regularly` variable was obtained from a an Alcohol Use questionnaire targeted at ages 20 and up.
+
+
 # EDA
-```{r summary}
+
+- note: age < 20 is missing from data!!
+
+```{r data summary}
 summary(data)
-
-str(data)
-
 ```
 
 ```{r dist}
@@ -105,7 +152,7 @@ out1$p.value
 
 ```{r mcar_test}
 # Should this be on data1 or data?
-mcar_test(data1)
+mcar_test(data)
 ```
 Thus, the missing values are definitelly not missing at random. 
 
