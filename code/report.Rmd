@@ -11,20 +11,18 @@ output:
     highlight: tango
 ---
 
-# Introduction 
+# Introduction (Ruben)
 
-# Methodology?
+### RQ (Ruben)
 
-## Data
+# Methodology (Aga)
+## Dataset
 
-Description of the dataset source and variables selection.
+Description of the dataset source.
+We then create a sub-selection of variables that are of interest to our model.
 
-##
-
-# Loading data
-
-We first specify our dependencies and read the data from the `data.rds` file.
 ```{r import dependencies, message = FALSE, warning = FALSE}
+# We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
 library(fastDummies)
 library(kableExtra)
@@ -44,9 +42,9 @@ source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
 
-We then create a sub-selection of variables that are of interest to our model.
 
 ```{r variable selection}
+# We then create a sub-selection of variables that are of interest to our model.
 data <- source %>%
   select(
     id,
@@ -91,8 +89,11 @@ As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and
 
 Finally, the `drink_regularly` variable was obtained from a an Alcohol Use questionnaire targeted at ages 20 and up.
 
+### Data proccessing methodology
+- what we investigated and why
+### Model methodology
 
-# EDA
+# EDA Results (Nisse)
 
 ## Descriptive statistics
 
@@ -152,7 +153,7 @@ No outliers using IQR.
 ```
 
 
-
+# Missing data problem (Aga)
 
 ## Missing data and response Patterns
 Firstly, we investigate the overall distribution of missing data in our dataset:
@@ -196,6 +197,23 @@ out1$p.value
 # Should this be on data1 or data?
 mcar_test(data)
 ```
-Thus, the missing values are definitelly not missing at random. 
+Thus, the missing values are definitely not missing at random. 
+
+- what's the missing data mechnism? 
+
+### Result models with deletion and imputation (Nisse)
+- formula
+- table with coefficients and pval (make sure to exponential the coefficients for easier interpretation)
+- Interpretation of model result 
+
+```{r}
+miceOut <- mice(data, defaultMethod = c("norm.predict", "logreg", "polyreg", "polr"), m = 1, maxit = 1)
+reg_imp_data <- complete(miceOut)
+summary(reg_imp_data)
+```
+
+## Comparison of the two diffrent models in terms of missing data treatment !!! (Ruben)
+
+## Conclusion in terms of answering RQ (Nisse)
 
 
