@@ -16,10 +16,12 @@ output:
 ### RQ (Ruben)
 
 # Methodology (Aga)
+
 ## Dataset
 
-Description of the dataset source.
-We then create a sub-selection of variables that are of interest to our model.
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. 
+
+The used dataset contains a wide range of variables related to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
 
 ```{r import dependencies, message = FALSE, warning = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
@@ -41,6 +43,8 @@ library(mice)
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
+
+## Variables description
 
 
 ```{r variable selection}
@@ -67,7 +71,7 @@ data <- source %>%
   )
 ```
 
-## Variables description
+
 
 ```{r variable table, echo=FALSE}
 read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
