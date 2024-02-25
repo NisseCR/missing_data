@@ -3,28 +3,11 @@ title: "Missing Data - Assignment 1"
 author: "Aga, Nisse, Ruben"
 date: "`r Sys.Date()`"
 output: 
-  pdf_document:
-    number_sections: true
-    toc: true
-    toc_depth: 2
-    df_print: kable
-    highlight: tango
+  bookdown::pdf_document2
 ---
 
-# Introduction (Ruben)
-
-### RQ (Ruben)
-
-# Methodology (Aga)
-
-## Dataset
-
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. 
-
-The used dataset contains a wide range of variables related to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
-
-```{r import dependencies, message = FALSE, warning = FALSE}
-# We first specify our dependencies and read the data from the `data.rds` file.
+```{r dependencies, echo=FALSE, message=FALSE}
+# Load dependencies.
 library(tidyverse)
 library(fastDummies)
 library(kableExtra)
@@ -37,18 +20,29 @@ library(pROC)
 library(naniar)
 library(ggmice)
 library(mice)
+library(vtable)
 ```
 
-```{r load data}
+```{r functions, echo=FALSE}
+show_table <- function(data, caption) {
+  kbl(data, caption = caption, booktabs = T) %>%
+    kable_styling(latex_options = c(
+      "striped", 
+      "scale_down", 
+      "hold_position",
+      "repeat_header"
+    ))
+}
+```
+
+```{r load data, echo=FALSE}
+# Read file.
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
 
-## Variables description
-
-
-```{r variable selection}
-# We then create a sub-selection of variables that are of interest to our model.
+```{r variable selection, echo=FALSE}
+# We create a sub-selection of variables that are of interest to our model.
 data <- source %>%
   select(
     id,
@@ -71,17 +65,32 @@ data <- source %>%
   )
 ```
 
-
-
 ```{r variable table, echo=FALSE}
-read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
-  as_tibble() %>%
-  kable(
-    # caption="Table with variable information."
-    )
+# Read variable description file.
+descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
+  as_tibble()
 ```
 
-The table above lists the variables used in our subset selection, which will be utilised for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. 
+# Introduction (Ruben)
+
+### RQ (Ruben)
+
+# Methodology (Aga)
+
+## Dataset
+
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. 
+
+The used dataset contains a wide range of variables related to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
+
+
+## Data variables
+
+```{r, vars-desc, echo=FALSE}
+show_table(descs, "Variable descriptions")
+```
+
+Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which will be utilised for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. 
 The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
 
 - The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
@@ -91,30 +100,30 @@ The demographic variables - that being `sex`, `age`, `ethnicity`, `education` an
 
 As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age `0` to `150`.  
 
-Finally, the `drink_regularly` variable was obtained from a an Alcohol Use questionnaire targeted at ages 20 and up.
+Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
-### Data proccessing methodology
-- what we investigated and why
-### Model methodology
+## Data proccessing methodology
+
+- what we investigated and why  
+
+## Model methodology
 
 # EDA Results (Nisse)
 
 ## Descriptive statistics
 
-```{r data summary}
-summary(data)
-
-
-n_rows <- n_distinct(data$id)
+```{r data-sum, echo=FALSE}
+sumtable(data, title = "Summary statistics", fit.page = TRUE)
 ```
+Table \@ref(tab:data-sum) shows
+
 
 Notes:  
 - note: age < 20 is missing from data!!  
-- `r n_rows` unique rows / cases.  
 
 ## Distributions
 
-```{r dist}
+```{r dist, eval=FALSE}
 
 # Continuous
 ggplot(data, aes(age)) + geom_histogram(stat = 'count')
