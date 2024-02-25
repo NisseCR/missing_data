@@ -75,7 +75,7 @@ descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
 
 ### RQ (Ruben)
 
-# Methodology (Aga)
+# Methodology (Aga) {#methodology}
 
 ## Dataset
 
@@ -108,14 +108,62 @@ Finally, the `drink_regularly` variable was obtained from an Alcohol Use questio
 
 ## Model methodology
 
-# EDA Results (Nisse)
+# EDA Results (Nisse) {#EDA}
 
 ## Descriptive statistics
 
 ```{r data-sum, echo=FALSE}
 sumtable(data, title = "Summary statistics", fit.page = TRUE)
 ```
-Table \@ref(tab:data-sum) shows
+
+```{r data-calcs, echo=FALSE}
+# Calculate frequency per marital category, excluding the dominant category of 'married'.
+marital_counts <- data %>%
+  select(marital) %>%
+  filter(marital != 'married') %>%
+  group_by(marital) %>%
+  count()
+  
+# Calculate mean frequency of non-dominant marital categories.
+marital_avg <- mean(marital_counts$n)
+
+# Function for marital plotting
+plot_marital <- function(data) {
+  ggplot(data, aes(marital)) +
+    geom_bar(stat = 'count') +
+    labs(
+      x = 'Marital status',
+      y = 'Frequency'
+    )
+}
+```
+Table \@ref(tab:data-sum) shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. In general, it is worthy to note that all variables are interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggests that `dep` should in fact be categorical ordinal and hence also be cast as a factor. That said - and as mentioned in Section \@ref(methodology) - keeping the levels of `dep` as a numerical continuous datatype is beneficial for our missing data problem.  
+
+Our outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our model. Additionally, the frequencies per case suggest that 79 cases contain values outside of the dichotomous set of possible values - possibly being missing values.
+
+The variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1).
+
+```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo=FALSE}
+plot_marital(data)
+```
+
+```{r combine-marital, echo=FALSE}
+data <- data %>%
+  mutate(marital = case_when(
+    marital == 'married' ~ 'married',
+    .default = 'other'
+  ))
+```
+
+Figure \@ref(fig:marital-dist-2) shows the frequencies per `marital` category after the pre-processing step of combining the other values into one.
+
+```{r marital-dist-2, fig.cap = "Distribution of marital status categories after pre-processing", echo=FALSE}
+plot_marital(data)
+```
+
+```{r data-str, echo=FALSE}
+summary(data)
+```
 
 
 Notes:  

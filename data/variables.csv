@@ -4,7 +4,7 @@ Predictor;Sex;sex;Categorical;Binary, male and female;m/f, age 0-150
 Predictor;Age;age;Numeric;Discrete;m/f, age 0-150
 Predictor;Ethnicity;ethnicity;Categorical;Nominal, 5 categories;m/f, age 0-150
 Predictor;Education;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
-Predictor;Marital;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
+Predictor;Marital status;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
 Predictor;Household income;household_income;Categorical;Nominal, 12 categories;m/f, age 0-150
 Predictor;No interest in activity;dep1;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
 Predictor;Feeling depressed;dep2;Categorical;Ordinal, 1-3 scale;m/f, age 18-150

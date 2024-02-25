@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  25 FEB 2024 11:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  25 FEB 2024 13:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -593,55 +593,65 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Warning: Float too large for page by 34.58662pt on input line 300.
 
 [2{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+<report_files/figure-latex/marital-dist-1-1.pdf, id=112, 469.755pt x 325.215pt>
+File: report_files/figure-latex/marital-dist-1-1.pdf Graphic file (type pdf)
+<use report_files/figure-latex/marital-dist-1-1.pdf>
+Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 310.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<report_files/figure-latex/marital-dist-2-1.pdf, id=114, 469.755pt x 325.215pt>
+File: report_files/figure-latex/marital-dist-2-1.pdf Graphic file (type pdf)
+<use report_files/figure-latex/marital-dist-2-1.pdf>
+Package pdftex.def Info: report_files/figure-latex/marital-dist-2-1.pdf  used on input line 318.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[3 <./report_files/figure-latex/marital-dist-1-1.pdf>] [4] [5 <./report_files/figure-latex/marital-dist-2-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 313.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 313.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 374.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 374.
 (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-<report_files/figure-latex/outlier plots-1.pdf, id=100, 469.755pt x 325.215pt>
+) [6]
+<report_files/figure-latex/outlier plots-1.pdf, id=151, 469.755pt x 325.215pt>
 File: report_files/figure-latex/outlier plots-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/outlier plots-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/outlier plots-1.pdf  used on input line 350.
+Package pdftex.def Info: report_files/figure-latex/outlier plots-1.pdf  used on input line 411.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 350--352
+Underfull \hbox (badness 10000) in paragraph at lines 411--413
 [][]
  []
 
-[3] [4]
-<report_files/figure-latex/mis_percentage-1.pdf, id=118, 469.755pt x 325.215pt>
+[7 <./report_files/figure-latex/outlier plots-1.pdf>]
+<report_files/figure-latex/mis_percentage-1.pdf, id=164, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mis_percentage-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mis_percentage-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mis_percentage-1.pdf  used on input line 372.
+Package pdftex.def Info: report_files/figure-latex/mis_percentage-1.pdf  used on input line 433.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[5 <./report_files/figure-latex/outlier plots-1.pdf>]
-<report_files/figure-latex/res_pattern-1.pdf, id=131, 469.755pt x 325.215pt>
+<report_files/figure-latex/res_pattern-1.pdf, id=165, 469.755pt x 325.215pt>
 File: report_files/figure-latex/res_pattern-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/res_pattern-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/res_pattern-1.pdf  used on input line 386.
+Package pdftex.def Info: report_files/figure-latex/res_pattern-1.pdf  used on input line 447.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[6 <./report_files/figure-latex/mis_percentage-1.pdf>] [7 <./report_files/figure-latex/res_pattern-1.pdf>] [8] [9] [10] (./report.aux)
+[8 <./report_files/figure-latex/mis_percentage-1.pdf>] [9 <./report_files/figure-latex/res_pattern-1.pdf>] [10] [11] [12] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-18>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 3533899682DFEA55157861330997339A;2401.
+(rerunfilecheck)             Checksum: 8C2C9AD9203516FB8213A7117E22B886;2751.
  ) 
 Here is how much of TeX's memory you used:
- 13201 strings out of 476102
- 207242 string characters out of 5791771
- 1963994 words of memory out of 5000000
- 34974 multiletter control sequences out of 15000+600000
+ 13226 strings out of 476102
+ 208157 string characters out of 5791771
+ 1964994 words of memory out of 5000000
+ 34995 multiletter control sequences out of 15000+600000
  605849 words of font info for 81 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,576b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,675b,599s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on report.pdf (10 pages, 255484 bytes).
+Output written on report.pdf (12 pages, 267436 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 195 compressed objects within 2 object streams
- 50 named destinations out of 1000 (max. 500000)
- 120 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 272 PDF objects out of 1000 (max. 8388607)
+ 223 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 
