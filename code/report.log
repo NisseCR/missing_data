@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  25 FEB 2024 13:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  26 FEB 2024 17:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **report.tex
 (./report.tex
 LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-02-18>
+L3 programming layer <2024-02-20>
 (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
@@ -604,54 +604,59 @@ File: report_files/figure-latex/marital-dist-2-1.pdf Graphic file (type pdf)
 Package pdftex.def Info: report_files/figure-latex/marital-dist-2-1.pdf  used on input line 318.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [3 <./report_files/figure-latex/marital-dist-1-1.pdf>] [4] [5 <./report_files/figure-latex/marital-dist-2-1.pdf>]
+<report_files/figure-latex/age-dist-1.pdf, id=143, 469.755pt x 325.215pt>
+File: report_files/figure-latex/age-dist-1.pdf Graphic file (type pdf)
+<use report_files/figure-latex/age-dist-1.pdf>
+Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 333.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 374.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 374.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 343.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 343.
 (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [6]
-<report_files/figure-latex/outlier plots-1.pdf, id=151, 469.755pt x 325.215pt>
+) [6 <./report_files/figure-latex/age-dist-1.pdf>]
+<report_files/figure-latex/outlier plots-1.pdf, id=159, 469.755pt x 325.215pt>
 File: report_files/figure-latex/outlier plots-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/outlier plots-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/outlier plots-1.pdf  used on input line 411.
+Package pdftex.def Info: report_files/figure-latex/outlier plots-1.pdf  used on input line 380.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 411--413
+Underfull \hbox (badness 10000) in paragraph at lines 380--382
 [][]
  []
 
 [7 <./report_files/figure-latex/outlier plots-1.pdf>]
-<report_files/figure-latex/mis_percentage-1.pdf, id=164, 469.755pt x 325.215pt>
+<report_files/figure-latex/mis_percentage-1.pdf, id=172, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mis_percentage-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mis_percentage-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mis_percentage-1.pdf  used on input line 433.
+Package pdftex.def Info: report_files/figure-latex/mis_percentage-1.pdf  used on input line 402.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/res_pattern-1.pdf, id=165, 469.755pt x 325.215pt>
+<report_files/figure-latex/res_pattern-1.pdf, id=173, 469.755pt x 325.215pt>
 File: report_files/figure-latex/res_pattern-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/res_pattern-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/res_pattern-1.pdf  used on input line 447.
+Package pdftex.def Info: report_files/figure-latex/res_pattern-1.pdf  used on input line 416.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [8 <./report_files/figure-latex/mis_percentage-1.pdf>] [9 <./report_files/figure-latex/res_pattern-1.pdf>] [10] [11] [12] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-02-18>
+L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 8C2C9AD9203516FB8213A7117E22B886;2751.
  ) 
 Here is how much of TeX's memory you used:
- 13226 strings out of 476102
- 208157 string characters out of 5791771
- 1964994 words of memory out of 5000000
- 34995 multiletter control sequences out of 15000+600000
+ 13234 strings out of 476097
+ 208466 string characters out of 5792150
+ 1965190 words of memory out of 5000000
+ 35008 multiletter control sequences out of 15000+600000
  605849 words of font info for 81 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,675b,599s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,675b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on report.pdf (12 pages, 267436 bytes).
+Output written on report.pdf (12 pages, 271997 bytes).
 PDF statistics:
- 272 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
- 146 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 281 PDF objects out of 1000 (max. 8388607)
+ 230 compressed objects within 3 object streams
+ 55 named destinations out of 1000 (max. 500000)
+ 151 words of extra memory for PDF output out of 10000 (max. 10000000)
 

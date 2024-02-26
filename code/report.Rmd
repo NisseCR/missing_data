@@ -23,7 +23,7 @@ library(mice)
 library(vtable)
 ```
 
-```{r functions, echo=FALSE}
+```{r helper-functions, echo=FALSE}
 show_table <- function(data, caption) {
   kbl(data, caption = caption, booktabs = T) %>%
     kable_styling(latex_options = c(
@@ -35,13 +35,13 @@ show_table <- function(data, caption) {
 }
 ```
 
-```{r load data, echo=FALSE}
+```{r load-data, echo=FALSE}
 # Read file.
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
 
-```{r variable selection, echo=FALSE}
+```{r variable-selection, echo=FALSE}
 # We create a sub-selection of variables that are of interest to our model.
 data <- source %>%
   select(
@@ -65,7 +65,7 @@ data <- source %>%
   )
 ```
 
-```{r variable table, echo=FALSE}
+```{r variable-table, echo=FALSE}
 # Read variable description file.
 descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
   as_tibble()
@@ -139,7 +139,7 @@ plot_marital <- function(data) {
 ```
 Table \@ref(tab:data-sum) shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. In general, it is worthy to note that all variables are interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggests that `dep` should in fact be categorical ordinal and hence also be cast as a factor. That said - and as mentioned in Section \@ref(methodology) - keeping the levels of `dep` as a numerical continuous datatype is beneficial for our missing data problem.  
 
-Our outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our model. Additionally, the frequencies per case suggest that 79 cases contain values outside of the dichotomous set of possible values - possibly being missing values.
+Our outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our logistic regression model. Additionally, the total amount of value entries of 446 suggests that 79 cases contain values outside of the set of possible binary values - possibly being missing values.
 
 The variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1).
 
@@ -161,13 +161,16 @@ Figure \@ref(fig:marital-dist-2) shows the frequencies per `marital` category af
 plot_marital(data)
 ```
 
-```{r data-str, echo=FALSE}
-summary(data)
+Predictor `age` is a dichotomous variable with a balanced frequency distribution across the values "male" and "female", that being 48% and 52% respectively. 525 entries contain one of these values, suggesting that the variable does not contain missing data.  
+
+The predictor `age` is the only continuous variable present within the sub-selected dataset. Although the survey was targeted at respondents of age 0-150 for most variables - the documentation even mentioning the topcoded entries for age 80+ - the dataset seems to only contain cases of people between the age of 20 and 69. Moreover, Figure \@ref(fig:age-dist) suggests a uniform distribution of the age variable.
+
+```{r age-dist, fig.cap = "Distribution of age", echo=FALSE, warning=FALSE}
+ggplot(data, aes(age)) +
+  geom_histogram(stat = 'count')
 ```
 
 
-Notes:  
-- note: age < 20 is missing from data!!  
 
 ## Distributions
 
