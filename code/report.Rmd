@@ -19,11 +19,11 @@ output:
 
 ## Dataset
 
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. 
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
 
-The used dataset contains a wide range of variables related to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
+The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
 
-```{r import dependencies, message = FALSE, warning = FALSE}
+```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
 library(fastDummies)
@@ -39,7 +39,7 @@ library(ggmice)
 library(mice)
 ```
 
-```{r load data}
+```{r load data, echo = FALSE}
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
@@ -47,7 +47,7 @@ source <- readRDS("../data/data.rds") %>%
 ## Variables description
 
 
-```{r variable selection}
+```{r variable selection, echo = FALSE}
 # We then create a sub-selection of variables that are of interest to our model.
 data <- source %>%
   select(
@@ -71,7 +71,17 @@ data <- source %>%
   )
 ```
 
+The table below lists the variables used in our subset selection, which will be utilized for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. These questions are intended as components of an overall Depression Score that will be created by summing up the individual values.  
+The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
 
+- The variable `age` is topcoded at the value 80  for the respondents who were older than 80 years. 
+- The variable `education` was targeted at respondents of age 20 to 150, thus excluding younger participants. It is likely due to the fact that it intends to register the "final" level of education and participats would not be likely to accomplish `AA degree` or `College Graduate` earlier.
+- Similarly, the variable `marital` was also targeted at respondents of age 20 to 150.
+- The variable `household_income` is ordinal, rather than continuous.
+
+As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age 0 to 150.  
+
+Finally, the `drink_regularly` variable was obtained from a an Alcohol Use questionnaire targeted at ages 20 and up.
 
 ```{r variable table, echo=FALSE}
 read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
@@ -81,20 +91,11 @@ read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
     )
 ```
 
-The table above lists the variables used in our subset selection, which will be utilised for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. 
-The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
-
-- The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
-- The variable `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This is due to the fact that this question includes responses such as `AA degree` and `College Graduate`.
-- Similarly, the variable `marital` was also targeted at respondents of age `20` to `150`.
-- The variable `household_income` is ordinal, rather than continuous.
-
-As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age `0` to `150`.  
-
-Finally, the `drink_regularly` variable was obtained from a an Alcohol Use questionnaire targeted at ages 20 and up.
 
 ### Data proccessing methodology
-- what we investigated and why
+After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found. The important findings of this step are presented in 'EDA Results' section. It is important to note, that after the uneven distribution in 'marital' categories was discovered and the relationship of the categories with other variables was investigated, it was decided to combine the not-married categories into one and make it a binary variable. This reduced the complexity
+
+
 ### Model methodology
 
 # EDA Results (Nisse)
