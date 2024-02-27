@@ -98,7 +98,9 @@ read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
 
 
 ### Data proccessing methodology
-After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found. The important findings of this step are presented in 'EDA Results' section. It is important to note, that after the uneven distribution in 'marital' categories was discovered and the relationship of the categories with other variables was investigated, it was decided to combine the not-married categories into one and make it a binary variable. This reduced the complexity
+After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found. The important findings of this step are presented in 'EDA Results' section. It is important to note, that after the uneven distribution in 'marital' categories was discovered and the relationship of the categories with other variables was investigated, it was decided to combine the not-married categories into one. Thus, a less complex, binary variable was created. 
+
+Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. 
 
 
 ### Model methodology
@@ -168,14 +170,14 @@ No outliers using IQR.
 ## Missing data and response Patterns
 Firstly, we investigate the overall distribution of missing data in our dataset:
 
-```{r mis_percentage}
+```{r mis_percentage, echo = FALSE}
 
 # Creates a graph displaying the % of data missing in each variable
 
 vis_miss(data)
 ```
 
-As can be seen on the graph above, 8.2% of the data is missing. The missing values occur in the outcome variable 'drink_regularly' and in the responses to questions 'dep2', 'dep3', 'dep5' and 'dep6'that create the depression score variable. 15% of responses are missing for the predictor variable and 25% of the responses are missing for the individual depression questions. 
+As can be seen on the graph above, 8.2% of the data is missing. The missing values occur in the outcome variable 'drink_regularly' and in the responses to questions 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' that create the depression score variable. 15% of responses are missing for the predictor variable. 25% of the responses are missing for the individual depression questions 2, 3, 5 and 6, 10% are missing for question 8 and 14% for question 9. 
 
 We further investigate the missing data patterns by looking at the response patters:
 
@@ -186,7 +188,9 @@ We further investigate the missing data patterns by looking at the response patt
 md.pattern(data, rotate = TRUE)
 ```
 
-This figure reveals that there are four distinct response patterns in the dataset. The most frequent one is no missing entries, with 340 cases. Alternatively, either all four depression entries are missing (106 cases), the predictor variable is missing (54 cases) or both (25 cases). It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. Since the depression items are missing in this pattern, 25% of the overall depression score will be missing. 
+This figure reveals that there are 13 distinct response patterns in the dataset and the missingness pattern is not monotone. The most frequent pattern is no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 are always either all present or all missing. It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. 
+
+Based on the missingness pattern of the depression items, 41% of the overall depression score includes at least one missing value. 
 
 #### Testing dependency of missing values
 
