@@ -244,28 +244,64 @@ Figure \@ref(fig:res-pattern) reveals that there are 13 distinct response patter
 
 Based on the missingness pattern of the depression items, 41% of the overall depression score includes at least one missing value. 
 
-#### Testing dependency of missing values
+## Missing data mechanism
+
+Missing completly at random (MCAR) missingneses mechanism is often an important assumption for statistical analysis, including this one. To gain some inside whether the data is MCAR or not, we deploy a variety of tests. If missing values of a variable are MCAR then there should be no significant dependency of them with other variables. 
+
+Firstly, Little MCAR test was preformed to verify if the missing data is MCAR at a global level, thus for all of the instances of missigness. The test was significant ($\chi^2 (164) = 465.18, p < 0.01$), therefore the data may be assumed as not MCAR. 
+```{r mcar-test, echo = FALSE, include=FALSE}
+mcar_test(data)
+
+```
+
+Since the data being MCAR can be questioned following the Little's test, a t-test was performed for all missing values vectors and numerical variables to check which variables are the likely culprit. The test compared the observed means of a given numerical variable within the group of individuals that had an observed value and the group with a missing value for another variable. Effectively testing if there is a significant difference in the continuous variable in the group that answered another question and the group that did not. Since the null hypothesis is no difference in means across the groups, a single significant value for a missingness of a given variable suggests that the missing values in that variable depend on the observed values of another variable. Therefore, it is likely that the missing values are not MCAR. Due to the identical pattern of responses in 'dep2', 'dep3', 'dep5' and 'dep6' it was sufficient to only test once for the dependency of their missing values. By the design of the test it is impossible to test the dependency of missing values and observed values within the same variable, thus these values are missing from the table. 
+
+Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In the table below the exact t-statistic and the p-value are reported. 
 
 ```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
 
 mdrink <- is.na(data$drink_regularly)
-mdep <- is.na(data$dep2)
+mdep2 <- is.na(data$dep2)
+mdep8 <- is.na(data$dep8)
+mdep9 <- is.na(data$dep9)
 
 # Testing dependency between missing value in var1 and values of var2. Null hypothesis: no dependency. 
 
-out1 <- t.test(age ~ mdrink, data = data)
-out1$statistic
-out1$p.value
+dependency_test <- function(var, mis_vector){
+  out <- t.test(var ~ mis_vector, data = data)
+  paste(c("t =", paste(c(signif(out$statistic, digits = 3), ","), collapse =""), "pVal =", signif(out$p.value, digits = 3)), collapse = " ")
+
+}
+
+# make a table with outcomes of the t-test:
+col1 <- c("age",
+    "dep1",
+    "dep2",
+    "dep3",
+    "dep4",
+    "dep5",
+    "dep6",
+    "dep7",
+    "dep8",
+    "dep9")
+col2 <- c(dependency_test(var = data$age, mis_vector = mdrink), dependency_test(var = data$dep1, mis_vector = mdrink), dependency_test(var = data$dep2, mis_vector = mdrink), dependency_test(var = data$dep3, mis_vector = mdrink), dependency_test(var = data$dep4, mis_vector = mdrink), dependency_test(var = data$dep5, mis_vector = mdrink), dependency_test(var = data$dep6, mis_vector = mdrink), dependency_test(var = data$dep7, mis_vector = mdrink), dependency_test(var = data$dep8, mis_vector = mdrink), dependency_test(var = data$dep9, mis_vector = mdrink))
+col3 <- c(dependency_test(var = data$age, mis_vector = mdep2), dependency_test(var = data$dep1, mis_vector =  mdep2), "-", "-", dependency_test(var = data$dep4, mis_vector =  mdep2), "-", "-", dependency_test(var = data$dep7, mis_vector =  mdep2), dependency_test(var = data$dep8, mis_vector =  mdep2), dependency_test(var = data$dep9, mis_vector =  mdep2))
+col4 <- c(dependency_test(var = data$age, mis_vector = mdep8), dependency_test(var = data$dep1, mis_vector =  mdep8), dependency_test(var = data$dep2, mis_vector =  mdep8), dependency_test(var = data$dep3, mis_vector =  mdep8), dependency_test(var = data$dep4, mis_vector =  mdep8), dependency_test(var = data$dep5, mis_vector =  mdep8), dependency_test(var = data$dep6, mis_vector =  mdep8), dependency_test(var = data$dep7, mis_vector =  mdep8), "-", dependency_test(var = data$dep9, mis_vector =  mdep8))
+col5 <- c(dependency_test(var = data$age, mis_vector = mdep9), dependency_test(var = data$dep1, mis_vector =  mdep9), dependency_test(var = data$dep2, mis_vector =  mdep9), dependency_test(var = data$dep3, mis_vector =  mdep9), dependency_test(var = data$dep4, mis_vector =  mdep9), dependency_test(var = data$dep5, mis_vector =  mdep9), dependency_test(var = data$dep6, mis_vector =  mdep9), dependency_test(var = data$dep7, mis_vector =  mdep9), dependency_test(var = data$dep8, mis_vector =  mdep9), "-")
+
+table_test <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test) <- c("numerical variable", 
+    "drink_regularly",
+    "dep2/3/5/6",
+    "dep8",
+    "dep9")
+show_table(as_tibble(table_test), "Dependency t-test: mean comparison in numerical variables across missing values and observed values in the other variables")
+
+
 ```
 
-```{r mcar-test, echo = FALSE}
-# Should this be on data1 or data?
-mcar_test(data)
-```
-Thus, the missing values are definitely not missing at random. 
-
-- what's the missing data mechnism? 
 
 ### Result models with deletion and imputation (Nisse)
 - formula

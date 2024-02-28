@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  28 FEB 2024 14:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  28 FEB 2024 21:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -595,13 +595,13 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 LaTeX Warning: Reference `methodology' on page 4 undefined on input line 245.
 
-<report_files/figure-latex/age-dist-1.pdf, id=116, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-dist-1.pdf, id=121, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-dist-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-dist-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 271.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [4] [5 <./report_files/figure-latex/age-dist-1.pdf>]
-<report_files/figure-latex/marital-dist-1-1.pdf, id=137, 469.755pt x 325.215pt>
+<report_files/figure-latex/marital-dist-1-1.pdf, id=142, 469.755pt x 325.215pt>
 File: report_files/figure-latex/marital-dist-1-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/marital-dist-1-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 283.
@@ -613,7 +613,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: Reference `fig:age-outliers' on page 7 undefined on input line 346.
 
-<report_files/figure-latex/age-outliers-1.pdf, id=151, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-outliers-1.pdf, id=156, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-outliers-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-outliers-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/age-outliers-1.pdf  used on input line 348.
@@ -624,37 +624,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 348--350
  []
 
 [7]
-<report_files/figure-latex/marital-dist-2-1.pdf, id=160, 469.755pt x 325.215pt>
+<report_files/figure-latex/marital-dist-2-1.pdf, id=165, 469.755pt x 325.215pt>
 File: report_files/figure-latex/marital-dist-2-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/marital-dist-2-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/marital-dist-2-1.pdf  used on input line 355.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/mis-percentage-1.pdf, id=161, 469.755pt x 325.215pt>
+<report_files/figure-latex/mis-percentage-1.pdf, id=166, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mis-percentage-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mis-percentage-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/mis-percentage-1.pdf  used on input line 369.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/res-pattern-1.pdf, id=163, 469.755pt x 325.215pt>
+<report_files/figure-latex/res-pattern-1.pdf, id=168, 469.755pt x 325.215pt>
 File: report_files/figure-latex/res-pattern-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/res-pattern-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/res-pattern-1.pdf  used on input line 379.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[8 <./report_files/figure-latex/age-outliers-1.pdf>] [9 <./report_files/figure-latex/marital-dist-2-1.pdf>] [10 <./report_files/figure-latex/mis-percentage-1.pdf>] [11 <./report_files/figure-latex/res-pattern-1.pdf>]
+[8 <./report_files/figure-latex/age-outliers-1.pdf>] [9 <./report_files/figure-latex/marital-dist-2-1.pdf>] [10 <./report_files/figure-latex/mis-percentage-1.pdf>] [11 <./report_files/figure-latex/res-pattern-1.pdf>] [12]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 429.
-[12]
-<report_files/figure-latex/mean-imp-1.pdf, id=220, 469.755pt x 325.215pt>
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 446.
+[13]
+<report_files/figure-latex/mean-imp-1.pdf, id=231, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mean-imp-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mean-imp-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mean-imp-1.pdf  used on input line 528.
+Package pdftex.def Info: report_files/figure-latex/mean-imp-1.pdf  used on input line 545.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13]
-<report_files/figure-latex/lw-del-1.pdf, id=227, 469.755pt x 325.215pt>
+[14 <./report_files/figure-latex/mean-imp-1.pdf>]
+<report_files/figure-latex/lw-del-1.pdf, id=244, 469.755pt x 325.215pt>
 File: report_files/figure-latex/lw-del-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/lw-del-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/lw-del-1.pdf  used on input line 545.
+Package pdftex.def Info: report_files/figure-latex/lw-del-1.pdf  used on input line 562.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./report_files/figure-latex/mean-imp-1.pdf>] [15 <./report_files/figure-latex/lw-del-1.pdf>] [16] (./report.aux)
+[15 <./report_files/figure-latex/lw-del-1.pdf>] [16] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -663,21 +663,21 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: A7BF240025EF4F5D4BFD0A0778E41DC8;2854.
+(rerunfilecheck)             Checksum: FE5B1E831E0D3BC3E63207562804DEE5;3028.
  ) 
 Here is how much of TeX's memory you used:
- 13224 strings out of 476097
- 208692 string characters out of 5792150
+ 13227 strings out of 476097
+ 208704 string characters out of 5792150
  1958190 words of memory out of 5000000
- 34993 multiletter control sequences out of 15000+600000
+ 34995 multiletter control sequences out of 15000+600000
  605225 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,970b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,1154b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (16 pages, 266446 bytes).
+Output written on report.pdf (16 pages, 268546 bytes).
 PDF statistics:
- 319 PDF objects out of 1000 (max. 8388607)
- 263 compressed objects within 3 object streams
- 65 named destinations out of 1000 (max. 500000)
- 161 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 324 PDF objects out of 1000 (max. 8388607)
+ 268 compressed objects within 3 object streams
+ 66 named destinations out of 1000 (max. 500000)
+ 169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
