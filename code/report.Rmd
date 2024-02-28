@@ -64,17 +64,18 @@ data <- source %>%
     dep7,
     dep8,
     dep9
-  )
+  )%>%
+  rename(income = household_income)
 ```
 
-# Introduction (Ruben)
+\newpage
 
-### RQ (Ruben)
+# Introduction 
 Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10% of global deaths in people aged 15-49 years. Higher levels of alcohol consumption leads to a higher risk of mortality and the only level of alcohol consumption that minimizes this risk is zero alcohol consumption (study). This means that drinking any alcohol at all increases the risk of mortality. All of this makes it vital to know and understand the factors behind alcohol consumption.
 
 Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
 
-The research question of this study is whether the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
+The research question of this study is: \textbf{Can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
 
 # Methodology (Aga)
 
@@ -96,14 +97,14 @@ show_table(descs, "Variable descriptions")
 Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which will be utilised for the model in question. 
 The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can later be combined to indicate an overall level of depression.
 
-The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
+The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
 
 - The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
 - The variable `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This is due to the fact that this question includes responses such as `AA degree` and `College Graduate`.
 - Similarly, the variable `marital` was also targeted at respondents of age `20` to `150`.
-- The variable `household_income` is ordinal, rather than continuous.  
+- The variable `income` is ordinal, rather than continuous.  
 
-As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age `0` to `150`.  
+As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these are retrieved from target age `0` to `150`.  
 
 Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
@@ -239,7 +240,7 @@ We further investigate the missing data patterns by looking at the response patt
 
 ```{r res_pattern, echo = FALSE}
 # Creates a graph with all of the response patterns in the dataset and their frequency
-md.pattern(data, rotate = TRUE)
+plot_pattern(data, rotate = TRUE)
 ```
 
 This figure reveals that there are 13 distinct response patterns in the dataset and the missingness pattern is not monotone. The most frequent pattern is no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 are always either all present or all missing. It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. 
@@ -337,14 +338,14 @@ md.pattern(data_mi)
 ```{r model-creation, echo = FALSE}
 # Listwise deletion model creation.
 fit_lw <- glm(
-  drink_regularly ~ sex + age + ethnicity + education + marital + household_income + dep, 
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
   family = binomial, 
   data = data_lw
 )
 
 # Mean imputation model creation.
 fit_mi <- glm(
-  drink_regularly ~ sex + age + ethnicity + education + marital + household_income + dep, 
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
   family = binomial, 
   data = data_mi
 )
