@@ -6,23 +6,6 @@ output:
   bookdown::pdf_document2
 ---
 
-# Introduction (Ruben)
-
-### RQ (Ruben)
-Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10% of global deaths in people aged 15-49 years. Higher levels of alcohol consumption leads to a higher risk of mortality and the only level of alcohol consumption that minimizes this risk is zero alcohol consumption (study). This means that drinking any alcohol at all increases the risk of mortality. All of this makes it vital to know and understand the factors behind alcohol consumption.
-
-Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
-
-The research question of this study is whether the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
-
-# Methodology (Aga)
-
-## Dataset
-
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
-
-The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
-
 ```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
@@ -37,6 +20,7 @@ library(pROC)
 library(naniar)
 library(ggmice)
 library(mice)
+library(Hmisc)
 library(vtable)
 library(vcd)
 ```
@@ -83,16 +67,22 @@ data <- source %>%
   )
 ```
 
-<<<<<<< HEAD
-```{r variable-table, echo=FALSE}
-# Read variable description file.
-descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
-  as_tibble()
-```
-
 # Introduction (Ruben)
 
 ### RQ (Ruben)
+Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10% of global deaths in people aged 15-49 years. Higher levels of alcohol consumption leads to a higher risk of mortality and the only level of alcohol consumption that minimizes this risk is zero alcohol consumption (study). This means that drinking any alcohol at all increases the risk of mortality. All of this makes it vital to know and understand the factors behind alcohol consumption.
+
+Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
+
+The research question of this study is whether the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
+
+# Methodology (Aga)
+
+## Dataset
+
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
+
+The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
 
 # Methodology (Aga) {#methodology}
 
@@ -104,7 +94,10 @@ The used dataset contains a wide range of variables related to the health of the
 
 ## Data variables
 
-```{r, vars-desc, echo=FALSE}
+```{r, vars-desc, echo = FALSE}
+# Read variable description file.
+descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
+  as_tibble()
 show_table(descs, "Variable descriptions")
 ```
 
@@ -201,6 +194,11 @@ chisq.test(data$marital, data$drink_regularly)
 assocstats(xtabs(~data$marital + data$drink_regularly))
 ```
 
+TODO (from pract):  
+
+- Variable with most NA's
+- Summary of non-NA vars
+- 
 
 ## Outliers
 
@@ -226,12 +224,6 @@ Figure \@ref(fig:marital-dist-2) shows the frequencies per `marital` category af
 plot_marital(data)
 ```
 
-## Relations
-
-```{r correlation plots}
-```
-
-
 # Missing data problem (Aga)
 
 ## Missing data and response Patterns
@@ -240,7 +232,6 @@ Firstly, we investigate the overall distribution of missing data in our dataset:
 ```{r mis_percentage, echo = FALSE}
 
 # Creates a graph displaying the % of data missing in each variable
-
 vis_miss(data)
 ```
 
@@ -248,10 +239,8 @@ As can be seen on the graph above, 8.2% of the data is missing. The missing valu
 
 We further investigate the missing data patterns by looking at the response patters:
 
-```{r res_pattern}
-
-#Creates a graph with all of the response patterns in the dataset and their frequency
-
+```{r res_pattern, echo = FALSE}
+# Creates a graph with all of the response patterns in the dataset and their frequency
 md.pattern(data, rotate = TRUE)
 ```
 
@@ -261,7 +250,7 @@ Based on the missingness pattern of the depression items, 41% of the overall dep
 
 #### Testing dependency of missing values
 
-```{r is_mis_vectors}
+```{r is_mis_vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
 
 mdrink <- is.na(data$drink_regularly)
@@ -274,7 +263,7 @@ out1$statistic
 out1$p.value
 ```
 
-```{r mcar_test}
+```{r mcar_test, echo = FALSE}
 # Should this be on data1 or data?
 mcar_test(data)
 ```
@@ -291,6 +280,76 @@ Thus, the missing values are definitely not missing at random.
 miceOut <- mice(data, defaultMethod = c("norm.predict", "logreg", "polyreg", "polr"), m = 1, maxit = 1)
 reg_imp_data <- complete(miceOut)
 summary(reg_imp_data)
+```
+
+## Model creation (maybe combine with next section?)
+
+Mostly code for now, will add more later on.  
+
+TODO:  
+
+- Use mode imputation for depression and outcome.
+- Mention n rows removal in case of listwise
+
+Summary of code:  
+1. Create imputed data for each ad-hoc method.
+2. combine deps levels for each dataset.
+3. create models for analysis.
+
+```{r combine-dep, echo = FALSE}
+# Combine imputed levels of depression into one depression score.
+combine_dep <- function(data) {
+  data %>%
+    mutate(dep = dep1 + dep2 + dep3 + dep4 + dep5 + dep6 + dep7 + dep8 + dep9) %>%
+    select(-c(dep1, dep2, dep3, dep4, dep5, dep6, dep7,  dep8, dep9))
+}
+```
+
+```{r mean-imp, echo = FALSE, warning = FALSE}
+# Perform mean imputation on the data. Mode imputation is used for drink_regularly.
+
+# Copy data
+data_mi <- data
+
+# Mode imputation for drink_regularly.
+data_mi$drink_regularly <- impute(data_mi$drink_regularly, fun = mode)
+
+# Mean imputation for depression levels.
+data_mi <- mice(data_mi, method = "mean", m = 1, maxit = 1) %>%
+  complete()
+
+# Combine depression levels.
+data_mi <- combine_dep(data_mi)
+
+# Check if imputation works.
+md.pattern(data_mi)
+```
+
+```{r lw-del, echo = FALSE}
+# Perform listwise deletion on the data.
+data_lw <- data[complete.cases(data), ]
+
+# Combine depression levels.
+data_lw <- combine_dep(data_lw)
+
+# Check if imputation works.
+md.pattern(data_mi)
+```
+
+```{r model-creation, echo = FALSE}
+# Listwise deletion model creation.
+fit_lw <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + household_income + dep, 
+  family = binomial, 
+  data = data_lw
+)
+
+# Mean imputation model creation.
+fit_mi <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + household_income + dep, 
+  family = binomial, 
+  data = data_mi
+)
 ```
 
 ## Comparison of the two diffrent models in terms of missing data treatment !!! (Ruben)
