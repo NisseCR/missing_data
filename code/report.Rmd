@@ -84,14 +84,6 @@ The dataset used is a subset of the data collected in the National Health and Nu
 
 The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
 
-# Methodology (Aga) {#methodology}
-
-## Dataset
-
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. 
-
-The used dataset contains a wide range of variables related to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
-
 ## Data variables
 
 ```{r, vars-desc, echo = FALSE}
