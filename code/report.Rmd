@@ -117,11 +117,17 @@ Finally, the `drink_regularly` variable was obtained from an Alcohol Use questio
 
 ## Data processing methodology
 
-After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found. The important findings of this step are presented in 'EDA Results' section. It is important to note, that after the uneven distribution in 'marital' categories was discovered and the relationship of the categories with other variables was investigated, it was decided to combine the not-married categories into one. Thus, a less complex, binary variable was created. 
+### Data proccessing methodology
+After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. The important findings of this step are presented in 'EDA Results' section. 
 
-Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated.
+Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including testing of the dependencies between missing values in one variable and observed values of other variables and performing the Little (1988) MCAR Test. 
+
+Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with diffrent missing data treatments were created.
 
 ### Model methodology
+Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. 
+
+The two logistics models were then compared and the impact of the two different missing data treatments was eveluated.  
 
 - what we investigated and why
 
