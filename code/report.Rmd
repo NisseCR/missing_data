@@ -83,9 +83,9 @@ The research question of this study is: \textbf{Can the occurrence of regular al
 
 The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
 
-The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variable Description section.  
+The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description section.  
 
-## Data variables
+## Variables Description
 
 ```{r, vars-desc, echo = FALSE}
 # Read variable description file.
@@ -108,17 +108,17 @@ As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and
 
 Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
-## Data processing methodology
-
-### Data proccessing methodology
+## Data processing
 After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. The important findings of this step are presented in 'EDA Results' section. 
 
-Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including testing of the dependencies between missing values in one variable and observed values of other variables and performing the Little (1988) MCAR Test. 
+Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including testing of the dependencies between missing values in one variable and observed values of other variables and performing the Little (1988) MCAR Test. Since the assumptions of MCAR was not meet, MAR was assumed. 
 
-Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with diffrent missing data treatments were created.
+Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate (source). For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
 
-### Model methodology
-Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was eveluated.  
+Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual. A sum was used, as opposed to other methods of aggregation (sucha as mean), as it preserves a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual questions. 
+
+## Modelling methodology
+Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated.  
 
 
 # EDA Results (Nisse) {#EDA}
