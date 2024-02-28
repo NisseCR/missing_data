@@ -21,17 +21,19 @@ library(naniar)
 library(ggmice)
 library(mice)
 library(vtable)
+library(vcd)
 ```
 
 ```{r helper-functions, echo=FALSE}
-show_table <- function(data, caption) {
+show_table <- function(data, caption, scale = TRUE) {
+  if (scale) {
+    args <- c("striped", "scale_down", "hold_position", "repeat_header")
+  } else {
+    args <- c("striped", "hold_position", "repeat_header")
+  }
+  
   kbl(data, caption = caption, booktabs = T) %>%
-    kable_styling(latex_options = c(
-      "striped", 
-      "scale_down", 
-      "hold_position",
-      "repeat_header"
-    ))
+    kable_styling(latex_options = args)
 }
 ```
 
@@ -90,13 +92,15 @@ The used dataset contains a wide range of variables related to the health of the
 show_table(descs, "Variable descriptions")
 ```
 
-Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which will be utilised for the model in question. The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. 
+Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which will be utilised for the model in question. 
+The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can later be combined to indicate an overall level of depression.
+
 The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `household_income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
 
 - The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
 - The variable `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This is due to the fact that this question includes responses such as `AA degree` and `College Graduate`.
 - Similarly, the variable `marital` was also targeted at respondents of age `20` to `150`.
-- The variable `household_income` is ordinal, rather than continuous.
+- The variable `household_income` is ordinal, rather than continuous.  
 
 As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `household_income`, these are retrieved from target age `0` to `150`.  
 
@@ -110,11 +114,7 @@ Finally, the `drink_regularly` variable was obtained from an Alcohol Use questio
 
 # EDA Results (Nisse) {#EDA}
 
-## Descriptive statistics
-
-```{r data-sum, echo=FALSE}
-sumtable(data, title = "Summary statistics", fit.page = TRUE)
-```
+## Descriptive statistics {#desc-stats}
 
 ```{r data-calcs, echo=FALSE}
 # Calculate frequency per marital category, excluding the dominant category of 'married'.
@@ -137,15 +137,60 @@ plot_marital <- function(data) {
     )
 }
 ```
-Table \@ref(tab:data-sum) shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. In general, it is worthy to note that all variables are interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggests that `dep` should in fact be categorical ordinal and hence also be cast as a factor. That said - and as mentioned in Section \@ref(methodology) - keeping the levels of `dep` as a numerical continuous datatype is beneficial for our missing data problem.  
+Table \@ref(tab:data-sum) from the appendix shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. For categorical variables, a list of possible categories and their respective proportions is provided to replace the continuous summary statistics. Lastly, the column `N` shows the amount of cases with present  data - that being non-NA values.  
+In general, it is worthy to note that all variables are interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggests that `dep` should in fact be categorical ordinal and should therefore be cast as a factor. That said - and as mentioned in Section \@ref(methodology) - keeping the levels of `dep` as a numerical continuous datatype is beneficial for our missing data problem.  
 
-Our outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our logistic regression model. Additionally, the total amount of value entries of 446 suggests that 79 cases contain values outside of the set of possible binary values - possibly being missing values.
+Our dichotomous outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our logistic regression model. Additionally, the total amount of value entries (`N`) of 446 suggests that 79 cases contain values outside of the set of possible binary values - most likely being missing values. Table \@ref(tab:drink-missing) further confirms this.  
 
-The variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1).
+```{r, drink-missing, echo=FALSE}
+data %>%
+  count(drink_regularly) %>%
+  show_table("Drink regularly value distributions", scale = FALSE)
+```
 
-```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo=FALSE}
+Predictor `sex` is a dichotomous variable with a balanced frequency distribution across the values "male" and "female", that being 48% and 52% respectively. 525 entries contain one of these values, suggesting that the variable does not contain missing data.  
+
+The predictor `age` is the only continuous variable present within the sub-selected dataset. Although the survey was targeted at respondents of age 0-150 for most variables - the documentation even mentioning the topcoded entries for age 80+ - the dataset seems to only contain cases of people between the age of 20 and 69. Moreover, Figure \@ref(fig:age-dist) suggests a uniform distribution of the age variable.
+Like `sex`, `age` has 525 cases with non-NA values, hence the variable does not contain missing data values.
+
+```{r age-dist, fig.cap = "Distribution of age", echo=FALSE, warning=FALSE}
+ggplot(data, aes(age)) +
+  geom_histogram(stat = 'count')
+```
+
+Predictor `ethnicity` has 5 categories, with `non-hispanic_white` being the most prevalant category with 220 cases (42% of total), all the while `other` is the most infrequent category with 25 cases (5%). A total of 525 cases contain `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
+
+Predictor `education` is similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seem to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, we do not observe any missing data values within the variable. This can be further justified by the fact that the minimum `age` within our dataset is 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
+
+The predictor variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases.  
+
+
+```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo = FALSE}
 plot_marital(data)
 ```
+
+## Correlations
+
+```{r cont-marital, echo = FALSE}
+cont_mar <- table(data$marital, data$drink_regularly)
+show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```
+
+```{r sign-marital, echo = FALSE}
+chisq.test(data$marital, data$drink_regularly)
+assocstats(xtabs(~data$marital + data$drink_regularly))
+```
+
+
+## Outliers
+
+For our only continuous predictor `age`, a boxplot shows potential outliers if datapoints fall outside of the interquartile range (whiskers of the plot). Figure \@ref(fig:age-outliers) shows the distribution of `age` in said boxplot, revealing no possible outliers. This is to be expected, since `age` was uniformly distributed as mentioned in Section \@ref(desc-stats).
+
+```{r age-outliers, fig.cap = "Boxplot of age", echo=FALSE}
+ggplot(data, aes(age)) +
+  geom_boxplot()
+```
+As for our categorical predictors,
 
 ```{r combine-marital, echo=FALSE}
 data <- data %>%
@@ -160,56 +205,6 @@ Figure \@ref(fig:marital-dist-2) shows the frequencies per `marital` category af
 ```{r marital-dist-2, fig.cap = "Distribution of marital status categories after pre-processing", echo=FALSE}
 plot_marital(data)
 ```
-
-Predictor `age` is a dichotomous variable with a balanced frequency distribution across the values "male" and "female", that being 48% and 52% respectively. 525 entries contain one of these values, suggesting that the variable does not contain missing data.  
-
-The predictor `age` is the only continuous variable present within the sub-selected dataset. Although the survey was targeted at respondents of age 0-150 for most variables - the documentation even mentioning the topcoded entries for age 80+ - the dataset seems to only contain cases of people between the age of 20 and 69. Moreover, Figure \@ref(fig:age-dist) suggests a uniform distribution of the age variable.
-
-```{r age-dist, fig.cap = "Distribution of age", echo=FALSE, warning=FALSE}
-ggplot(data, aes(age)) +
-  geom_histogram(stat = 'count')
-```
-
-
-
-## Distributions
-
-```{r dist, eval=FALSE}
-
-# Continuous
-ggplot(data, aes(age)) + geom_histogram(stat = 'count')
-
-# Categorical
-categorical_dist <- function(plot) {
-  plot +
-    geom_histogram(stat = 'count') +
-     theme(axis.text.x = element_blank())
-}
-
-ggplot(data, aes(drink_regularly, fill = drink_regularly)) %>% categorical_dist()
-ggplot(data, aes(sex, fill = sex)) %>% categorical_dist()
-ggplot(data, aes(ethnicity, fill = ethnicity)) %>% categorical_dist()
-ggplot(data, aes(education, fill = education)) %>% categorical_dist()
-ggplot(data, aes(marital, fill = marital)) %>% categorical_dist()
-ggplot(data, aes(household_income, fill = household_income)) %>% categorical_dist()
-
-# TODO depression data
-
-```
-Notes:  
-- Age is not normally distributed, moreover might be unknowingly missing data < 20 and > 70?  
-- Missing data in outcome (and depression).  
-- Lots of married people compared to other marital statuses.
-
-## Outliers
-
-Can only check continuous variables, hence only `age`.
-
-```{r outlier plots}
-ggplot(data, aes(age)) +
-  geom_boxplot()
-```
-No outliers using IQR.
 
 ## Relations
 
@@ -280,4 +275,9 @@ summary(reg_imp_data)
 
 ## Conclusion in terms of answering RQ (Nisse)
 
+# Appendix {#appendix}
+
+```{r data-sum, echo=FALSE}
+sumtable(data, title = "Summary statistics", fit.page = TRUE)
+```
 
