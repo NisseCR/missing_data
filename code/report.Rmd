@@ -118,11 +118,8 @@ Following the EDA, the missing data problem was addressed. The extend, distribut
 Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with diffrent missing data treatments were created.
 
 ### Model methodology
-Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. 
+Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was eveluated.  
 
-The two logistics models were then compared and the impact of the two different missing data treatments was eveluated.  
-
-- what we investigated and why
 
 # EDA Results (Nisse) {#EDA}
 
@@ -183,7 +180,7 @@ plot_marital(data)
 
 ## Correlations
 
-```{r cont-marital, echo = FALSE}
+```{r cont-marital, echo = FALSE, warning = FALSE}
 cont_mar <- table(data$marital, data$drink_regularly)
 show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
 ```
@@ -228,28 +225,28 @@ plot_marital(data)
 ## Missing data and response Patterns
 Firstly, we investigate the overall distribution of missing data in our dataset:
 
-```{r mis_percentage, echo = FALSE}
+```{r mis-percentage, fig.cap = "Distribution of missing data in each variable", echo = FALSE}
 
 # Creates a graph displaying the % of data missing in each variable
 vis_miss(data)
 ```
 
-As can be seen on the graph above, 8.2% of the data is missing. The missing values occur in the outcome variable 'drink_regularly' and in the responses to questions 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' that create the depression score variable. 15% of responses are missing for the predictor variable. 25% of the responses are missing for the individual depression questions 2, 3, 5 and 6, 10% are missing for question 8 and 14% for question 9. 
+As can be seen on Figure \@ref(fig:mis-percentage) , 8.2% of the data is missing. The missing values occur in the outcome variable 'drink_regularly' and in the responses to questions 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' that create the depression score variable. 15% of responses are missing for the predictor variable. 25% of the responses are missing for the individual depression questions 2, 3, 5 and 6, 10% are missing for question 8 and 14% for question 9. 
 
 We further investigate the missing data patterns by looking at the response patters:
 
-```{r res_pattern, echo = FALSE}
+```{r res-pattern, fig.cap = "Response patterns and their frequency", echo = FALSE}
 # Creates a graph with all of the response patterns in the dataset and their frequency
 plot_pattern(data, rotate = TRUE)
 ```
 
-This figure reveals that there are 13 distinct response patterns in the dataset and the missingness pattern is not monotone. The most frequent pattern is no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 are always either all present or all missing. It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. 
+Figure \@ref(fig:res-pattern) reveals that there are 13 distinct response patterns in the dataset and the missingness pattern is not monotone. The most frequent pattern is no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 are always either all present or all missing. It is very probable that the reason for item non-response for the depression items is the same, since there are no cases of only some of them missing. 
 
 Based on the missingness pattern of the depression items, 41% of the overall depression score includes at least one missing value. 
 
 #### Testing dependency of missing values
 
-```{r is_mis_vectors, echo = FALSE}
+```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
 
 mdrink <- is.na(data$drink_regularly)
@@ -262,7 +259,7 @@ out1$statistic
 out1$p.value
 ```
 
-```{r mcar_test, echo = FALSE}
+```{r mcar-test, echo = FALSE}
 # Should this be on data1 or data?
 mcar_test(data)
 ```
