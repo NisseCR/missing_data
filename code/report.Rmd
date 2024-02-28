@@ -4,6 +4,7 @@ author: "Aga, Nisse, Ruben"
 date: "`r Sys.Date()`"
 output: 
   bookdown::pdf_document2
+bibliography: references.bib  
 ---
 
 ```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
@@ -70,6 +71,7 @@ data <- source %>%
 # Introduction (Ruben)
 
 ### RQ (Ruben)
+@moore @garnett @enders
 Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10% of global deaths in people aged 15-49 years. Higher levels of alcohol consumption leads to a higher risk of mortality and the only level of alcohol consumption that minimizes this risk is zero alcohol consumption (study). This means that drinking any alcohol at all increases the risk of mortality. All of this makes it vital to know and understand the factors behind alcohol consumption.
 
 Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
@@ -206,21 +208,6 @@ For our only continuous predictor `age`, a boxplot shows potential outliers if d
 ggplot(data, aes(age)) +
   geom_boxplot()
 ```
-As for our categorical predictors,
-
-```{r combine-marital, echo=FALSE}
-data <- data %>%
-  mutate(marital = case_when(
-    marital == 'married' ~ 'married',
-    .default = 'other'
-  ))
-```
-
-Figure \@ref(fig:marital-dist-2) shows the frequencies per `marital` category after the pre-processing step of combining the other values into one.
-
-```{r marital-dist-2, fig.cap = "Distribution of marital status categories after pre-processing", echo=FALSE}
-plot_marital(data)
-```
 
 # Missing data problem (Aga)
 
@@ -354,9 +341,14 @@ fit_mi <- glm(
 
 ## Conclusion in terms of answering RQ (Nisse)
 
-# Appendix {#appendix}
+# References
+
+<div id="refs"></div>
+
+# (APPENDIX) Appendix {-} 
+
+# Appendix
 
 ```{r data-sum, echo=FALSE}
 sumtable(data, title = "Summary statistics", fit.page = TRUE)
 ```
-
