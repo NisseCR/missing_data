@@ -62,7 +62,7 @@ data <- source %>%
   rename(income = household_income)
 ```
 
-```{r set-seed. echo = FALSE}
+```{r set-seed, echo = FALSE}
 set.seed(0)
 ```
 
@@ -149,6 +149,8 @@ plot_marital <- function(data) {
 Table \@ref(tab:data-sum) from the appendix shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. For categorical variables, a list of possible categories and their respective proportions is provided to replace the continuous summary statistics. Lastly, the column `N` shows the amount of cases with present  data - that being non-NA values.  
 In general, it is worthy to note that all variables are interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggests that `dep` should in fact be categorical ordinal and should therefore be cast as a factor. That said - and as mentioned in Section \@ref(methodology) - keeping the levels of `dep` as a numerical continuous datatype is beneficial for our missing data problem.  
 
+The dataset contains a total of 525 observations, each with 17 variables.  
+
 Our dichotomous outcome variable `drink_regularly` has 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our logistic regression model. Additionally, the total amount of value entries (`N`) of 446 suggests that 79 cases contain values outside of the set of possible binary values - most likely being missing values. Table \@ref(tab:drink-missing) further confirms this.  
 
 ```{r, drink-missing, echo=FALSE}
@@ -171,7 +173,7 @@ ggplot(data, aes(age)) +
     )
 ```
 
-Predictor `ethnicity` has 5 categories, with `non-hispanic_white` being the most prevalant category with 220 cases (42% of total), all the while `other` is the most infrequent category with 25 cases (5%). A total of 525 cases contain `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
+Predictor `ethnicity` has 5 categories, with `non-hispanic_white` being the most prevalent category with 220 cases (42% of total), all the while `other` is the most infrequent category with 25 cases (5%). A total of 525 cases contain `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
 
 Predictor `education` is similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seem to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, we do not observe any missing data values within the variable. This can be further justified by the fact that the minimum `age` within our dataset is 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
 
@@ -198,6 +200,14 @@ The multiple levels of depression all have ranging scores between 0 and 3, with 
 Lastly, `dep9` only has 18 cases of scores above 0, whilst also having the lowest mean value out of all depression levels. `dep9` describes the presence of suicidal thoughts, hence it makes sense that this has the lowest score out of all levels. On the contrary, `dep4` (feeling tired) has the highest average score.  
 Overall, the score distribution are heavily skewed towards the 0 values.
 
+## Response rates
+
+As mentioned, some levels of of depression as well as the outcome variable `drink_regularly` contain missing data values. Figure \@ref(fig:mis-perc) further confirms this, showing that `dep2`, `dep3`, `dep5` and `dep6` have an equal amount of cases with missingness, whilst also being the variables with the most amount of missing data. `drink_regularly` is the variable with the second most missingness, followed by `dep9` and `dep8`. In total, 7 out of the 17 variables have NA values.
+
+```{r mis-perc, fig.cap = "Percentages of missing data per variable", echo = FALSE}
+gg_miss_var(data, show_pct = TRUE)
+```
+
 ## Outliers
 
 For our only continuous predictor `age`, a boxplot shows potential outliers if datapoints fall outside of the interquartile range (whiskers of the plot). Figure \@ref(fig:age-outliers) shows the distribution of `age` in said boxplot, revealing no possible outliers. This is to be expected, since `age` was uniformly distributed as mentioned in Section \@ref(desc-stats).
@@ -207,40 +217,38 @@ ggplot(data, aes(age)) +
   geom_boxplot()
 ```
 
-Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in category frequencies.
+Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in category frequencies, with the category `married` being overly dominant within the data. We considered combining the other `marital` categories into one, as their infrequency could allude to being possible outliers. Figure \@ref(tab:cont-marital) shows the interrelations between the `martial` variable and our outcome `drink_regularly`. From this, we concluded that combining the remaining 5 categories - that being `widowed`, `divorced`, `separated`, `never_married` and `living_with_partner` - was not feasible, since these relations seem to differ per category. For example, `widowed` has more "no" cases compared to "yes", whilst the relation is reversed for `separated`.
+
+```{r cont-marital, echo = FALSE}
+show_table(table(data$marital, data$drink_regularly), "Contingency table of marital status vs. drinking regularly", scale = FALSE)
+```
 
 ## Correlations
 
-Figure \@ref(fig:scatter-age) scatters the `age` data against the outcome variable `drink_regularly`. We observe that the "no" cases for `drink_regularly` tend to be of a higher age. The figure also reveals that the missing data entries for `drink_regularly` are generally younger respondents.
+Figure \@ref(fig:cor-age) shows the distributions of `age` over the outcome variable `drink_regularly` in a boxplot. Not considering the NA values, `age` does not seem to be strongly correlated with `drink_regularly`, with "no" cases having only slightly higher ages than its counterpart.  
+It should however be noted that the NA values of `drink_regularly` are primarily present in younger participants, therefore attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.
 
-- mid class drinks less, poor and rich drink often.
-- male drink more often
-- 
-
-```{r scatter-age, echo = FALSE}
-
+```{r cor-age, echo = FALSE}
 ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
-  geom_jitter() +
+  geom_boxplot() +
   labs(x = 'Age', y = 'Drink regularly')
-
-gg_miss_var(data, show_pct = TRUE)
-
-ggmice(data, mapping = aes(age, drink_regularly)) + geom_jitter()
-
-show_table(table(data$sex, data$drink_regularly), "")
-
-show_table(table(data$ethnicity, data$drink_regularly), "")
-
-show_table(table(data$education, data$drink_regularly), "")
-
-show_table(table(data$marital, data$drink_regularly), "")
-
-show_table(table(data$income, data$drink_regularly), "")
 ```
 
-```{r cont-marital, echo = FALSE, warning = FALSE}
-cont_mar <- table(data$marital, data$drink_regularly)
-show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```{r cor-cat, echo = FALSE}
+ggplot(data, aes(sex, fill = drink_regularly)) +
+  geom_bar(stat = 'count', position = 'dodge')
+
+ggplot(data, aes(marital, fill = drink_regularly)) +
+  geom_bar(stat = 'count', position = 'dodge')
+
+ggplot(data, aes(ethnicity, fill = drink_regularly)) +
+  geom_bar(stat = 'count', position = 'dodge')
+
+ggplot(data, aes(education, fill = drink_regularly)) +
+  geom_bar(stat = 'count', position = 'dodge')
+
+ggplot(data, aes(income, fill = drink_regularly)) +
+  geom_bar(stat = 'count', position = 'dodge')
 ```
 
 TODO (from pract):  
@@ -449,9 +457,6 @@ data_mi <- mice(data_mi, method = "mean", m = 1, maxit = 1) %>%
 
 # Combine depression levels.
 data_mi <- combine_dep(data_mi)
-
-# Check if imputation works.
-md.pattern(data_mi)
 ```
 
 ```{r lw-del, echo = FALSE}
@@ -460,9 +465,6 @@ data_lw <- data[complete.cases(data), ]
 
 # Combine depression levels.
 data_lw <- combine_dep(data_lw)
-
-# Check if imputation works.
-md.pattern(data_mi)
 ```
 
 ```{r model-creation, echo = FALSE}
