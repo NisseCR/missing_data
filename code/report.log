@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  29 FEB 2024 09:00
-=======
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  28 FEB 2024 21:39
->>>>>>> main
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.22)  29 FEB 2024 11:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -10,11 +6,7 @@ entering extended mode
 (./report.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
-<<<<<<< HEAD
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
-=======
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
->>>>>>> main
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
@@ -277,15 +269,11 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 )
 \Gin@req@height=\dimen181
 \Gin@req@width=\dimen182
-<<<<<<< HEAD
 )
 \cslhangindent=\skip63
 \csllabelwidth=\skip64
 \cslentryspacingunit=\skip65
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
-=======
-) (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
->>>>>>> main
+(c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
 \multirow@colwidth=\skip66
 \multirow@cntb=\count293
@@ -348,13 +336,8 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \tabu@arstrutbox=\box67
 \tabu@hleads=\box68
 \tabu@vleads=\box69
-<<<<<<< HEAD
 \tabu@cellskip=\skip69
-) (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
-=======
-\tabu@cellskip=\skip66
 ) (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
->>>>>>> main
 Package: threeparttable 2003/06/13  v 3.0
 \@tempboxb=\box70
 ) (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
@@ -364,13 +347,8 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-<<<<<<< HEAD
 \TPTL@width=\skip70
-) (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
-=======
-\TPTL@width=\skip67
 ) (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
->>>>>>> main
 \UL@box=\box71
 \UL@hyphenbox=\box72
 \UL@skip=\skip71
@@ -491,13 +469,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip72
 )
-<<<<<<< HEAD
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 160.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-=======
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 137.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
->>>>>>> main
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
@@ -506,7 +479,6 @@ File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 ) (./report.aux)
 \openout1 = `report.aux'.
 
-<<<<<<< HEAD
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 160.
 LaTeX Font Info:    ... okay on input line 160.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 160.
@@ -525,28 +497,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 160.
 LaTeX Font Info:    ... okay on input line 160.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 160.
 LaTeX Font Info:    ... okay on input line 160.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
-=======
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 137.
-LaTeX Font Info:    ... okay on input line 137.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
->>>>>>> main
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
@@ -591,37 +542,20 @@ Package hyperref Info: Link coloring OFF on input line 160.
 \@outlinefile=\write4
 \openout4 = `report.out'.
 
-<<<<<<< HEAD
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
-File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
-File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
-=======
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 139.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 139.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 162.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 139.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 162.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 139.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 162.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
->>>>>>> main
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -629,23 +563,13 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <8> on input line 162.
 LaTeX Font Info:    External font `lmex10' loaded for size
-<<<<<<< HEAD
 (Font)              <6> on input line 162.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 162.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
-=======
-(Font)              <6> on input line 139.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 139.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 139.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 162.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
->>>>>>> main
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./report.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -664,138 +588,70 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<<<<<<< HEAD
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 228.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 233.
-(c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [2{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [3]
-
-LaTeX Warning: Reference `methodology' on page 4 undefined on input line 278.
-=======
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 203.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 226.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 208.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 231.
 (c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [2{c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [3]
 
-LaTeX Warning: Reference `methodology' on page 4 undefined on input line 244.
->>>>>>> main
+LaTeX Warning: Reference `methodology' on page 4 undefined on input line 267.
 
-<report_files/figure-latex/age-dist-1.pdf, id=123, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-dist-1.pdf, id=128, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-dist-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-dist-1.pdf>
-<<<<<<< HEAD
-Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 304.
-=======
-Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 270.
->>>>>>> main
+Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 293.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [4] [5 <./report_files/figure-latex/age-dist-1.pdf>]
-<report_files/figure-latex/marital-dist-1-1.pdf, id=144, 469.755pt x 325.215pt>
+<report_files/figure-latex/marital-dist-1-1.pdf, id=149, 469.755pt x 325.215pt>
 File: report_files/figure-latex/marital-dist-1-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/marital-dist-1-1.pdf>
-<<<<<<< HEAD
-Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 316.
+Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 305.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [6 <./report_files/figure-latex/marital-dist-1-1.pdf>]
-<report_files/figure-latex/age-outliers-1.pdf, id=159, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-outliers-1.pdf, id=164, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-outliers-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-outliers-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/age-outliers-1.pdf  used on input line 383.
+Package pdftex.def Info: report_files/figure-latex/age-outliers-1.pdf  used on input line 372.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/mis_percentage-1.pdf, id=160, 469.755pt x 325.215pt>
-File: report_files/figure-latex/mis_percentage-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/mis_percentage-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mis_percentage-1.pdf  used on input line 395.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[7] [8 <./report_files/figure-latex/age-outliers-1.pdf>]
-<report_files/figure-latex/res_pattern-1.pdf, id=180, 469.755pt x 325.215pt>
-File: report_files/figure-latex/res_pattern-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/res_pattern-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/res_pattern-1.pdf  used on input line 401.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[9 <./report_files/figure-latex/mis_percentage-1.pdf>] [10 <./report_files/figure-latex/res_pattern-1.pdf>]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 482.
-[11] [12]
-<report_files/figure-latex/mean-imp-1.pdf, id=217, 469.755pt x 325.215pt>
-File: report_files/figure-latex/mean-imp-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/mean-imp-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mean-imp-1.pdf  used on input line 577.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/lw-del-1.pdf, id=218, 469.755pt x 325.215pt>
-File: report_files/figure-latex/lw-del-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/lw-del-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/lw-del-1.pdf  used on input line 597.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13 <./report_files/figure-latex/mean-imp-1.pdf>]
-
-LaTeX Warning: Float too large for page by 34.58662pt on input line 705.
-
-[14 <./report_files/figure-latex/lw-del-1.pdf>] [15] [16] (./report.aux)
-=======
-Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 282.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[6 <./report_files/figure-latex/marital-dist-1-1.pdf>]
-
-LaTeX Warning: Reference `fig:age-outliers' on page 7 undefined on input line 345.
-
-<report_files/figure-latex/age-outliers-1.pdf, id=158, 469.755pt x 325.215pt>
-File: report_files/figure-latex/age-outliers-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/age-outliers-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/age-outliers-1.pdf  used on input line 347.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 347--349
-[][]
- []
-
-[7]
-<report_files/figure-latex/marital-dist-2-1.pdf, id=167, 469.755pt x 325.215pt>
-File: report_files/figure-latex/marital-dist-2-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/marital-dist-2-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/marital-dist-2-1.pdf  used on input line 354.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/mis-percentage-1.pdf, id=168, 469.755pt x 325.215pt>
+<report_files/figure-latex/mis-percentage-1.pdf, id=165, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mis-percentage-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mis-percentage-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mis-percentage-1.pdf  used on input line 368.
+Package pdftex.def Info: report_files/figure-latex/mis-percentage-1.pdf  used on input line 386.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/res-pattern-1.pdf, id=170, 469.755pt x 325.215pt>
+<report_files/figure-latex/res-pattern-1.pdf, id=167, 469.755pt x 325.215pt>
 File: report_files/figure-latex/res-pattern-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/res-pattern-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/res-pattern-1.pdf  used on input line 378.
+Package pdftex.def Info: report_files/figure-latex/res-pattern-1.pdf  used on input line 396.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[8 <./report_files/figure-latex/age-outliers-1.pdf>] [9 <./report_files/figure-latex/marital-dist-2-1.pdf>] [10 <./report_files/figure-latex/mis-percentage-1.pdf>] [11 <./report_files/figure-latex/res-pattern-1.pdf>]
+[7] [8 <./report_files/figure-latex/age-outliers-1.pdf>] [9 <./report_files/figure-latex/mis-percentage-1.pdf>] [10 <./report_files/figure-latex/res-pattern-1.pdf>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[11]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 436.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 501.
 [12] [13]
-<report_files/figure-latex/mean-imp-1.pdf, id=234, 469.755pt x 325.215pt>
+<report_files/figure-latex/mean-imp-1.pdf, id=238, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mean-imp-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mean-imp-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/mean-imp-1.pdf  used on input line 535.
+Package pdftex.def Info: report_files/figure-latex/mean-imp-1.pdf  used on input line 596.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./report_files/figure-latex/mean-imp-1.pdf>]
-<report_files/figure-latex/lw-del-1.pdf, id=247, 469.755pt x 325.215pt>
+<report_files/figure-latex/lw-del-1.pdf, id=239, 469.755pt x 325.215pt>
 File: report_files/figure-latex/lw-del-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/lw-del-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/lw-del-1.pdf  used on input line 552.
+Package pdftex.def Info: report_files/figure-latex/lw-del-1.pdf  used on input line 613.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[15 <./report_files/figure-latex/lw-del-1.pdf>] [16] (./report.aux)
->>>>>>> main
+[14 <./report_files/figure-latex/mean-imp-1.pdf>]
+
+LaTeX Warning: Float too large for page by 34.58662pt on input line 715.
+
+[15 <./report_files/figure-latex/lw-del-1.pdf>] [16] [17] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -804,41 +660,21 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-<<<<<<< HEAD
-(rerunfilecheck)             Checksum: 0F6830EF770F3F29E136BFF06E392CC1;2998.
+(rerunfilecheck)             Checksum: 9957710C25C735B05CCB739FA2ED370B;3261.
  ) 
 Here is how much of TeX's memory you used:
- 13238 strings out of 476097
- 208586 string characters out of 5792150
- 1961190 words of memory out of 5000000
- 34999 multiletter control sequences out of 15000+600000
- 609488 words of font info for 80 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 75i,10n,79p,970b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (16 pages, 281536 bytes).
-PDF statistics:
- 331 PDF objects out of 1000 (max. 8388607)
- 275 compressed objects within 3 object streams
- 72 named destinations out of 1000 (max. 500000)
- 164 words of extra memory for PDF output out of 10000 (max. 10000000)
-=======
-(rerunfilecheck)             Checksum: 2D7C642F19582AE896E0301A04FA9616;3166.
- ) 
-Here is how much of TeX's memory you used:
- 13225 strings out of 476097
- 208636 string characters out of 5792150
- 1957190 words of memory out of 5000000
- 34995 multiletter control sequences out of 15000+600000
+ 13240 strings out of 476097
+ 208541 string characters out of 5792150
+ 1960190 words of memory out of 5000000
+ 35003 multiletter control sequences out of 15000+600000
  605225 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,10n,79p,1204b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/agaag/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (16 pages, 285347 bytes).
+Output written on report.pdf (17 pages, 287606 bytes).
 PDF statistics:
- 331 PDF objects out of 1000 (max. 8388607)
- 273 compressed objects within 3 object streams
- 64 named destinations out of 1000 (max. 500000)
- 177 words of extra memory for PDF output out of 10000 (max. 10000000)
->>>>>>> main
+ 343 PDF objects out of 1000 (max. 8388607)
+ 286 compressed objects within 3 object streams
+ 71 named destinations out of 1000 (max. 500000)
+ 180 words of extra memory for PDF output out of 10000 (max. 10000000)
 

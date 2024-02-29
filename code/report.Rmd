@@ -76,7 +76,7 @@ Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10
 
 Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
 
-The research question of this study is: \textbf{Can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
+The research question of this study is: \textbf{To what extent the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
 
 # Methodology (Aga)
 
@@ -241,7 +241,7 @@ mcar_test(data)
 
 Since the data being MCAR can be questioned following the Little's test, a t-test was performed for all missing values vectors and numerical variables to check which variables are the likely culprit. The test compared the observed means of a given numerical variable within the group of individuals that had an observed value and the group with a missing value for another variable. Effectively testing if there is a significant difference in the continuous variable in the group that answered another question and the group that did not. Since the null hypothesis is no difference in means across the groups, a single significant value for a missingness of a given variable suggests that the missing values in that variable depend on the observed values of another variable. Therefore, it is likely that the missing values are not MCAR. Due to the identical pattern of responses in 'dep2', 'dep3', 'dep5' and 'dep6' it was sufficient to only test once for the dependency of their missing values. By the design of the test it is impossible to test the dependency of missing values and observed values within the same variable, thus these values are missing from the table. 
 
-Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In the table below the exact t-statistic and the p-value are reported. 
+Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
 
 ```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
@@ -251,12 +251,11 @@ mdep2 <- is.na(data$dep2)
 mdep8 <- is.na(data$dep8)
 mdep9 <- is.na(data$dep9)
 
-# Testing dependency between missing value in var1 and values of var2. Null hypothesis: no dependency. 
+# Testing dependency between missing value in var1 and values of var2 with t-test. Null hypothesis: no dependency. 
 
 dependency_test <- function(var, mis_vector){
   out <- t.test(var ~ mis_vector, data = data)
   paste(c("t =", paste(c(signif(out$statistic, digits = 3), ","), collapse =""), "pVal =", signif(out$p.value, digits = 3)), collapse = " ")
-
 }
 
 # make a table with outcomes of the t-test:
@@ -278,15 +277,86 @@ col5 <- c(dependency_test(var = data$age, mis_vector = mdep9), dependency_test(v
 table_test <-as.data.frame(cbind(col1, col2, col3, col4, col5))
 
 names(table_test) <- c("numerical variable", 
-    "drink_regularly",
-    "dep2/3/5/6",
-    "dep8",
-    "dep9")
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
 show_table(as_tibble(table_test), "Dependency t-test: mean comparison in numerical variables across missing values and observed values in the other variables")
 
 
 ```
 
+```{r chi-squared-test, warning = FALSE, echo = FALSE}
+# Testing dependency between missing value in var1 and values of var2 with t-test. Null hypothesis: no dependency. 
+
+dependency_chitest <- function(var, mis_vector){
+  out <- chisq.test(table(var, mis_vector))
+  paste(c("X^2 =", paste(c(signif(out$statistic, digits = 3), ","), collapse =""), "pVal =", signif(out$p.value, digits = 3)), collapse = " ")
+}
+
+# make a table with outcomes of the chi-squared:
+col1 <- c("drink_regularly",
+    "sex",
+    "ethnicity",
+    "education",
+    "marital",
+    "income")
+col2 <- c("-", dependency_chitest(var = data$sex, mis_vector = mdrink), dependency_chitest(var = data$ethnicity, mis_vector = mdrink), dependency_chitest(var = data$education, mis_vector = mdrink), dependency_chitest(var = data$marital, mis_vector = mdrink), dependency_chitest(var = data$income, mis_vector = mdrink))
+col3 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep2), dependency_chitest(var = data$sex, mis_vector =  mdep2), dependency_chitest(var = data$ethnicity, mis_vector = mdep2), dependency_chitest(var = data$education, mis_vector =  mdep2), dependency_chitest(var = data$marital, mis_vector =  mdep2), dependency_chitest(var = data$income, mis_vector =  mdep2))
+col4 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep8), dependency_chitest(var = data$sex, mis_vector =  mdep8), dependency_chitest(var = data$ethnicity, mis_vector =  mdep8), dependency_chitest(var = data$education, mis_vector =  mdep8), dependency_chitest(var = data$marital, mis_vector =  mdep8), dependency_chitest(var = data$income, mis_vector =  mdep8))
+col5 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep9), dependency_chitest(var = data$sex, mis_vector =  mdep9), dependency_chitest(var = data$ethnicity, mis_vector =  mdep9), dependency_chitest(var = data$education, mis_vector =  mdep9), dependency_chitest(var = data$marital, mis_vector =  mdep9), dependency_chitest(var = data$income, mis_vector =  mdep9))
+
+table_test2 <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test2) <- c("categorical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+
+show_table(table_test2, "Independency Chi-squared test")
+
+```
+
+Since the t-test is not appropriate for categorical variables, we perform the Chi-squared test for them. The null hypothesis of the test is that there is no significant relationship between the categorical variables. The test compares observed frequencies to expected frequencies if there was no relationship between the variables.
+
+The outcomes of the test are presented in table \@ref(tab:chi-squared-test). However, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Thus, it further supports the non-MCAR nature of missing data in these items. 
+
+However, the Chi-squared test has an requirement that the smallest expected frequencies have to be higher than 5. This requirement is not met for some combinations of missing values and categorical variables. Specifically:  missing 'dep8/9' and 'ethnicity', 'marital', 'income'; missing 'dep2/3/5/6' and 'marital', 'income'; missing 'drink_regularly' and 'ethnicity', 'marital', 'income'. Since this assumption is not met for these combination, the pValues might not be correctly estimated. Therefore, the Fischer test, test with the same hypothesis but without the assumption, will be performed for these combinations. 
+
+```{r fisher-test, warning = FALSE, echo = FALSE}
+# Testing dependency between missing value in var1 and values of var2 with fisher test. Null hypothesis: independent variables. 
+
+dependency_fitest <- function(var, mis_vector){
+  out <- fisher.test(table(var, mis_vector), simulate.p.value=TRUE,B=1e5)
+  paste(c("pVal =", signif(out$p.value, digits = 3)), collapse = " ")
+}
+
+# make a table with outcomes of the fisher test:
+col1 <- c("ethnicity",
+    "marital",
+    "income")
+col2 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdrink), dependency_fitest(var = data$marital, mis_vector = mdrink), dependency_fitest(var = data$income, mis_vector = mdrink))
+col3 <- c("-", dependency_fitest(var = data$marital, mis_vector = mdep2), dependency_fitest(var = data$income, mis_vector = mdep2))
+col4 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdep8), dependency_fitest(var = data$marital, mis_vector = mdep8), dependency_fitest(var = data$income, mis_vector = mdep8))
+col5 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdep9), dependency_fitest(var = data$marital, mis_vector = mdep9), dependency_fitest(var = data$income, mis_vector = mdep9))
+
+table_test3 <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test3) <- c("categorical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+
+show_table(table_test3, "Fisher test")
+
+```
+  
+The outcomes of the FIsher test are presented in table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Therefore, we can conclude the dependence of missingness in these variables on multiple other observed variables and reject MCAR in their case.
+
+In all of the tests above 'dep8' and 'dep9' seem not to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions are MAR,
+the overall score is also assumed to be MAR. 
 
 ### Result models with deletion and imputation (Nisse)
 - formula
