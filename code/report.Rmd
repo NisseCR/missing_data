@@ -7,7 +7,7 @@ output:
 bibliography: references.bib  
 ---
 
-```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
+```{r import-dependencies, message = FALSE, warning = FALSE, echo = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
 library(kableExtra)
@@ -17,9 +17,11 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
+library(ggpubr)
 ```
 
 ```{r helper-functions, echo=FALSE}
+# Pretty print of table.
 show_table <- function(data, caption, scale = TRUE) {
   if (scale) {
     args <- c("striped", "scale_down", "hold_position", "repeat_header")
@@ -30,15 +32,23 @@ show_table <- function(data, caption, scale = TRUE) {
   kbl(data, caption = caption, booktabs = T) %>%
     kable_styling(latex_options = args)
 }
+
+# Standard settings for correlatio plot (cat vs. cat)
+cor_plot <- function(plot, name) {
+  plot +
+    geom_bar(stat = 'count', position = 'dodge') +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+    labs(x = name, y = 'Frequency')
+}
 ```
 
-```{r load data, echo = FALSE}
+```{r load-data, echo = FALSE}
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
 
 ```{r variable-selection, echo=FALSE}
-# We create a sub-selection of variables that are of interest to our model.
+# Create a sub-selection of variables that are of interest to our model.
 data <- source %>%
   select(
     id,
@@ -179,14 +189,14 @@ Predictor `education` is similar to `ethnicity`, having 5 categories. That said,
 
 The predictor variable `marital` contains 6 categories. It should be noted that the category value `married` exceeds the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases. Furthermore, the meaning of `never_married` and `living_with_partners` is ambiguous in the sense that a person specifically living with their (non-married) partner can fall into both these categories.
 
-```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo = FALSE}
+```{r marital-dist-1, fig.cap = "Distribution of marital status categories", echo = FALSE}
 plot_marital(data)
 ```
 
 Predictor `income` is a ordinal variable formed by 12 levels, ranging from income values 0 to 100000+. This data, like `age`, is topcoded at the value 100000. This also explains the highest income category - that being 100000+ - having 76 cases (9%), as can be seen in Figure \@ref(fig:income-dist). If we ignore the latter case, the most frequent category is instead `25000:34999`, which coincidentally is the mid-range category of our income data.  
 525 cases contain `income` data, therefore the variable does not contain missing data values.
 
-```{r income-dist, fig.cap = "Distribution of income", echo = FALSE}
+```{r income-dist, fig.cap = "Distribution of income", echo = FALSE, warning = FALSE}
 ggplot(data, aes(income)) +
   geom_histogram(stat = 'count') +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -217,7 +227,7 @@ ggplot(data, aes(age)) +
   geom_boxplot()
 ```
 
-Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in category frequencies, with the category `married` being overly dominant within the data. We considered combining the other `marital` categories into one, as their infrequency could allude to being possible outliers. Figure \@ref(tab:cont-marital) shows the interrelations between the `martial` variable and our outcome `drink_regularly`. From this, we concluded that combining the remaining 5 categories - that being `widowed`, `divorced`, `separated`, `never_married` and `living_with_partner` - was not feasible, since these relations seem to differ per category. For example, `widowed` has more "no" cases compared to "yes", whilst the relation is reversed for `separated`.
+Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in frequency distribution, with the category `married` being overly dominant within the data. We considered combining the other `marital` categories into one, as their infrequency could allude to being possible outliers. Table \@ref(tab:cont-marital) shows the interrelations between the `martial` variable and our outcome `drink_regularly`. From this, we concluded that combining the remaining 5 categories - that being `widowed`, `divorced`, `separated`, `never_married` and `living_with_partner` - was not feasible, since these relations seem to differ per category. For example, `widowed` has more "no" cases compared to "yes", whilst the relation is reversed for `separated`.
 
 ```{r cont-marital, echo = FALSE}
 show_table(table(data$marital, data$drink_regularly), "Contingency table of marital status vs. drinking regularly", scale = FALSE)
@@ -226,35 +236,24 @@ show_table(table(data$marital, data$drink_regularly), "Contingency table of mari
 ## Correlations
 
 Figure \@ref(fig:cor-age) shows the distributions of `age` over the outcome variable `drink_regularly` in a boxplot. Not considering the NA values, `age` does not seem to be strongly correlated with `drink_regularly`, with "no" cases having only slightly higher ages than its counterpart.  
-It should however be noted that the NA values of `drink_regularly` are primarily present in younger participants, therefore attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.
+It should however be noted that the NA values of `drink_regularly` are primarily present in younger participants, therefore possibly attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.
 
-```{r cor-age, echo = FALSE}
+```{r cor-age, fig.cap = "Correlations of age vs. drink regularly", echo = FALSE}
 ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
   geom_boxplot() +
   labs(x = 'Age', y = 'Drink regularly')
 ```
+Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between our categorical predictors and the outcome variable. From this, we observed that `sex` seemed to be highly correlated with `drink_regularly` - 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.  
+Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). We also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have cases of a younger age as well.  
+`ethnicity` showed a weaker correlation effect with the outcome variable. Only `non-hispanic_black` and `other` showed different frequency distributions compared to the other categories. Missing data of `drink_regularly` was present in all categories of `ethnicity`, though `other_hispanic` and `other` had close to none compared to the remaining categories.  
+The variable `education` was considered to have the weakest correlation with `drink_regularly`, having similar success ratios across all categories all the while missing data of `drink_regularly` was also evenly spread.  
+`income` was considered to be correlated with the outcome variable. Performing a similar analysis, we observed that respondents with an income up until 24999 were less likely to drink regularly than cases with a higher income. Akin to `education`, missing data of `drink_regularly` seemed to be evenly spread across the `income` values.  
 
-```{r cor-cat, echo = FALSE}
-ggplot(data, aes(sex, fill = drink_regularly)) +
-  geom_bar(stat = 'count', position = 'dodge')
+Finally, all levels of depression showed a effect of correlation with `drink_regularly`, where higher scores tended to decrease the ratio of "yes" to "no" cases, that is to say that respondents were less likely to drink regularly if signs of depression were present.
 
-ggplot(data, aes(marital, fill = drink_regularly)) +
-  geom_bar(stat = 'count', position = 'dodge')
-
-ggplot(data, aes(ethnicity, fill = drink_regularly)) +
-  geom_bar(stat = 'count', position = 'dodge')
-
-ggplot(data, aes(education, fill = drink_regularly)) +
-  geom_bar(stat = 'count', position = 'dodge')
-
-ggplot(data, aes(income, fill = drink_regularly)) +
-  geom_bar(stat = 'count', position = 'dodge')
+```{r cor-marital, fig.cap = "Correlations of marital vs. drink regularly", echo = FALSE, warning = FALSE}
+cor_plot(ggplot(data, aes(marital, fill = drink_regularly)), 'Marital')
 ```
-
-TODO (from pract):  
-
-- Variable with most NA's
-- Summary of non-NA vars
 
 # Missing data problem (Aga)
 
