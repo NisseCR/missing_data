@@ -10,20 +10,13 @@ bibliography: references.bib
 ```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
-library(fastDummies)
 library(kableExtra)
-library(gridExtra, exclude="combine")
-library(lubridate)
-library(car)
-library(ICC)
-library(caret)
-library(pROC)
 library(naniar)
 library(ggmice)
 library(mice)
 library(Hmisc)
 library(vtable)
-library(vcd)
+library(gtsummary)
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -109,17 +102,20 @@ As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and
 
 Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
+## Software 
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: tidyverse was used for data manipulation [@tidyverse], the mice [@mice] and ggmice [@ggmice] packaged were used for missing data visualizations and list-wise deletion and mean imputation, the kableExtra pacckage was used for table styling [@kables], naniar package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], Hmisc was utilized for mode imputation and vtable helped with the summary statistic table in the Appendix [@vtab] and x was used to produce the summary tables for the two final models [@gtsummary].
+
 ## Data processing
-After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. The important findings of this step are presented in 'EDA Results' section. 
+After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found. Additionally, the missingness seems to be more prevalent among younger individuals, which gave a first indication of lack of MCAR mechanism. The important findings of this step are presented in 'EDA Results' section. 
 
-Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including testing of the dependencies between missing values in one variable and observed values of other variables and performing the Little (1988) MCAR Test. Since the assumptions of MCAR was not meet, MAR was assumed. 
+Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable and observed values of other variables using t-test for continuous variables, Chi-squared test and Fisher test for categorical variables [@Soetewey]. The Fisher test with simulated pValues was used to verify outcomes for combinations of variables that included an expected frequency of below 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not meet, MAR was assumed. 
 
-Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate (source). For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
+Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate [@enders]. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
 
 Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual. A sum was used, as opposed to other methods of aggregation (sucha as mean), as it preserves a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual questions. 
 
 ## Modelling methodology
-Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated.
+Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, it was decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurence of regular drinking was considered the "successful" outcome.
 
 # EDA Results (Nisse) {#EDA}
 
@@ -185,11 +181,6 @@ cont_mar <- table(data$marital, data$drink_regularly)
 show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
 ```
 
-```{r sign-marital, echo = FALSE}
-chisq.test(data$marital, data$drink_regularly)
-assocstats(xtabs(~data$marital + data$drink_regularly))
-```
-
 TODO (from pract):  
 
 - Variable with most NA's
@@ -241,7 +232,7 @@ mcar_test(data)
 
 Since the data being MCAR can be questioned following the Little's test, a t-test was performed for all missing values vectors and numerical variables to check which variables are the likely culprit. The test compared the observed means of a given numerical variable within the group of individuals that had an observed value and the group with a missing value for another variable. Effectively testing if there is a significant difference in the continuous variable in the group that answered another question and the group that did not. Since the null hypothesis is no difference in means across the groups, a single significant value for a missingness of a given variable suggests that the missing values in that variable depend on the observed values of another variable. Therefore, it is likely that the missing values are not MCAR. Due to the identical pattern of responses in 'dep2', 'dep3', 'dep5' and 'dep6' it was sufficient to only test once for the dependency of their missing values. By the design of the test it is impossible to test the dependency of missing values and observed values within the same variable, thus these values are missing from the table. 
 
-Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
+Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In Table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
 
 ```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
@@ -320,7 +311,7 @@ show_table(table_test2, "Independency Chi-squared test")
 
 Since the t-test is not appropriate for categorical variables, we perform the Chi-squared test for them. The null hypothesis of the test is that there is no significant relationship between the categorical variables. The test compares observed frequencies to expected frequencies if there was no relationship between the variables.
 
-The outcomes of the test are presented in table \@ref(tab:chi-squared-test). However, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Thus, it further supports the non-MCAR nature of missing data in these items. 
+The outcomes of the test are presented in Table \@ref(tab:chi-squared-test). However, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Thus, it further supports the non-MCAR nature of missing data in these items. 
 
 However, the Chi-squared test has an requirement that the smallest expected frequencies have to be higher than 5. This requirement is not met for some combinations of missing values and categorical variables. Specifically:  missing 'dep8/9' and 'ethnicity', 'marital', 'income'; missing 'dep2/3/5/6' and 'marital', 'income'; missing 'drink_regularly' and 'ethnicity', 'marital', 'income'. Since this assumption is not met for these combination, the pValues might not be correctly estimated. Therefore, the Fischer test, test with the same hypothesis but without the assumption, will be performed for these combinations. 
 
@@ -353,7 +344,7 @@ show_table(table_test3, "Fisher test")
 
 ```
   
-The outcomes of the FIsher test are presented in table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Therefore, we can conclude the dependence of missingness in these variables on multiple other observed variables and reject MCAR in their case.
+The outcomes of the FIsher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Therefore, we can conclude the dependence of missingness in these variables on multiple other observed variables and reject MCAR in their case.
 
 In all of the tests above 'dep8' and 'dep9' seem not to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions are MAR,
 the overall score is also assumed to be MAR. 
