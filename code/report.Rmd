@@ -86,17 +86,18 @@ Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10
 
 Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
 
-The research question of this study is: \textbf{To what extent the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
+The research question of this study is: \textbf{To what extent can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?}  
+It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption, whilst household income will be positively correlated (sources). In addition, expectation entails that male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status, it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to other marital statuses. That said, the latter was based on a study where the factor marital status consisted of just married and other (source), while in this study more categories were considered.
 
-# Methodology (Aga)
+# Methodology
 
 ## Dataset
 
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be referred to later. 
+The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data we used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
 
-The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description section.  
+The used dataset contained a wide range of variables related to the health of the individuals. We further subsetted the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
 
-## Variables Description
+## Variables Description {#var-desc}
 
 ```{r, vars-desc, echo = FALSE}
 # Read variable description file.
@@ -412,7 +413,8 @@ The outcomes of the FIsher test are presented in Table \@ref(tab:fisher-test). L
 In all of the tests above 'dep8' and 'dep9' seem not to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions are MAR,
 the overall score is also assumed to be MAR. 
 
-### Result models with deletion and imputation (Nisse)
+## Interpretation of the two models
+
 - formula
 - table with coefficients and pval (make sure to exponential the coefficients for easier interpretation)
 - Interpretation of model result 
@@ -422,20 +424,6 @@ miceOut <- mice(data, defaultMethod = c("norm.predict", "logreg", "polyreg", "po
 reg_imp_data <- complete(miceOut)
 summary(reg_imp_data)
 ```
-
-## Model creation (maybe combine with next section?)
-
-Mostly code for now, will add more later on.  
-
-TODO:  
-
-- Use mode imputation for depression and outcome.
-- Mention n rows removal in case of listwise
-
-Summary of code:  
-1. Create imputed data for each ad-hoc method.
-2. combine deps levels for each dataset.
-3. create models for analysis.
 
 ```{r combine-dep, echo = FALSE}
 # Combine imputed levels of depression into one depression score.
@@ -519,8 +507,6 @@ comp_df <- data.frame(
 
 show_table(comp_df, caption = "Model fit statistics")
 ```
-
-## Interpretation of the two models.
 
 Two logistic models were created, one model with the dataset resulting from using listwise deletion as the method used to treat the missing data and the other model with the dataset resulting from using mean imputation as the method used to treat the missing data. In the interpretation section below only the significant predictors are mentioned as most are non-significant and including them would add an unnecessary amount of text. They are still included in the created models, see table 5 and 6.
   
