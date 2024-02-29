@@ -16,7 +16,6 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
-library(ggpubr)
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -106,38 +105,32 @@ descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
 show_table(descs, "Variable descriptions")
 ```
 
-Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which will be utilised for the model in question. 
-The predictor variables $[dep1...dep9]$ are sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can later be combined to indicate an overall level of depression.
+Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which were utilised for the model in question. 
+The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
 
-The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The following should be noted, regarding these demographic variables:  
-
-- The variable `age` is topcoded at the value `80`  for the respondents who were older than 80 years. 
-- The variable `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This is due to the fact that this question includes responses such as `AA degree` and `College Graduate`.
-- Similarly, the variable `marital` was also targeted at respondents of age `20` to `150`.
-- The variable `income` is ordinal, rather than continuous.  
-
-As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these are retrieved from target age `0` to `150`.  
+The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The variable `age` was topcoded at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  
+As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`.  
 
 Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
 ## Software
 
-All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: tidyverse was used for data manipulation [@tidyverse], the mice [@mice] and ggmice [@ggmice] packaged were used for missing data visualizations and list-wise deletion and mean imputation, the kableExtra pacckage was used for table styling [@kables], naniar package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], Hmisc was utilized for mode imputation and vtable helped with the summary statistic table in the Appendix [@vtab] and x was used to produce the summary tables for the two final models [@gtsummary].
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and list-wise deletion and mean imputation, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab] and *gtsummary* was used to produce the summary tables for the two final models [@gtsummary].
 
 ## Data processing
-After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found. Additionally, the missingness seems to be more prevalent among younger individuals, which gave a first indication of lack of MCAR mechanism. The important findings of this step are presented in 'EDA Results' section. 
+After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)). 
 
-Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable and observed values of other variables using t-test for continuous variables, Chi-squared test and Fisher test for categorical variables [@Soetewey]. The Fisher test with simulated pValues was used to verify outcomes for combinations of variables that included an expected frequency of below 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not meet, MAR was assumed. 
+Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable vs. observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. 
 
-Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate [@enders]. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
+Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion, all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilised to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". Thus, two complete datasets with different missing data treatments were created. 
 
-Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual. A sum was used, as opposed to other methods of aggregation (sucha as mean), as it preserves a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual questions. 
+Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual case. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
 
 ## Modelling methodology
 
-Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, it was decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurence of regular drinking was considered the "successful" outcome.
+Including all of the variables in the two complete data sets was motivated by theoretical findings, since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors following the aforementioned model-building methods, it was decided to keep all the predictor variables and therefore have a more complex model. Following model creation, the two logistics models were compared, where the impact of the two different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurrence of regular drinking was considered the "successful" outcome.
 
-# EDA Results (Nisse) {#EDA}
+# EDA Results {#EDA}
 
 ## Descriptive statistics {#desc-stats}
 
@@ -415,16 +408,6 @@ the overall score is also assumed to be MAR.
 
 ## Interpretation of the two models
 
-- formula
-- table with coefficients and pval (make sure to exponential the coefficients for easier interpretation)
-- Interpretation of model result 
-
-```{r}
-miceOut <- mice(data, defaultMethod = c("norm.predict", "logreg", "polyreg", "polr"), m = 1, maxit = 1)
-reg_imp_data <- complete(miceOut)
-summary(reg_imp_data)
-```
-
 ```{r combine-dep, echo = FALSE}
 # Combine imputed levels of depression into one depression score.
 combine_dep <- function(data) {
@@ -505,7 +488,7 @@ comp_df <- data.frame(
   D = c(RD(fit_lw), RD(fit_mi))
 )
 
-show_table(comp_df, caption = "Model fit statistics")
+show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
 ```
 
 Two logistic models were created, one model with the dataset resulting from using listwise deletion as the method used to treat the missing data and the other model with the dataset resulting from using mean imputation as the method used to treat the missing data. In the interpretation section below only the significant predictors are mentioned as most are non-significant and including them would add an unnecessary amount of text. They are still included in the created models, see table 5 and 6.
