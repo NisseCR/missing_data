@@ -10,20 +10,12 @@ bibliography: references.bib
 ```{r import dependencies, message = FALSE, warning = FALSE, echo = FALSE}
 # We first specify our dependencies and read the data from the `data.rds` file.
 library(tidyverse)
-library(fastDummies)
 library(kableExtra)
-library(gridExtra, exclude="combine")
-library(lubridate)
-library(car)
-library(ICC)
-library(caret)
-library(pROC)
 library(naniar)
 library(ggmice)
 library(mice)
 library(Hmisc)
 library(vtable)
-library(vcd)
 library(gtsummary)
 library(gt)
 ```
