@@ -65,8 +65,12 @@ data <- source %>%
     dep7,
     dep8,
     dep9
-  )%>%
+  ) %>%
   rename(income = household_income)
+```
+
+```{r set-seed. echo = FALSE}
+set.seed(0)
 ```
 
 \newpage
@@ -82,7 +86,7 @@ The research question of this study is: \textbf{Can the occurrence of regular al
 
 ## Dataset
 
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be referred to later. 
 
 The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description section.  
 
@@ -164,37 +168,39 @@ Like `sex`, `age` has 525 cases with non-NA values, hence the variable does not 
 
 ```{r age-dist, fig.cap = "Distribution of age", echo=FALSE, warning=FALSE}
 ggplot(data, aes(age)) +
-  geom_histogram(stat = 'count')
+  geom_histogram(stat = 'count') +
+  labs(
+      x = 'Age',
+      y = 'Frequency'
+    )
 ```
 
 Predictor `ethnicity` has 5 categories, with `non-hispanic_white` being the most prevalant category with 220 cases (42% of total), all the while `other` is the most infrequent category with 25 cases (5%). A total of 525 cases contain `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
 
 Predictor `education` is similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seem to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, we do not observe any missing data values within the variable. This can be further justified by the fact that the minimum `age` within our dataset is 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
 
-The predictor variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases.  
-
+The predictor variable `marital` contains 6 categories. It should be noted that the category value `married` exceeds the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases. Furthermore, the meaning of `never_married` and `living_with_partners` is ambiguous in the sense that a person specifically living with their (non-married) partner can fall into both these categories.
 
 ```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo = FALSE}
 plot_marital(data)
 ```
 
-## Correlations
+Predictor `income` is a ordinal variable formed by 12 levels, ranging from income values 0 to 100000+. This data, like `age`, is topcoded at the value 100000. This also explains the highest income category - that being 100000+ - having 76 cases (9%), as can be seen in Figure \@ref(fig:income-dist). If we ignore the latter case, the most frequent category is instead `25000:34999`, which coincidentally is the mid-range category of our income data.  
+525 cases contain `income` data, therefore the variable does not contain missing data values.
 
-```{r cont-marital, echo = FALSE, warning = FALSE}
-cont_mar <- table(data$marital, data$drink_regularly)
-show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```{r income-dist, fig.cap = "Distribution of income", echo = FALSE}
+ggplot(data, aes(income)) +
+  geom_histogram(stat = 'count') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(
+      x = 'Income',
+      y = 'Frequency'
+    )
 ```
 
-```{r sign-marital, echo = FALSE}
-chisq.test(data$marital, data$drink_regularly)
-assocstats(xtabs(~data$marital + data$drink_regularly))
-```
-
-TODO (from pract):  
-
-- Variable with most NA's
-- Summary of non-NA vars
-- 
+The multiple levels of depression all have ranging scores between 0 and 3, with increments of 1 specifically. A higher score indicates agreement with the signs of depression described in the survey. Only `dep1` and `dep7` have complete data data, whilst the other levels have varying amounts of missing data. Missing data could possibly be caused by the respondents being reluctant to answers these questions. We also observe that `dep2`, `dep3`, `dep5`, `dep6` have the same amount of missing data value, hence it is plausible that they have a shared cause of missing data.
+Lastly, `dep9` only has 18 cases of scores above 0, whilst also having the lowest mean value out of all depression levels. `dep9` describes the presence of suicidal thoughts, hence it makes sense that this has the lowest score out of all levels. On the contrary, `dep4` (feeling tired) has the highest average score.  
+Overall, the score distribution are heavily skewed towards the 0 values.
 
 ## Outliers
 
@@ -204,6 +210,47 @@ For our only continuous predictor `age`, a boxplot shows potential outliers if d
 ggplot(data, aes(age)) +
   geom_boxplot()
 ```
+
+Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in category frequencies.
+
+## Correlations
+
+Figure \@ref(fig:scatter-age) scatters the `age` data against the outcome variable `drink_regularly`. We observe that the "no" cases for `drink_regularly` tend to be of a higher age. The figure also reveals that the missing data entries for `drink_regularly` are generally younger respondents.
+
+- mid class drinks less, poor and rich drink often.
+- male drink more often
+- 
+
+```{r scatter-age, echo = FALSE}
+
+ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
+  geom_jitter() +
+  labs(x = 'Age', y = 'Drink regularly')
+
+gg_miss_var(data, show_pct = TRUE)
+
+ggmice(data, mapping = aes(age, drink_regularly)) + geom_jitter()
+
+show_table(table(data$sex, data$drink_regularly), "")
+
+show_table(table(data$ethnicity, data$drink_regularly), "")
+
+show_table(table(data$education, data$drink_regularly), "")
+
+show_table(table(data$marital, data$drink_regularly), "")
+
+show_table(table(data$income, data$drink_regularly), "")
+```
+
+```{r cont-marital, echo = FALSE, warning = FALSE}
+cont_mar <- table(data$marital, data$drink_regularly)
+show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```
+
+TODO (from pract):  
+
+- Variable with most NA's
+- Summary of non-NA vars
 
 # Missing data problem (Aga)
 
@@ -378,6 +425,9 @@ To summarize the chosen method to treat the missing data causes bias in the indi
 
 
 ## Conclusion in terms of answering RQ (Nisse)
+
+- go back to papers, reflect hypo
+- stuffs
 
 # References
 
