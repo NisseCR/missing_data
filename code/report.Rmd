@@ -17,10 +17,7 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
-<<<<<<< HEAD
 library(gt)
-=======
->>>>>>> 6ede28e1053093069e11ecfa823a47d94159f55d
 ```
 
 ```{r helper-functions, echo=FALSE}
