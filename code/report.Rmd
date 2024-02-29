@@ -17,7 +17,10 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
+<<<<<<< HEAD
 library(gt)
+=======
+>>>>>>> 6ede28e1053093069e11ecfa823a47d94159f55d
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -59,10 +62,14 @@ data <- source %>%
     dep7,
     dep8,
     dep9
-  )%>%
+  ) %>%
   rename(income = household_income)
 data$drink_regularly <- relevel(data$drink_regularly, "no") #relevel outcome variable
 
+```
+
+```{r set-seed. echo = FALSE}
+set.seed(0)
 ```
 
 \newpage
@@ -72,13 +79,13 @@ Alcohol consumption led to 2.8 million deaths in 2016 and accounts for almost 10
 
 Moore et al. 2005 found that age, sex, ethnicity, marital status, education level and household income were all either negatively or positively associated with alcohol consumption. In Garnett et all. 2022 it was found that the level of depression was negatively associated with alcohol consumption. Considering that the only safe level of alcohol consumption is zero, it is important to understand what factors predict regular consumption of alcohol instead of only looking at the amount of alcohol consumption as in the two studies mentioned above. 
 
-The research question of this study is: \textbf{Can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity (white vs other), marital status and household income}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
+The research question of this study is: \textbf{To what extent the occurrence of regular alcohol consumption (12 or more in a year) can be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?}. It is expected that age and depression level will be negatively correlated with the occurrence of alcohol consumption while household income will be positively correlated (sources). It is also expected that being male (vs female) and white ( vs other ethnicities) will be positively correlated with the regular occurrence of alcohol consumption (source). Regarding marital status it is expected that the married status will be positively associated with the regular occurrence of alcohol consumption compared to others but that is based on a study where the factor marital status consisted of just married and other (source), while in this study more categories are considered.
 
 # Methodology (Aga)
 
 ## Dataset
 
-The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be refered to later. 
+The dataset used is a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey is a part of annual program that investigates the health and nutrition of  a representative sample of people in the United States. The data we used contains information about 525 individuals that has been collected for the NHANES 2007-2008. This is a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% was interviewed and 75.4% was examined in mobile examination centers. The NHANES is further subdivided into themed sections, such as the Alcohol Use questionnaire, that have separate documentation that will be referred to later. 
 
 The used dataset contains a wide range of variables related, to the health of the individuals. We further subset the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description section.  
 
@@ -105,17 +112,20 @@ As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and
 
 Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
+## Software 
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: tidyverse was used for data manipulation [@tidyverse], the mice [@mice] and ggmice [@ggmice] packaged were used for missing data visualizations and list-wise deletion and mean imputation, the kableExtra pacckage was used for table styling [@kables], naniar package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], Hmisc was utilized for mode imputation and vtable helped with the summary statistic table in the Appendix [@vtab] and x was used to produce the summary tables for the two final models [@gtsummary].
+
 ## Data processing
-After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. The important findings of this step are presented in 'EDA Results' section. 
+After arriving at the subset dataset, as Exploratory Data Analysis was performed. The distributions of the variables were investigated and presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found. Additionally, the missingness seems to be more prevalent among younger individuals, which gave a first indication of lack of MCAR mechanism. The important findings of this step are presented in 'EDA Results' section. 
 
-Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including testing of the dependencies between missing values in one variable and observed values of other variables and performing the Little (1988) MCAR Test. Since the assumptions of MCAR was not meet, MAR was assumed. 
+Following the EDA, the missing data problem was addressed. The extend, distribution and patterns of missingness were investigated. Testing was done to verify the missing data mechanism, including performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable and observed values of other variables using t-test for continuous variables, Chi-squared test and Fisher test for categorical variables [@Soetewey]. The Fisher test with simulated pValues was used to verify outcomes for combinations of variables that included an expected frequency of below 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not meet, MAR was assumed. 
 
-Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate (source). For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
+Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion all cases with one or more missing values were excluded from the modeling. The mean imputation method was implemented in the following way: For the missing depression questions the mean of the observed values within the variable was computed and then the missing values were replaces by the mean value. This approach was taken, as in case of ordinal variables on Likert scale treating them as continuous is an appropriate [@enders]. For 'drink_regularly, the outcome variable, instead of a mean, the mode was computed. This was motivated by the need for a binary outcome variable in the logistic regression that was planned to answer the research question. Since the EDA found there was significantly more 'yes' values than 'no' values in 'drink_regularly', the missing values were replaces by 'yes'. Thus, two complete datasets with different missing data treatments were created. 
 
 Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual. A sum was used, as opposed to other methods of aggregation (sucha as mean), as it preserves a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual questions. 
 
 ## Modelling methodology
-Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, we decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated.
+Including all of the variables in the two complete data sets is motivated by theoretical findings since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors as in the other approaches, it was decided to keep them and therefore have more complex models. The two logistics models were then compared and the impact of the two different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurence of regular drinking was considered the "successful" outcome.
 
 # EDA Results (Nisse) {#EDA}
 
@@ -160,37 +170,39 @@ Like `sex`, `age` has 525 cases with non-NA values, hence the variable does not 
 
 ```{r age-dist, fig.cap = "Distribution of age", echo=FALSE, warning=FALSE}
 ggplot(data, aes(age)) +
-  geom_histogram(stat = 'count')
+  geom_histogram(stat = 'count') +
+  labs(
+      x = 'Age',
+      y = 'Frequency'
+    )
 ```
 
 Predictor `ethnicity` has 5 categories, with `non-hispanic_white` being the most prevalant category with 220 cases (42% of total), all the while `other` is the most infrequent category with 25 cases (5%). A total of 525 cases contain `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
 
 Predictor `education` is similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seem to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, we do not observe any missing data values within the variable. This can be further justified by the fact that the minimum `age` within our dataset is 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
 
-The predictor variable `marital` contains 6 categories. Prior to combining the `marital` categories, the category value `married` exceeded the the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases.  
-
+The predictor variable `marital` contains 6 categories. It should be noted that the category value `married` exceeds the average frequency of other categories (that being `r marital_avg`) by a large margin - as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories made up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases. Furthermore, the meaning of `never_married` and `living_with_partners` is ambiguous in the sense that a person specifically living with their (non-married) partner can fall into both these categories.
 
 ```{r marital-dist-1, fig.cap = "Distribution of marital status categories before pre-processing", echo = FALSE}
 plot_marital(data)
 ```
 
-## Correlations
+Predictor `income` is a ordinal variable formed by 12 levels, ranging from income values 0 to 100000+. This data, like `age`, is topcoded at the value 100000. This also explains the highest income category - that being 100000+ - having 76 cases (9%), as can be seen in Figure \@ref(fig:income-dist). If we ignore the latter case, the most frequent category is instead `25000:34999`, which coincidentally is the mid-range category of our income data.  
+525 cases contain `income` data, therefore the variable does not contain missing data values.
 
-```{r cont-marital, echo = FALSE, warning = FALSE}
-cont_mar <- table(data$marital, data$drink_regularly)
-show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```{r income-dist, fig.cap = "Distribution of income", echo = FALSE}
+ggplot(data, aes(income)) +
+  geom_histogram(stat = 'count') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(
+      x = 'Income',
+      y = 'Frequency'
+    )
 ```
 
-```{r sign-marital, echo = FALSE}
-chisq.test(data$marital, data$drink_regularly)
-assocstats(xtabs(~data$marital + data$drink_regularly))
-```
-
-TODO (from pract):  
-
-- Variable with most NA's
-- Summary of non-NA vars
-- 
+The multiple levels of depression all have ranging scores between 0 and 3, with increments of 1 specifically. A higher score indicates agreement with the signs of depression described in the survey. Only `dep1` and `dep7` have complete data data, whilst the other levels have varying amounts of missing data. Missing data could possibly be caused by the respondents being reluctant to answers these questions. We also observe that `dep2`, `dep3`, `dep5`, `dep6` have the same amount of missing data value, hence it is plausible that they have a shared cause of missing data.
+Lastly, `dep9` only has 18 cases of scores above 0, whilst also having the lowest mean value out of all depression levels. `dep9` describes the presence of suicidal thoughts, hence it makes sense that this has the lowest score out of all levels. On the contrary, `dep4` (feeling tired) has the highest average score.  
+Overall, the score distribution are heavily skewed towards the 0 values.
 
 ## Outliers
 
@@ -200,6 +212,47 @@ For our only continuous predictor `age`, a boxplot shows potential outliers if d
 ggplot(data, aes(age)) +
   geom_boxplot()
 ```
+
+Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in category frequencies.
+
+## Correlations
+
+Figure \@ref(fig:scatter-age) scatters the `age` data against the outcome variable `drink_regularly`. We observe that the "no" cases for `drink_regularly` tend to be of a higher age. The figure also reveals that the missing data entries for `drink_regularly` are generally younger respondents.
+
+- mid class drinks less, poor and rich drink often.
+- male drink more often
+- 
+
+```{r scatter-age, echo = FALSE}
+
+ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
+  geom_jitter() +
+  labs(x = 'Age', y = 'Drink regularly')
+
+gg_miss_var(data, show_pct = TRUE)
+
+ggmice(data, mapping = aes(age, drink_regularly)) + geom_jitter()
+
+show_table(table(data$sex, data$drink_regularly), "")
+
+show_table(table(data$ethnicity, data$drink_regularly), "")
+
+show_table(table(data$education, data$drink_regularly), "")
+
+show_table(table(data$marital, data$drink_regularly), "")
+
+show_table(table(data$income, data$drink_regularly), "")
+```
+
+```{r cont-marital, echo = FALSE, warning = FALSE}
+cont_mar <- table(data$marital, data$drink_regularly)
+show_table(cont_mar, "Contigency table of marital vs. drink regularly", scale = FALSE)
+```
+
+TODO (from pract):  
+
+- Variable with most NA's
+- Summary of non-NA vars
 
 # Missing data problem (Aga)
 
@@ -232,12 +285,11 @@ Missing completly at random (MCAR) missingneses mechanism is often an important 
 Firstly, Little MCAR test was preformed to verify if the missing data is MCAR at a global level, thus for all of the instances of missigness. The test was significant ($\chi^2 (164) = 465.18, p < 0.01$), therefore the data may be assumed as not MCAR. 
 ```{r mcar-test, echo = FALSE, include=FALSE}
 mcar_test(data)
-
 ```
 
 Since the data being MCAR can be questioned following the Little's test, a t-test was performed for all missing values vectors and numerical variables to check which variables are the likely culprit. The test compared the observed means of a given numerical variable within the group of individuals that had an observed value and the group with a missing value for another variable. Effectively testing if there is a significant difference in the continuous variable in the group that answered another question and the group that did not. Since the null hypothesis is no difference in means across the groups, a single significant value for a missingness of a given variable suggests that the missing values in that variable depend on the observed values of another variable. Therefore, it is likely that the missing values are not MCAR. Due to the identical pattern of responses in 'dep2', 'dep3', 'dep5' and 'dep6' it was sufficient to only test once for the dependency of their missing values. By the design of the test it is impossible to test the dependency of missing values and observed values within the same variable, thus these values are missing from the table. 
 
-Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In the table below the exact t-statistic and the p-value are reported. 
+Assuming an alpha of 0.05, it can be observed that missing values of 'drink_regularly' are dependent on 'age', 'dep2' and 'dep9'. Similarly, 'dep2', 'dep3', 'dep5' and 'dep6' seem to be dependent on 'age' and the remaining depression questions. For missingness in 'dep8' and 'dep9' there are no significant differences across groups in any of the numerical variables. These tests suggest that at least 'drink_regularly', 'dep2', 'dep3', 'dep5' and 'dep6'are not MCAR, thus MAR will be assumed for them. In Table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
 
 ```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
@@ -247,12 +299,11 @@ mdep2 <- is.na(data$dep2)
 mdep8 <- is.na(data$dep8)
 mdep9 <- is.na(data$dep9)
 
-# Testing dependency between missing value in var1 and values of var2. Null hypothesis: no dependency. 
+# Testing dependency between missing value in var1 and values of var2 with t-test. Null hypothesis: no dependency. 
 
 dependency_test <- function(var, mis_vector){
   out <- t.test(var ~ mis_vector, data = data)
   paste(c("t =", paste(c(signif(out$statistic, digits = 3), ","), collapse =""), "pVal =", signif(out$p.value, digits = 3)), collapse = " ")
-
 }
 
 # make a table with outcomes of the t-test:
@@ -274,15 +325,86 @@ col5 <- c(dependency_test(var = data$age, mis_vector = mdep9), dependency_test(v
 table_test <-as.data.frame(cbind(col1, col2, col3, col4, col5))
 
 names(table_test) <- c("numerical variable", 
-    "drink_regularly",
-    "dep2/3/5/6",
-    "dep8",
-    "dep9")
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
 show_table(as_tibble(table_test), "Dependency t-test: mean comparison in numerical variables across missing values and observed values in the other variables")
 
 
 ```
 
+```{r chi-squared-test, warning = FALSE, echo = FALSE}
+# Testing dependency between missing value in var1 and values of var2 with t-test. Null hypothesis: no dependency. 
+
+dependency_chitest <- function(var, mis_vector){
+  out <- chisq.test(table(var, mis_vector))
+  paste(c("X^2 =", paste(c(signif(out$statistic, digits = 3), ","), collapse =""), "pVal =", signif(out$p.value, digits = 3)), collapse = " ")
+}
+
+# make a table with outcomes of the chi-squared:
+col1 <- c("drink_regularly",
+    "sex",
+    "ethnicity",
+    "education",
+    "marital",
+    "income")
+col2 <- c("-", dependency_chitest(var = data$sex, mis_vector = mdrink), dependency_chitest(var = data$ethnicity, mis_vector = mdrink), dependency_chitest(var = data$education, mis_vector = mdrink), dependency_chitest(var = data$marital, mis_vector = mdrink), dependency_chitest(var = data$income, mis_vector = mdrink))
+col3 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep2), dependency_chitest(var = data$sex, mis_vector =  mdep2), dependency_chitest(var = data$ethnicity, mis_vector = mdep2), dependency_chitest(var = data$education, mis_vector =  mdep2), dependency_chitest(var = data$marital, mis_vector =  mdep2), dependency_chitest(var = data$income, mis_vector =  mdep2))
+col4 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep8), dependency_chitest(var = data$sex, mis_vector =  mdep8), dependency_chitest(var = data$ethnicity, mis_vector =  mdep8), dependency_chitest(var = data$education, mis_vector =  mdep8), dependency_chitest(var = data$marital, mis_vector =  mdep8), dependency_chitest(var = data$income, mis_vector =  mdep8))
+col5 <- c(dependency_chitest(var = data$drink_regularly, mis_vector = mdep9), dependency_chitest(var = data$sex, mis_vector =  mdep9), dependency_chitest(var = data$ethnicity, mis_vector =  mdep9), dependency_chitest(var = data$education, mis_vector =  mdep9), dependency_chitest(var = data$marital, mis_vector =  mdep9), dependency_chitest(var = data$income, mis_vector =  mdep9))
+
+table_test2 <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test2) <- c("categorical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+
+show_table(table_test2, "Independency Chi-squared test")
+
+```
+
+Since the t-test is not appropriate for categorical variables, we perform the Chi-squared test for them. The null hypothesis of the test is that there is no significant relationship between the categorical variables. The test compares observed frequencies to expected frequencies if there was no relationship between the variables.
+
+The outcomes of the test are presented in Table \@ref(tab:chi-squared-test). However, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Thus, it further supports the non-MCAR nature of missing data in these items. 
+
+However, the Chi-squared test has an requirement that the smallest expected frequencies have to be higher than 5. This requirement is not met for some combinations of missing values and categorical variables. Specifically:  missing 'dep8/9' and 'ethnicity', 'marital', 'income'; missing 'dep2/3/5/6' and 'marital', 'income'; missing 'drink_regularly' and 'ethnicity', 'marital', 'income'. Since this assumption is not met for these combination, the pValues might not be correctly estimated. Therefore, the Fischer test, test with the same hypothesis but without the assumption, will be performed for these combinations. 
+
+```{r fisher-test, warning = FALSE, echo = FALSE}
+# Testing dependency between missing value in var1 and values of var2 with fisher test. Null hypothesis: independent variables. 
+
+dependency_fitest <- function(var, mis_vector){
+  out <- fisher.test(table(var, mis_vector), simulate.p.value=TRUE,B=1e5)
+  paste(c("pVal =", signif(out$p.value, digits = 3)), collapse = " ")
+}
+
+# make a table with outcomes of the fisher test:
+col1 <- c("ethnicity",
+    "marital",
+    "income")
+col2 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdrink), dependency_fitest(var = data$marital, mis_vector = mdrink), dependency_fitest(var = data$income, mis_vector = mdrink))
+col3 <- c("-", dependency_fitest(var = data$marital, mis_vector = mdep2), dependency_fitest(var = data$income, mis_vector = mdep2))
+col4 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdep8), dependency_fitest(var = data$marital, mis_vector = mdep8), dependency_fitest(var = data$income, mis_vector = mdep8))
+col5 <- c(dependency_fitest(var = data$ethnicity, mis_vector = mdep9), dependency_fitest(var = data$marital, mis_vector = mdep9), dependency_fitest(var = data$income, mis_vector = mdep9))
+
+table_test3 <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test3) <- c("categorical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+
+show_table(table_test3, "Fisher test")
+
+```
+  
+The outcomes of the FIsher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only 'martial' with missingness of 'drink_regularly' and 'marital' with missingness of 'dep2', 'dep3', 'dep5' and 'dep6' are significant. Therefore, we can conclude the dependence of missingness in these variables on multiple other observed variables and reject MCAR in their case.
+
+In all of the tests above 'dep8' and 'dep9' seem not to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions are MAR,
+the overall score is also assumed to be MAR. 
 
 ### Result models with deletion and imputation (Nisse)
 - formula
@@ -420,6 +542,9 @@ So as both methods were used when the missingness wasn’t MCAR the created mode
 
 
 ## Conclusion in terms of answering RQ (Nisse)
+
+- go back to papers, reflect hypo
+- stuffs
 
 # References
 
