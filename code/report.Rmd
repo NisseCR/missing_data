@@ -17,7 +17,6 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
-library(gt)
 ```
 
 ```{r helper-functions, echo=FALSE}
