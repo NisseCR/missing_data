@@ -385,6 +385,12 @@ fit_mi <- glm(
 ```
 
 ## Comparison of the two diffrent models in terms of missing data treatment !!! (Ruben)
+Depending on the chosen method used to treat the missing data, the answer on the research question changes. In the model fitted on the data where listwise-deletion was used as the missing data treatment only sex and marital status divorced were significant predictors (stats). Using mean imputation as the missing data treatment resulted in a fitted model where next to sex and marital status divorced, age and the intercept were also significant. The used method also changes the odds resulting from the model, in predictors that were significant in one but not the other ( see intercept for example) but also in predictors that were significant in both (see age and divorced). As can be seen the estimated odds differ quite a lot. The standard errors in the listwise deletion model are also considerably smaller than those in the mean imputation model. All of the above shows that the used missing data  treatment method can cause bias in the odds, standards errors and significant values. 
+
+The missing data treatment method also influences the look of the resulting model as a whole. The model fitted on the listwise deletion data looks better, the null deviance and residual deviance are both considerably lower compared to the model fitted on the data resulting from mean imputation ( values ). Looking at AIC also gives the impression that the liswise deletion method gives a betger model.
+
+To summarize the chosen method to treat the missing data causes bias in the individual predictors and in the look of the fitted model as a whole. As a result the answer to the studied research question depends on which method is chosen. 
+
 
 ## Conclusion in terms of answering RQ (Nisse)
 
