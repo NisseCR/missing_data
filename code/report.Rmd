@@ -239,7 +239,7 @@ cor_plot(ggplot(data, aes(marital, fill = drink_regularly)), 'Marital')
 
 Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). We also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have more cases of a younger age as well. 
 
-```{r age-marital, fig.cap = "", echo = FALSE}
+```{r age-marital, fig.cap = "Age distributions over marital statuses", echo = FALSE}
 ggplot(data, aes(age, marital, colour = marital)) +
   geom_boxplot()
 ```
