@@ -16,6 +16,8 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
+
+citation("mice")
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -235,10 +237,16 @@ Figure \@ref(fig:box-age) shows the distributions of `age` over the outcome vari
 It should however be noted that the NA values of `drink_regularly` were primarily present in younger participants, therefore possibly attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.  
 
 Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between our categorical predictors and the outcome variable. From this, we observed that `sex` seemed to be highly correlated with `drink_regularly`; 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.  
-Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). We also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have more cases of a younger age as well. 
 
 ```{r cor-marital, fig.cap = "Correlations of marital vs. drink regularly", echo = FALSE, warning = FALSE}
 cor_plot(ggplot(data, aes(marital, fill = drink_regularly)), 'Marital')
+```
+
+Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). We also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have more cases of a younger age as well. 
+
+```{r age-marital, fig.cap = "", echo = FALSE}
+ggplot(data, aes(age, marital, colour = marital)) +
+  geom_boxplot()
 ```
 
 `ethnicity` showed a weaker correlation effect with the outcome variable. Only `non-hispanic_black` and `other` showed different frequency distributions compared to the other categories. Missing data of `drink_regularly` was present in all categories of `ethnicity`, though `other_hispanic` and `other` had close to none compared to the remaining categories.  
@@ -441,16 +449,21 @@ fit_mi <- glm(
   family = binomial, 
   data = data_mi
 )
+```
 
+```{r lw-model, echo = FALSE}
 # Make table of the glm output
 as_kable_extra(tbl_regression(fit_lw, exponentiate = TRUE, intercept = TRUE) %>%
-  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Mean imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
+  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Listwise deletion model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
   kableExtra::kable_styling(
     position = "center",
     latex_options = c("striped", "repeat_header"),
     stripe_color = "gray!15"
   )
+```
 
+```{r mi-model, echo = FALSE}
+# Make table of the glm output
 as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, intercept = TRUE) %>%
   add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Mean imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
   kableExtra::kable_styling(
@@ -458,8 +471,9 @@ as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, in
     latex_options = c("striped", "repeat_header"),
     stripe_color = "gray!15"
   )
+```
 
-
+```{r model-compare, echo = FALSE}
 # Obtain residual deviance statistic from model.
 RD <- function(model) {
   summary(model)$deviance
@@ -476,14 +490,14 @@ comp_df <- data.frame(
 show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
 ```
 
-Two logistic models were created, one model with the dataset resulting from using listwise deletion as the method used to treat the missing data and the other model with the dataset resulting from using mean imputation as the method used to treat the missing data. In the interpretation section below only the significant predictors are mentioned as most are non-significant and including them would add an unnecessary amount of text. They are still included in the created models, see table 7 and 8.
+Two logistic models were created, one for each of the imputed datasets that resulted from both the ad-hoc mean imputation and listwise deletion missing  data methods. The interpretation below only includes significant predictors, since most of the model's predictors seemed non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model).
   
 Looking at the listwise deletion model, only sex ( p < 0.001) and the marital status divorced (p <  0.001) are significant predictors, all the other predictors and the intercept were insignificant. The odds ratio of females drinking regularly compared to males was 0.16[0.08, 0.31] meaning they were 0.16 times as likely to drink compared to males ( 0.16 < 1 so it less likely). The odds ratio of people with the marital status divorced compared to people with the marital status married was 7.37[2.54, 25.0] meaning divorced people were 7.37 times as likely to drink regularly compared to married people. 
 
 In the mean imputation model age (p < 0.001) is also a significant predictor next to sex (p < 0.001) and marital status divorced (p < 0.004 ), the intercept (p < 0.001) is also significant. For a unit increase in age the odds ratio of drinking regularly decreases 0.97[0.95, 0.99] times. The odds ratio of females drinking regularly compared to males was 0.24[0.14, 0.38] meaning they were 0.24 times as likely to drink compared to males. The odds ratio of people with the marital status divorced compared to people with the marital status married was 3.05[1.47, 6.69] meaning divorced people were 3.05 times as likely to drink regularly compared to married people. If all predictor variables were in their reference state the baseline odds ratio is 20.5[3.40, 136]. 
 Looking at the model fit statistics, it seems like the listwise deletion models seems to fit better with a lower AIC, BIC and D value as show in table 9. 
 
-## Comparison of the two models in terms the missing data and resulting model
+## Results comparison ad-hoc methods
 
 The answer to the research question changes depending on the used method to treat missing data as can be seen in the interpretation section above. The models differ in: the number of significant predictors, the odds ratios, standard errors (these are lower in the mean imputation model, see tables 7 and 8) and the fitness statistics. Both methods used to treat missing data only work correctly if the missingness is MCAR but as the missingness is not MCAR and MAR is assumed (see (Section \@ref(MDM)), both methods caused bias in the results. In the case of logistic regression (as this study does) listwise deletion could still give unbiased results even if the missingness isn’t MCAR if the missing values are either in the predictor variables or in the outcome variable. This isn’t the case in the data used in this study, both predictor variables as the outcome variables contain missing values. 
 
@@ -494,7 +508,7 @@ Using mean imputation on a dataset where the missingness isn’t MCAR will give 
 So as both methods were used when the missingness wasn’t MCAR the created models are biased in multiple ways and thus aren’t valid.
 
 
-## Conclusion in terms of answering RQ (Nisse)
+# Conclusion
 
 - go back to papers, reflect hypo
 - stuffs
