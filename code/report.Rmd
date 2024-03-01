@@ -244,7 +244,6 @@ cor_plot(ggplot(data, aes(marital, fill = drink_regularly)), 'Marital')
 `ethnicity` showed a weaker correlation effect with the outcome variable. Only `non-hispanic_black` and `other` showed different frequency distributions compared to the other categories. Missing data of `drink_regularly` was present in all categories of `ethnicity`, though `other_hispanic` and `other` had close to none compared to the remaining categories.  
 The variable `education` was considered to have the weakest correlation with `drink_regularly`, having similar success ratios across all categories all the while missing data of `drink_regularly` was also evenly spread.  
 `income` was considered to be correlated with the outcome variable. Performing a similar analysis, we observed that respondents with an income up until 24999 were less likely to drink regularly than cases with a higher income. Akin to `education`, missing data of `drink_regularly` seemed to be evenly spread across the `income` values.  
-
 Finally, all levels of depression showed an effect of correlation with `drink_regularly`, where higher scores tended to decrease the ratio of "yes" to "no" cases, that is to say that respondents were less likely to drink regularly if signs of depression were present.
 
 # Missing data problem
@@ -280,7 +279,7 @@ mcar_test(data)
 
 Since the data being MCAR can be questioned following the Little's test, a t-test was performed for all missing values vectors and numerical variables to check which variables were the likely culprit. The test compared the observed means of a given numerical variable within the group of individuals that had an observed value and the group with a missing value for another variable. Effectively testing if there is a significant difference in the continuous variable in the group that answered another question and the group that did not. Since the null hypothesis suggests no difference in means across the groups, a single significant value for a missingness of a given variable suggests that the missing values in that variable depend on the observed values of another variable. Therefore, it is likely that the missing values are not MCAR. Due to the identical pattern of responses in `dep2`, `dep3`, `dep5` and `dep6` it was sufficient to only test once for the dependency of their missing values. By the design of the test, it was impossible to test the dependency of missing values and observed values within the same variable, thus these values were missing from the table. 
 
-Assuming an alpha of 0.05, it was observed that missing values of `drink_regularly` are dependent on `age`, `dep2` and `dep9`. Similarly, `dep2`, `dep3`, `dep5` and `dep6` seemed to be dependent on `age` and the remaining depression questions. For missingness in `dep8` and `dep9`, there were no significant differences across groups in any of the numerical variables. These tests suggested that at least `drink_regularly`, `dep2`, `dep3`, `dep5` and `dep6` were not MCAR, thus MAR was assumed for them. In Table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
+Assuming an alpha of 0.05, it was observed that missing values of `drink_regularly` were dependent on `age`, `dep2` and `dep9`. Similarly, `dep2`, `dep3`, `dep5` and `dep6` seemed to be dependent on `age` and the remaining depression questions. For missingness in `dep8` and `dep9`, there were no significant differences across groups in any of the numerical variables. These tests suggested that at least `drink_regularly`, `dep2`, `dep3`, `dep5` and `dep6` were not MCAR, thus MAR was assumed for them. In Table \@ref(tab:is-mis-vectors) the exact t-statistic and the p-value are reported. 
 
 ```{r is-mis-vectors, echo = FALSE}
 # Creating vectors that indicate if a value is missing in a given variable. Since the pattern in depression items is the same, one vector is sufficient. 
@@ -388,7 +387,9 @@ show_table(table_test3, "Fisher test")
   
 The outcomes of the Fisher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only `martial` with missingness of `drink_regularly` and `marital` with missingness of `dep2`, `dep3`, `dep5` and `dep6` were significant. Therefore, we concluded the dependence of missingness in these variables on multiple other observed variables and rejected MCAR in their case.
 
-In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR. 
+In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR.
+
+# Modelling
 
 ## Interpretation of the two models
 
