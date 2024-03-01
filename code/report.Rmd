@@ -397,7 +397,7 @@ In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any
 
 # Modelling
 
-## Interpretation of the two models
+## Interpretation of the two models {#interpret}
 
 ```{r combine-dep, echo = FALSE}
 # Combine imputed levels of depression into one depression score.
@@ -408,7 +408,7 @@ combine_dep <- function(data) {
 }
 ```
 
-```{r mean-imp, echo = FALSE, warning = FALSE}
+```{r mean-imp, echo = FALSE, warning = FALSE, message = FALSE, results = 'hide'}
 # Perform mean imputation on the data. Mode imputation is used for drink_regularly.
 
 # Copy data
@@ -449,28 +449,6 @@ fit_mi <- glm(
 )
 ```
 
-```{r lw-model, echo = FALSE}
-# Make table of the glm output
-as_kable_extra(tbl_regression(fit_lw, exponentiate = TRUE, intercept = TRUE) %>%
-  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Listwise deletion model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
-  kableExtra::kable_styling(
-    position = "center",
-    latex_options = c("striped", "repeat_header"),
-    stripe_color = "gray!15"
-  )
-```
-
-```{r mi-model, echo = FALSE}
-# Make table of the glm output
-as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, intercept = TRUE) %>%
-  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Mean imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
-  kableExtra::kable_styling(
-    position = "center",
-    latex_options = c("striped", "repeat_header"),
-    stripe_color = "gray!15"
-  )
-```
-
 ```{r model-compare, echo = FALSE}
 # Obtain residual deviance statistic from model.
 RD <- function(model) {
@@ -488,23 +466,23 @@ comp_df <- data.frame(
 show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
 ```
 
-Two logistic models were created, one for each of the imputed datasets that resulted from both the ad-hoc mean imputation and listwise deletion missing  data methods. The interpretation below only includes significant predictors, since most of the model's predictors seemed non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model).
+Two logistic models were created, one for each of the imputed datasets that resulted from both the ad-hoc mean imputation and listwise deletion missing  data methods. The interpretation below only includes significant predictors, since most of the model's predictors were non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model) in Appendix A.
   
-Looking at the listwise deletion model, only sex ( p < 0.001) and the marital status divorced (p <  0.001) are significant predictors, all the other predictors and the intercept were insignificant. The odds ratio of females drinking regularly compared to males was 0.16[0.08, 0.31] meaning they were 0.16 times as likely to drink compared to males ( 0.16 < 1 so it less likely). The odds ratio of people with the marital status divorced compared to people with the marital status married was 7.37[2.54, 25.0] meaning divorced people were 7.37 times as likely to drink regularly compared to married people. 
+Looking at the listwise deletion model, only sex ( p < 0.001) and the marital category `divorced` (p <  0.001) were significant predictors, whilst all the other predictors (including the intercept) were insignificant. The odds ratio of females drinking regularly compared to males was 0.16[0.08, 0.31], meaning they were 0.16 times as likely to drink regularly compared to males. The odds ratio of `divorced` respondents compared to those who were `married` was 7.37[2.54, 25.0], meaning divorced people were 7.37 times as likely to drink regularly compared to married people. 
 
-In the mean imputation model age (p < 0.001) is also a significant predictor next to sex (p < 0.001) and marital status divorced (p < 0.004 ), the intercept (p < 0.001) is also significant. For a unit increase in age the odds ratio of drinking regularly decreases 0.97[0.95, 0.99] times. The odds ratio of females drinking regularly compared to males was 0.24[0.14, 0.38] meaning they were 0.24 times as likely to drink compared to males. The odds ratio of people with the marital status divorced compared to people with the marital status married was 3.05[1.47, 6.69] meaning divorced people were 3.05 times as likely to drink regularly compared to married people. If all predictor variables were in their reference state the baseline odds ratio is 20.5[3.40, 136]. 
-Looking at the model fit statistics, it seems like the listwise deletion models seems to fit better with a lower AIC, BIC and D value as show in table 9. 
+In the mean imputation model, `age` (p < 0.001) was also a significant predictor. This was in addition to `sex` (p < 0.001) and marital status `divorced` (p < 0.004 ). Moreover, the `intercept` (p < 0.001) was also significant. For a unit increase in age the odds ratio of drinking regularly decreases 0.97[0.95, 0.99] times. The odds ratio of females drinking regularly compared to males was 0.24[0.14, 0.38], meaning they were 0.24 times as likely to drink compared to males. The odds ratio of people with the marital status `divorced` compared to people with the marital status `married` was 3.05[1.47, 6.69], meaning divorced people were 3.05 times as likely to drink regularly compared to married people. If all predictor variables were in their reference state, the baseline odds ratio was 20.5[3.40, 136]. 
+Looking at the model fit statistics, the listwise deletion model performed better with a lower AIC, BIC and $D$ value, as is shown in Table \@ref(tab:model-compare). 
 
 ## Results comparison ad-hoc methods
 
-The answer to the research question changes depending on the used method to treat missing data as can be seen in the interpretation section above. The models differ in: the number of significant predictors, the odds ratios, standard errors (these are lower in the mean imputation model, see tables 7 and 8) and the fitness statistics. Both methods used to treat missing data only work correctly if the missingness is MCAR but as the missingness is not MCAR and MAR is assumed (see (Section \@ref(MDM)), both methods caused bias in the results. In the case of logistic regression (as this study does) listwise deletion could still give unbiased results even if the missingness isn’t MCAR if the missing values are either in the predictor variables or in the outcome variable. This isn’t the case in the data used in this study, both predictor variables as the outcome variables contain missing values. 
+Following Section \@ref(interpret), the answer to the research question will differ depending on the ad-hoc method used to treat the missing data. Said difference is comprised of: the number of significant predictors, the odds ratios, standard errors and the fitness statistics. The SE of the mean imputation model was lower than the listwise deletion model, which can be see in Table \@ref(tab:mi-model) and \@ref(tab:lw-model).  
+We concluded that the missing data treating methods caused biased results within each model, since these methods assume the missingness to be MCAR. This assumption does not hold, in case we assume the data to be MAR - as was described in Section \@ref(MDM). In the specific case of logistic regression - which was utulised in this study - listwise deletion could still give unbiased results even if the missingness isn’t MCAR, but only if the missing values are either in the predictor variables or in the outcome variable. From our EDA and missing data specification we observed that both predictor _and_ outcome variables contained missing data, hence the result were biased as well.
 
-When listwise deletion is used on a dataset where the missingness isn’t MCAR it will result in bias in the regression coefficients and standard errors that are too large. As the models in this study are logistic regression models the regression coefficients are transformed into odds ratios instead. Another negative of listwise deletion is that it is wasteful, a lot of data goes unused. This is also the case in this study as 41% of the cases are deleted. Which might explain why the listwise deletion model has a lower D value: there is just a lot less data that might not fit in the model. Another consequence of removing so much data from the dataset is that it becomes more difficult to find effects, this is a possible explanation for why the listwise deletion model has less significant predictors. 
+When listwise deletion is used on a dataset where the missingness isn’t MCAR, it will result in a bias in the regression coefficients, with standard errors that are too large. As the models in this study were logistic regression models, the regression coefficients were transformed into odds ratios instead. Another negative of listwise deletion is that it is wasteful, a lot of data goes unused. This is also the case in this study, as 41% of the cases were deleted. This might explain why the listwise deletion model has a lower $D$ value; there is just a lot less data that might not fit in the model. Another consequence of removing so much data from the dataset is that it becomes more difficult to find effects, this is a possible explanation for why the listwise deletion model had less significant predictors. 
 
 Using mean imputation on a dataset where the missingness isn’t MCAR will give biased results and underestimated standard errors. It is indeed the case that the standard errors in the mean imputation model are lower than those in the listwise deletion model. As listwise deletion usually overestimates the standard errors, the real values are probably somewhere in between.
 
-So as both methods were used when the missingness wasn’t MCAR the created models are biased in multiple ways and thus aren’t valid.
-
+So as both methods were used on data that wasn't MCAR,  the created models were biased in multiple ways and thus weren't valid.
 
 # Conclusion
 
@@ -521,4 +499,30 @@ So as both methods were used when the missingness wasn’t MCAR the created mode
 
 ```{r data-sum, echo=FALSE}
 sumtable(data, title = "Summary statistics", fit.page = TRUE)
+```
+
+\newpage
+
+```{r lw-model, echo = FALSE}
+# Make table of the glm output
+as_kable_extra(tbl_regression(fit_lw, exponentiate = TRUE, intercept = TRUE) %>%
+  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Listwise deletion model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
+  kableExtra::kable_styling(
+    position = "center",
+    latex_options = c("striped", "repeat_header"),
+    stripe_color = "gray!15"
+  )
+```
+
+\newpage
+
+```{r mi-model, echo = FALSE}
+# Make table of the glm output
+as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, intercept = TRUE) %>%
+  add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Mean imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
+  kableExtra::kable_styling(
+    position = "center",
+    latex_options = c("striped", "repeat_header"),
+    stripe_color = "gray!15"
+  )
 ```
