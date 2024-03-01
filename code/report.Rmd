@@ -93,9 +93,9 @@ It is expected that age and depression level will be negatively correlated with 
 
 ## Dataset
 
-The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data we used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
+The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
 
-The used dataset contained a wide range of variables related to the health of the individuals. We further subsetted the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
+The used dataset contained a wide range of variables related to the health of the individuals. The data was further subsetted by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
 
 ## Variables Description {#var-desc}
 
@@ -106,7 +106,7 @@ descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
 show_table(descs, "Variable descriptions")
 ```
 
-Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which were utilised for the model in question. 
+Table \@ref(tab:vars-desc) lists the variables used in the subset selection, which were utilised for the model in question. 
 The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
 
 The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The variable `age` was topcoded at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`. Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
@@ -153,12 +153,13 @@ plot_marital <- function(data) {
     )
 }
 ```
-Table \@ref(tab:data-sum) in Appendix A shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. For categorical variables, a list of possible categories and their respective proportions was provided to replace the continuous summary statistics. Lastly, the column `N` shows the amount of cases with present  data - that being non-NA values.  
-In general, we observed that all variables were interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggested that `dep` should in fact be categorical ordinal and should therefore be cast as a factor. That said - and as mentioned in Section \@ref(data-proc) - keeping the levels of `dep` as a numerical continuous datatype was beneficial for our missing data problem.  
+Table \@ref(tab:data-sum) in Appendix A shows summary statistics for each of the variables within the dataset; including mean values, standard deviations, IQR statistics and data range values. For categorical variables, a list of possible categories and their respective proportions was provided to replace the continuous summary statistics. Lastly, the column `N` shows the amount of cases with present  data - that being non-NA values. 
+
+In general, it was observed that all variables were interpreted as a factor, excluding `age` and the multiple depression levels of `dep`. Table \@ref(tab:vars-desc) suggested that `dep` should in fact be categorical ordinal and should therefore be cast as a factor. That said - and as mentioned in Section \@ref(data-proc) - keeping the levels of `dep` as a numerical continuous datatype was beneficial for the missing data problem.  
 
 The dataset contained a total of 525 observations, each with 17 variables.  
 
-The dichotomous outcome variable `drink_regularly` had 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of our logistic regression model. Additionally, the total amount of value entries (`N`) of 446 suggested that 79 cases contained values outside of the set of possible binary values - most likely being missing values. Table \@ref(tab:drink-missing) further confirmed this.  
+The dichotomous outcome variable `drink_regularly` had 307 cases of "yes" and 107 cases of "no", having a outcome balance of 69% and 31% respectively. This outcome ratio could be considered imbalanced, which could affect the accuracy of the logistic regression model. Additionally, the total amount of value entries (`N`) of 446 suggested that 79 cases contained values outside of the set of possible binary values - most likely being missing values. Table \@ref(tab:drink-missing) further confirmed this.  
 
 ```{r, drink-missing, echo=FALSE}
 data %>%
@@ -182,7 +183,7 @@ ggplot(data, aes(age)) +
 
 Predictor `ethnicity` had 5 categories, with `non-hispanic_white` being the most prevalent category with 220 cases (42% of total), all the while `other` was the most infrequent category with 25 cases (5%). A total of 525 cases contained `ethnicity` data, once again suggesting no presence of missing data values within this variable.  
 
-Predictor `education` was similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seemed to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, we did not observe any missing data values within the variable. This could be further justified by the fact that the minimum `age` within our dataset was 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
+Predictor `education` was similar to `ethnicity`, having 5 categories. That said, the frequencies of said categories seemed to be less out of proportion, with `some_college` being the most frequent category with 155 (30%) cases. Whilst the data was retrieved from respondents of ages 20 and higher, no missing data values were observed within the variable. This could be further justified by the fact that the minimum `age` within the used dataset was 20, therefore foregoing possible issues with younger participants being unable to provide data for this specific variable.
 
 The predictor variable `marital` contained 6 categories. It should be noted that the category value `married` exceeded the average frequency of other categories (that being `r marital_avg`) by a large margin, as can be seen in Figure \@ref(fig:marital-dist-1). Specifically, 279 cases (53%) were `married`, with the other 5 categories making up the remaining 47% of the cases. `never_married` was the most frequent among those other 5 categories with 102 (19%) cases, whilst `separated` was the most infrequent category with only 14 (3%) cases. Furthermore, the meaning of `never_married` and `living_with_partners` was ambiguous in the sense that a person specifically living with their (non-married) partner could fall into both these categories.
 
@@ -190,7 +191,7 @@ The predictor variable `marital` contained 6 categories. It should be noted that
 plot_marital(data)
 ```
 
-Predictor `income` was an ordinal variable formed by 12 levels, ranging from income values 0 to 100000+. This data, like `age`, was topcoded at the value 100000. This also explained the highest income category - that being 100000+ - having 76 cases (9%), as can be seen in Figure \@ref(fig:income-dist). If we ignore the latter case, the most frequent category was instead `25000:34999`, which coincidentally was the mid-range category of our income data.  525 cases contained only observed `income` data, therefore the variable did not contain missing data values.
+Predictor `income` was an ordinal variable formed by 12 levels, ranging from income values 0 to 100000+. This data, like `age`, was topcoded at the value 100000. This also explained the highest income category - that being 100000+ - having 76 cases (9%), as can be seen in Figure \@ref(fig:income-dist). If the latter case is ignored, the most frequent category was instead `25000:34999`, which coincidentally was the mid-range category of income data.  525 cases contained only observed `income` data, therefore the variable did not contain missing data values.
 
 ```{r income-dist, fig.cap = "Distribution of income", echo = FALSE, warning = FALSE}
 ggplot(data, aes(income)) +
@@ -202,19 +203,18 @@ ggplot(data, aes(income)) +
     )
 ```
 
-The multiple levels of depression all had ranging scores between 0 and 3, with increments of 1 specifically. A higher score indicated an agreement with the signs of depression described in the survey. Only `dep1` and `dep7` had complete data data, whilst the other levels had varying amounts of missing data. Missing data could possibly be caused by the respondents being reluctant to answers these questions. We also observed that `dep2`, `dep3`, `dep5`, `dep6` had the same amount of missing data values, hence it was possible that they had a shared cause of missing data.
-Lastly, `dep9` only had 18 cases of scores above 0, whilst also having the lowest mean value out of all depression levels. `dep9` described the presence of suicidal thoughts, hence it made sense that this was the lowest average score out of all levels. On the contrary, `dep4` (feeling tired) had the highest average score.  Overall, the score distribution were heavily skewed towards the 0 values.
+The multiple levels of depression all had ranging scores between 0 and 3, with increments of 1 specifically. A higher score indicated an agreement with the signs of depression described in the survey. Only `dep1` and `dep7` had complete data data, whilst the other levels had varying amounts of missing data. Missing data could possibly be caused by the respondents being reluctant to answers these questions. It was also observed that `dep2`, `dep3`, `dep5`, `dep6` had the same amount of missing data values, hence it was possible that they had a shared cause of missing data. Lastly, `dep9` only had 18 cases of scores above 0, whilst also having the lowest mean value out of all depression levels. `dep9` described the presence of suicidal thoughts, hence it made sense that this was the lowest average score out of all levels. On the contrary, `dep4` (feeling tired) had the highest average score.  Overall, the score distribution were heavily skewed towards the 0 values.
 
 ## Outliers
 
-For our only continuous predictor `age`, a boxplot was utilised to find potential outliers . Figure \@ref(fig:age-outliers) shows the distribution of `age` in said boxplot, revealing no possible outliers. This was to be expected, since `age` was uniformly distributed as was mentioned in Section \@ref(desc-stats).
+For the only continuous predictor `age`, a boxplot was utilised to find potential outliers . Figure \@ref(fig:age-outliers) shows the distribution of `age` in said boxplot, revealing no possible outliers. This was to be expected, since `age` was uniformly distributed as was mentioned in Section \@ref(desc-stats).
 
 ```{r age-outliers, fig.cap = "Boxplot of age", echo=FALSE}
 ggplot(data, aes(age)) +
   geom_boxplot()
 ```
 
-Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in frequency distribution, with the category `married` being overly dominant within the data. We considered combining the other `marital` categories into one, as their infrequency could allude to being possible outliers. Table \@ref(tab:cont-marital) shows the interrelations between the `martial` variable and our outcome `drink_regularly`. From this, we concluded that combining the remaining 5 categories - that being `widowed`, `divorced`, `separated`, `never_married` and `living_with_partner` - was not feasible, since these relations seemed to differ per category. For example, `widowed` had more "no" cases compared to "yes", whilst the relation was reversed for `separated`.
+Looking at the distributions of the various categorical variables, the `marital` showed the aforementioned imbalance in frequency distribution, with the category `married` being overly dominant within the data. It was considered combining the other `marital` categories into one, as their infrequency could allude to being possible outliers. Table \@ref(tab:cont-marital) shows the interrelations between the `martial` variable and the outcome `drink_regularly`. From this, it was concluded that combining the remaining 5 categories - that being `widowed`, `divorced`, `separated`, `never_married` and `living_with_partner` - was not feasible, since these relations seemed to differ per category. For example, `widowed` had more "no" cases compared to "yes", whilst the relation was reversed for `separated`.
 
 ```{r cont-marital, echo = FALSE}
 show_table(table(data$marital, data$drink_regularly), "Contingency table of marital status vs. drinking regularly", scale = FALSE)
@@ -229,15 +229,14 @@ ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
 
 Figure \@ref(fig:box-age) shows the distributions of `age` over the outcome variable `drink_regularly` in a boxplot. Not considering the NA values, `age` did not seem to be strongly correlated with `drink_regularly`, with "no" cases having only slightly higher ages than its counterpart.  It should however be noted that the NA values of `drink_regularly` were primarily present in younger participants, therefore possibly attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.  
 
-Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between our categorical predictors and the outcome variable. From these, we observed that `sex` seemed to be highly correlated with `drink_regularly`; 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.  
+Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between the categorical predictors and the outcome variable. From these, it was observed that `sex` seemed to be highly correlated with `drink_regularly`; 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.  
 
-Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between our categorical predictors and the outcome variable. From this, we observed that `sex` seemed to be highly correlated with `drink_regularly`; 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.
 
 ```{r cor-marital, fig.cap = "Correlations of marital vs. drink regularly", echo = FALSE, warning = FALSE}
 cor_plot(ggplot(data, aes(marital, fill = drink_regularly)), 'Marital')
 ```
 
-Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). We also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have more cases of a younger age as well. 
+Likewise, `marital` showed a similarly strong correlation effect. The category `divorced` had a significantly higher ratio of respondents who drank regularly, compared to cases of `widowed`, where respondents were more likely to not drink regularly as can be seen in Figure \@ref(fig:cor-marital). It was also noted that the missing data of `drink_regularly` was not evenly distributed across the `marital` categories. Rather, the missingness was more prevalent in the `never_married` and `living_with_partner` cases. This possibly ties back into the fact that more data was missing amongst younger respondents, which can be direcly seen in Figure \@ref(fig:age-marital) where `never_married` and `living_with_partner` have more cases of a younger age as well. 
 
 ```{r age-marital, fig.cap = "Age distributions over marital statuses", echo = FALSE}
 ggplot(data, aes(age, marital, colour = marital)) +
@@ -247,14 +246,14 @@ ggplot(data, aes(age, marital, colour = marital)) +
 `Ethnicity` showed a weaker correlation effect with the outcome variable. Only `non-hispanic_black` and `other` showed different frequency distributions compared to the other categories. Missing data of `drink_regularly` was present in all categories of `ethnicity`, though `other_hispanic` and `other` had close to none compared to the remaining categories.
 The variable `education` was considered to have the weakest correlation with `drink_regularly`, having similar success ratios across all categories all the while missing data of `drink_regularly` was also evenly spread.  
 
-`income` was considered to be correlated with the outcome variable. Performing a similar analysis, we observed that respondents with an income up until 24999 were less likely to drink regularly than cases with a higher income. Akin to `education`, missing data of `drink_regularly` seemed to be evenly spread across the `income` values.  
+`income` was considered to be correlated with the outcome variable. Performing a similar analysis, it was observed that respondents with an income up until 24999 were less likely to drink regularly than cases with a higher income. Akin to `education`, missing data of `drink_regularly` seemed to be evenly spread across the `income` values.  
 
 Finally, all levels of depression showed an effect of correlation with `drink_regularly`, where higher scores tended to decrease the ratio of "yes" to "no" cases, that is to say that respondents were less likely to drink regularly if signs of depression were present.
 
 # Missing data problem
 
 ## Missing data and response patterns
-Firstly, we investigated the overall distribution of missingness within our dataset.
+Firstly, the overall distribution of missingness within the dataset was investigated.
 
 ```{r mis-percentage, fig.cap = "Distribution of missing data in each variable", echo = FALSE}
 # Creates a graph displaying the % of data missing in each variable
@@ -268,7 +267,7 @@ As can be seen on Figure \@ref(fig:mis-percentage), 8.2% of the data was missing
 plot_pattern(data, rotate = TRUE)
 ```
 
-We further investigated the missing data patterns by looking at the response patterns. Figure \@ref(fig:res-pattern) reveals that there were 13 distinct response patterns in the dataset, with the missingness *not* being monotone. The most frequent pattern was no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 were always either all present or all missing. It is very probable that the reason for the item non-response regarding these depression levels was the same, since there were no cases with partial missingness in these 4 variables.  
+The missing data patterns were further investigated by looking at the response patterns. Figure \@ref(fig:res-pattern) reveals that there were 13 distinct response patterns in the dataset, with the missingness *not* being monotone. The most frequent pattern was no missing entries, with 263 cases. It is important to note that the depression questions 2, 3, 5 and 6 were always either all present or all missing. It is very probable that the reason for the item non-response regarding these depression levels was the same, since there were no cases with partial missingness in these 4 variables.  
 
 Based on the missingness pattern of the depression items, 41% of the overall depression score included at least one missing value. 
 
@@ -390,7 +389,7 @@ show_table(table_test3, "Fisher test")
 
 ```
   
-The outcomes of the Fisher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only `martial` with missingness of `drink_regularly` and `marital` with missingness of `dep2`, `dep3`, `dep5` and `dep6` were significant. Therefore, we concluded the dependence of missingness in these variables on multiple other observed variables and rejected MCAR in their case.
+The outcomes of the Fisher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only `martial` with missingness of `drink_regularly` and `marital` with missingness of `dep2`, `dep3`, `dep5` and `dep6` were significant. Therefore, it was concluded the dependence of missingness in these variables on multiple other observed variables and rejected MCAR in their case.
 
 In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR.
 
@@ -476,7 +475,7 @@ Looking at the model fit statistics, the listwise deletion model performed bette
 
 Following Section \@ref(interpret), the answer to the research question will differ depending on the ad-hoc method used to treat the missing data. Said difference is comprised of: the number of significant predictors, the odds ratios, standard errors and the fitness statistics. The SE of the mean imputation model was lower than the listwise deletion model, which can be see in Table \@ref(tab:mi-model) and \@ref(tab:lw-model).  
 
-It was concluded that the missing data treating methods caused biased results within each model, since these methods assume the missingness to be MCAR. This assumption does not hold, in case we assume the data to be MAR - as was described in Section \@ref(MDM). In the specific case of logistic regression - which was utulised in this study - listwise deletion could still give unbiased results even if the missingness isn’t MCAR, but only if the missing values are either in the predictor variables or in the outcome variable. From our EDA and missing data specification we observed that both predictor _and_ outcome variables contained missing data, hence the result were biased as well.
+It was concluded that the missing data treating methods caused biased results within each model, since these methods assume the missingness to be MCAR. This assumption does not hold, in case the data is assumed to be MAR - as was described in Section \@ref(MDM). In the specific case of logistic regression - which was utulised in this study - listwise deletion could still give unbiased results even if the missingness isn’t MCAR, but only if the missing values are either in the predictor variables or in the outcome variable. From the EDA and missing data specification it was observed that both predictor _and_ outcome variables contained missing data, hence the results were biased as well.
 
 When listwise deletion is used on a dataset where the missingness isn’t MCAR, it will result in a bias in the regression coefficients, with standard errors that are too large. As the models in this study were logistic regression models, the regression coefficients were transformed into odds ratios instead. Another negative of listwise deletion is that it is wasteful, a lot of data goes unused. This is also the case in this study, as 263 out of a total of 525 cases were deleted or in other words only half the cases were used. This might explain why the listwise deletion model has a lower $D$ value; there is just a lot less data that might not fit in the model. Another consequence of removing so much data from the dataset is that it becomes more difficult to find effects, this is a possible explanation for why the listwise deletion model had less significant predictors. 
 
@@ -488,13 +487,13 @@ So as both methods were used on data that wasn't MCAR,  the created models were 
 
 The research question was \textbf{To what extent can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?} Here, it was expected that sex `male`, ethnicity `non-hispanic_white` and marital status `married` would exhibit a positive relation with drinking regularly, whilst age and depression would have a negative relation with said outcome variable.  
 
-The resulting listwise deletion model - using a logistic regression approach - only had `sex` and marital status `divorced` (in reference to `married`) as significant predictors. Using this ad-hoc method, we could not deduce a significant relation between the predictors `depression` and `ethnicity` vs. the outcome variable `drink_regularly`. Additionally, `divorced` was positively related to drinking regularly, which goes against the expectation of categories other than `married` exhibiting a negative relation with the outcome. The model did suggest that `male` respondents are more likely to drink regularly than `female` participants, and can therefore be used to predict alcohol consumption.  
+The resulting listwise deletion model - using a logistic regression approach - only had `sex` and marital status `divorced` (in reference to `married`) as significant predictors. Using this ad-hoc method, no significant relation between the predictors `depression` and `ethnicity` and the outcome variable `drink_regularly` could be deduced. Additionally, `divorced` was positively related to drinking regularly, which goes against the expectation of categories other than `married` exhibiting a negative relation with the outcome. The model did suggest that `male` respondents are more likely to drink regularly than `female` participants, and can therefore be used to predict alcohol consumption.  
 
-As for the mean imputation model, the results similarly suggested non-significant predictors for `ethnicity` and `depression`. `age` was significant, as opposed to in the listwise deletion model - this was in addition to the other significant predictors, those being the married status `divorced` and `sex`. Once again, the model aligned with our expectations of `male` respondents drinking more regularly. `age` also showed a negative relation with the outcome, albeit a small decrease per unit change of `age`. Similar to the previous model, `divorced` showed an unexected positive behaviour with the outcome variable.  
+As for the mean imputation model, the results similarly suggested non-significant predictors for `ethnicity` and `depression`. `age` was significant, as opposed to in the listwise deletion model - this was in addition to the other significant predictors, those being the married status `divorced` and `sex`. Once again, the model aligned with expectations of `male` respondents drinking more regularly. `age` also showed a negative relation with the outcome, albeit a small decrease per unit change of `age`. Similar to the previous model, `divorced` showed an unexected positive behaviour with the outcome variable.  
 
-Overall, we concluded from both models that `depression` and `ethnicity` cannot be used to predict whether a case is drinking regularly. Marital status is a valid predictor, although its relation does not align with research previously done by others. Whether `age` can be used as a predictor, depends on the ad-hoc method used to treat missing data. Lastly, the coefficients of significant predictors in both models differed greatly. The coefficient of `divorced` in the listwise deletion model exceeded the mean imputation variant twofold.
+Overall, it was concluded from both models that `depression` and `ethnicity` cannot be used to predict whether a case is drinking regularly. Marital status is a valid predictor, although its relation does not align with research previously done by others. Whether `age` can be used as a predictor, depends on the ad-hoc method used to treat missing data. Lastly, the coefficients of significant predictors in both models differed greatly. The coefficient of `divorced` in the listwise deletion model exceeded the mean imputation variant twofold.
 
-
+\newpage
 
 # References
 
