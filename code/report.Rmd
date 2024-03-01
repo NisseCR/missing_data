@@ -486,8 +486,16 @@ So as both methods were used on data that wasn't MCAR,  the created models were 
 
 # Conclusion
 
-- go back to papers, reflect hypo
-- stuffs
+The research question was \textbf{To what extent can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?} Here, it was expected that sex `male`, ethnicity `non-hispanic_white` and marital status `married` would exhibit a positive relation with drinking regularly, whilst age and depression would have a negative relation with said outcome variable.  
+
+The resulting listwise deletion model - using a logistic regression approach - only had `sex` and marital status `divorced` (in reference to `married`) as significant predictors. Using this ad-hoc method, we could not deduce a significant relation between the predictors `depression` and `ethnicity` vs. the outcome variable `drink_regularly`. Additionally, `divorced` was positively related to drinking regularly, which goes against the expectation of categories other than `married` exhibiting a negative relation with the outcome.  
+The model did suggest that `male` respondents are more likely to drink regularly than `female` participants, and can therefore be used to predict alcohol consumption.  
+
+As for the mean imputation model, the results similarly suggested non-significant predictors for `ethnicity` and `depression`. `age` was significant, as opposed to the listwise deletion model - this was in addition to the other significant predictors, those being the married status `divorced` and `sex`.  
+Once again, the model aligned with our expectations of `male` respondents drinking more regularly. `age` also showed a negative relation with the outcome, albeit a small decrease per unit change of `age`. Similar to the previous model, `divorced` showed an unexected positive behaviour with the outcome variable.  
+
+Overall, we concluded from both models that `depression` and `ethnicity` cannot be used to predict whether a case is drinking regularly. Marital status is a valid predictor, although its relation does not align with research previously done by others. Whether `age` can be used as a predictor, depends on the ad-hoc method used to treat missing data.
+Lastly, the coefficients of significant predictors in both models differed greatly. The coefficient of `divorced` in the listwise deletion model exceeded the mean imputation variant twofold.
 
 # References
 
