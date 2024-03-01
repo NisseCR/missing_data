@@ -1,6 +1,6 @@
 ---
-title: "Missing Data - Assignment 1"
-author: "Aga, Nisse, Ruben | Group 9"
+title: "Missing Data - Assignment A"
+author: "Aga Kubica, Nisse Hermsen, Ruben Custers | Group 9"
 date: "`r Sys.Date()`"
 output: 
   bookdown::pdf_document2
