@@ -397,6 +397,8 @@ In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any
 
 ## Interpretation of the two models {#interpret}
 
+TODO: determine derived variable imputation (in our case the sum of all the depression levels).
+
 ```{r combine-dep, echo = FALSE}
 # Combine imputed levels of depression into one depression score.
 combine_dep <- function(data) {
@@ -405,6 +407,95 @@ combine_dep <- function(data) {
     select(-c(dep1, dep2, dep3, dep4, dep5, dep6, dep7,  dep8, dep9))
 }
 ```
+
+### Single imputation
+
+```{r imp-single, echo = FALSE}
+# Default already applies pmm to numeric and logistic regression to binary variables.
+imp_single <- mice(data, m = 1)
+```
+
+```{r dens-single. echo = FALSE}
+# depression levels
+densityplot(imp_single)
+
+# drink_regularly
+ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
+  geom_histogram(stat = 'count')
+```
+
+```{r freqs-single, echo = FALSE}
+ggmice(imp_single, aes(dep2, fill = .imp)) +
+  geom_bar()
+
+ggmice(imp_single, aes(dep3, fill = .imp)) +
+  geom_bar()
+
+ggmice(imp_single, aes(dep5, fill = .imp)) +
+  geom_bar()
+
+ggmice(imp_single, aes(dep6, fill = .imp)) +
+  geom_bar()
+
+ggmice(imp_single, aes(dep8, fill = .imp)) +
+  geom_bar()
+
+ggmice(imp_single, aes(dep9, fill = .imp)) +
+  geom_bar()
+```
+
+```{r model-single, echo = FALSE}
+# Create complete dataset.
+comp_single <- complete(imp_single)
+
+# Combine depression levels post-hoc (might not be the best method).
+comp_single <- combine_dep(comp_single)
+
+# Create the logistic model.
+fit_single <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+  family = binomial, 
+  data = comp_single
+)
+summary(fit_single)
+```
+
+### Multiple imputation
+
+```{r imp_multiple, echo = FALSE}
+imp_multiple <- mice(data, m = 5)
+```
+
+```{r conv, echo = FALSE}
+plot(imp_multiple)
+```
+
+```{r dens-single. echo = FALSE}
+# depression levels
+densityplot(imp_multiple)
+
+# drink_regularly
+ggmice(imp_multiple, aes(drink_regularly, fill = .imp)) +
+  geom_histogram(stat = 'count')
+```
+
+```{r model-multiple, echo = FALSE}
+# Combine depression levels post-hoc (might not be the best method).
+imp_multiple <- with(imp_multiple, combine_dep)
+
+# Create the logistic model.
+fit_multiple <- with(
+  data = imp_multiple, 
+  glm(
+    drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+    family = binomial, 
+  ))
+
+# Pool models.
+poolFit <- pool(fit_multiple)
+summary(poolFit)
+```
+
 
 ```{r mean-imp, echo = FALSE, warning = FALSE, message = FALSE, results = 'hide'}
 # Perform mean imputation on the data. Mode imputation is used for drink_regularly.
