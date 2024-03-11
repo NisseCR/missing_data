@@ -93,7 +93,7 @@ It is expected that age and depression level will be negatively correlated with 
 
 ## Dataset
 
-The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data we used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
+The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES)[@nhanes]. The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data we used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
 
 The used dataset contained a wide range of variables related to the health of the individuals. We further subsetted the data by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
 
@@ -109,7 +109,7 @@ show_table(descs, "Variable descriptions")
 Table \@ref(tab:vars-desc) lists the variables used in our subset selection, which were utilised for the model in question. 
 The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
 
-The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The variable `age` was topcoded at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`. Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
+The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The original authors of the dataset topcoded the variable `age` was at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`. Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
 ## Software
 
@@ -459,7 +459,7 @@ comp_df <- data.frame(
   model = c('listwise deletion', 'mean imputation'),
   AIC = c(AIC(fit_lw), AIC(fit_mi)),
   BIC = c(BIC(fit_lw), BIC(fit_mi)),
-  D = c(RD(fit_lw), RD(fit_mi))
+  Residual deviance = c(RD(fit_lw), RD(fit_mi))
 )
 
 show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
@@ -470,7 +470,7 @@ Two logistic models were created, one for each of the imputed datasets that resu
 Looking at the listwise deletion model, only sex ( p < 0.001) and the marital category `divorced` (p <  0.001) were significant predictors, whilst all the other predictors (including the intercept) were insignificant. The odds ratio of females drinking regularly compared to males was 0.16[0.08, 0.31], meaning they were 0.16 times as likely to drink regularly compared to males. The odds ratio of `divorced` respondents compared to those who were `married` was 7.37[2.54, 25.0], meaning divorced people were 7.37 times as likely to drink regularly compared to married people. 
 
 In the mean imputation model, `age` (p < 0.001) was also a significant predictor. This was in addition to `sex` (p < 0.001) and marital status `divorced` (p < 0.004 ). Moreover, the `intercept` (p < 0.001) was also significant. For a unit increase in age the odds ratio of drinking regularly decreases 0.97[0.95, 0.99] times. The odds ratio of females drinking regularly compared to males was 0.24[0.14, 0.38], meaning they were 0.24 times as likely to drink compared to males. The odds ratio of people with the marital status `divorced` compared to people with the marital status `married` was 3.05[1.47, 6.69], meaning divorced people were 3.05 times as likely to drink regularly compared to married people. If all predictor variables were in their reference state, the baseline odds ratio was 20.5[3.40, 136]. 
-Looking at the model fit statistics, the listwise deletion model performed better with a lower AIC, BIC and $D$ value, as is shown in Table \@ref(tab:model-compare). 
+Looking at the model fit statistics, the listwise deletion model performed better with a lower AIC, BIC and residual deviance value, as is shown in Table \@ref(tab:model-compare). 
 
 ## Results comparison ad-hoc methods
 
