@@ -96,7 +96,7 @@ It is expected that age and depression level will be negatively correlated with 
 The dataset used was a subset of the data collected in the National Health and Nutrition Examination Survey (NHANES). The survey was a part of an annual program that investigated the health and nutrition of a representative sample of people in the United States. The data used contained information about 525 individuals that were collected for the NHANES 2007-2008 survey. This was a subset of the 12,946 individuals in that years' survey sample, out of which 78.4% were interviewed whilst 75.4% participants were examined in mobile examination centers. The NHANES survey was further subdivided into themed sections - such as the Alcohol Use questionnaire - with each of these sections having separate documentations that will be referred to later on.
 
 
-The used dataset contained a wide range of variables related to the health of the individuals. The data was further subsetted by only including variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
+The "full" dataset contained a wide range of variables related to the health of the individuals. This "full" dataset excluding the 'id' variable was used for the multiple imputation and stochastic regression missing data treatments. For the remaining data processing, analysis and modeling the data was further subsetted to only include variables relevant to the study (demographics, alcohol use and answers to depression screener questions). The selected variables are further described in Variables Description (Section \@ref(var-desc)).  
 
 ## Variables Description {#var-desc}
 
@@ -107,7 +107,7 @@ descs <- read.csv("../data/variables.csv", header = TRUE, sep = ";") %>%
 show_table(descs, "Variable descriptions")
 ```
 
-Table \@ref(tab:vars-desc) lists the variables used in the subset selection, which were utilised for the model in question. 
+Table \@ref(tab:vars-desc) lists the variables used in the subset selection, which were utilized for the model in question. The table for the "full" dataset can be found in the Appendix [number]. 
 The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
 
 The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The original authors of the dataset topcoded the variable `age` was at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`. Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
@@ -119,11 +119,21 @@ All of the data cleaning, processing and modeling was performed in R version 4.3
 ## Data processing {#data-proc}
 After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)). 
 
-Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable vs. observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. 
+Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable against observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. 
 
-Two solutions to the missing data problem were implemented: list-wise deletion and mean imputation. These where chosen based on the convenience of implementation. For list-wise deletion, all cases with one or more missing values were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means even further skewed the distribution towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. To conclude, two complete datasets with different missing data treatments were created. 
+Four solutions to the missing data problem were implemented: list-wise deletion, mean imputation, stochastic regression imputation and multiple imputation.
 
-Lastly, following the missing data treatments, the values for the depression questions were summed up to create an overall depression score for each individual case. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
+For list-wise deletion, all cases with one or more missing values were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. 
+
+The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means even further skewed the distribution towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. 
+
+Stochastic regression imputation 
+
+Multiple imputation
+
+Following each missing data treatment, the values for the depression questions were summed up to create an overall depression score for each individual case. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
+
+To conclude, the different missing data treatments created three complete datasets and a single MIDS object that were then used for statistical analysis. 
 
 ## Modelling methodology
 
@@ -623,4 +633,15 @@ as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, in
     latex_options = c("striped", "repeat_header"),
     stripe_color = "gray!15"
   )
+```
+
+\newpage
+
+# Appendix
+
+```{r, full-vars-desc, echo = FALSE}
+# Read full variable description file and create a table from it
+descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
+  as_tibble()
+show_table(descs, "Variable descriptions")
 ```
