@@ -31,7 +31,7 @@ show_table <- function(data, caption, scale = TRUE) {
     kable_styling(latex_options = args)
 }
 
-# Standard settings for correlatio plot (cat vs. cat)
+# Standard settings for correlation plot (cat vs. cat)
 cor_plot <- function(plot, name) {
   plot +
     geom_bar(stat = 'count', position = 'dodge') +
@@ -41,22 +41,34 @@ cor_plot <- function(plot, name) {
 ```
 
 ```{r load-data, echo = FALSE}
+# Load data
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
 ```
 
+```{r relevel, echo = FALSE, warning = FALSE}
+# Imputation data
+main_data <- source %>%
+  select(-id)
+
+# Re-level outcome
+main_data$drink_regularly <- relevel(source$drink_regularly, "no")
+
+# Rename household_income
+main_data <- rename(main_data, income = household_income)
+```
+
 ```{r variable-selection, echo=FALSE}
-# Create a sub-selection of variables that are of interest to our model.
-data <- source %>%
+sub_select <- function(data) {
+  main_data %>%
   select(
-    id,
     drink_regularly, 
     sex, 
     age,
     ethnicity, 
     education, 
     marital, 
-    household_income,
+    income,
     dep1,
     dep2,
     dep3,
@@ -66,12 +78,11 @@ data <- source %>%
     dep7,
     dep8,
     dep9
-  ) %>%
-  rename(income = household_income)
-```
+  )
+}
 
-```{r relevel, echo = FALSE, warning = FALSE}
-data$drink_regularly <- relevel(data$drink_regularly, "no")
+# Create a sub-selection of variables that are of interest to our model.
+data <- sub_select(main_data)
 ```
 
 ```{r set-seed, echo = FALSE}
@@ -419,14 +430,50 @@ combine_dep <- function(data) {
 }
 ```
 
-### Single imputation
-
 ```{r imp-single, echo = FALSE}
 # Default already applies pmm to numeric and logistic regression to binary variables.
-imp_single <- mice(data, m = 1)
+imp_single <- mice(main_data, m = 1, print = FALSE)
+
+# Create complete dataset.
+comp_single <- complete(imp_single)
+
+# Combine depression levels post-hoc (might not be the best method).
+comp_single <- combine_dep(comp_single)
 ```
 
-```{r dens-single, echo = FALSE}
+```{r imp-multiple, echo = FALSE}
+# Default already applies pmm to numeric and logistic regression to binary variables.
+imp_multiple <- mice(main_data, m = 5, print = FALSE)
+
+
+# Combine depression levels post-hoc (might not be the best method).
+comp_multiple <- complete(imp_multiple, "long", include = TRUE)
+comp_multiple <- combine_dep(comp_multiple)
+
+# Convert back to mids object
+imp_multiple_dev <- as.mids(comp_multiple)
+```
+
+```{r model-creation-1, echo = FALSE}
+# Single imputation model.
+fit_single <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+  family = binomial, 
+  data = comp_single
+)
+
+# Multiple imputation model.
+fit_multiple <- with(
+  data = imp_multiple_dev, 
+  glm(
+    drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+    family = binomial 
+  ))
+
+fit_pool <- pool(fit_multiple)
+```
+
+```{r dens-single, echo = FALSE, warning = FALSE}
 # depression levels
 densityplot(imp_single)
 
@@ -435,76 +482,17 @@ ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
   geom_histogram(stat = 'count')
 ```
 
-```{r freqs-single, echo = FALSE}
-ggmice(imp_single, aes(dep2, fill = .imp)) +
-  geom_bar()
-
-ggmice(imp_single, aes(dep3, fill = .imp)) +
-  geom_bar()
-
-ggmice(imp_single, aes(dep5, fill = .imp)) +
-  geom_bar()
-
-ggmice(imp_single, aes(dep6, fill = .imp)) +
-  geom_bar()
-
-ggmice(imp_single, aes(dep8, fill = .imp)) +
-  geom_bar()
-
-ggmice(imp_single, aes(dep9, fill = .imp)) +
-  geom_bar()
-```
-
-```{r model-single, echo = FALSE}
-# Create complete dataset.
-comp_single <- complete(imp_single)
-
-# Combine depression levels post-hoc (might not be the best method).
-comp_single <- combine_dep(comp_single)
-
-# Create the logistic model.
-fit_single <- glm(
-  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
-  family = binomial, 
-  data = comp_single
-)
-summary(fit_single)
-```
-
-### Multiple imputation
-
-```{r imp_multiple, echo = FALSE}
-imp_multiple <- mice(data, m = 5)
-```
-
 ```{r conv, echo = FALSE}
 plot(imp_multiple)
 ```
 
-```{r dens-multiple, echo = FALSE}
+```{r dens-multiple, echo = FALSE, warning = FALSE}
 # depression levels
 densityplot(imp_multiple)
 
 # drink_regularly
 ggmice(imp_multiple, aes(drink_regularly, fill = .imp)) +
   geom_histogram(stat = 'count')
-```
-
-```{r model-multiple, echo = FALSE}
-# Combine depression levels post-hoc (might not be the best method).
-imp_multiple <- with(imp_multiple, combine_dep)
-
-# Create the logistic model.
-fit_multiple <- with(
-  data = imp_multiple, 
-  glm(
-    drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
-    family = binomial 
-  ))
-
-# Pool models.
-poolFit <- pool(fit_multiple)
-summary(poolFit)
 ```
 
 
@@ -639,9 +627,10 @@ as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, in
 
 # Appendix
 
-```{r, full-vars-desc, echo = FALSE}
+```{r, full-vars-desc, echo = FALSE, eval = FALSE}
+# TODO .csv file is missing!
 # Read full variable description file and create a table from it
-descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
-  as_tibble()
-show_table(descs, "Variable descriptions")
+# descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
+#   as_tibble()
+# show_table(descs, "Variable descriptions")
 ```
