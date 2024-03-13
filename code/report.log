@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  13 MAR 2024 14:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  13 MAR 2024 16:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -563,199 +563,187 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 3.
-)
+[1
+
+{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}])
 \tf@toc=\write4
 \openout4 = `report.toc'.
 
-[1
-
-{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
+[2]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 188.
 (c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [2{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [3] [4]
-<report_files/figure-latex/age-dist-1.pdf, id=168, 469.755pt x 325.215pt>
+) [3{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [4] [5]
+<report_files/figure-latex/age-dist-1.pdf, id=187, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-dist-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-dist-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/age-dist-1.pdf  used on input line 257.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/marital-dist-1-1.pdf, id=170, 469.755pt x 325.215pt>
+<report_files/figure-latex/marital-dist-1-1.pdf, id=189, 469.755pt x 325.215pt>
 File: report_files/figure-latex/marital-dist-1-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/marital-dist-1-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/marital-dist-1-1.pdf  used on input line 269.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[5] [6 <./report_files/figure-latex/age-dist-1.pdf>]
-<report_files/figure-latex/income-dist-1.pdf, id=190, 469.755pt x 325.215pt>
+[6] [7 <./report_files/figure-latex/age-dist-1.pdf>]
+<report_files/figure-latex/income-dist-1.pdf, id=210, 469.755pt x 325.215pt>
 File: report_files/figure-latex/income-dist-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/income-dist-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/income-dist-1.pdf  used on input line 277.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/age-outliers-1.pdf, id=193, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-outliers-1.pdf, id=213, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-outliers-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-outliers-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/age-outliers-1.pdf  used on input line 290.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[7 <./report_files/figure-latex/marital-dist-1-1.pdf>] [8 <./report_files/figure-latex/income-dist-1.pdf>]
-<report_files/figure-latex/box-age-1.pdf, id=217, 469.755pt x 325.215pt>
+[8 <./report_files/figure-latex/marital-dist-1-1.pdf>] [9 <./report_files/figure-latex/income-dist-1.pdf>]
+<report_files/figure-latex/box-age-1.pdf, id=236, 469.755pt x 325.215pt>
 File: report_files/figure-latex/box-age-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/box-age-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/box-age-1.pdf  used on input line 320.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[9 <./report_files/figure-latex/age-outliers-1.pdf>]
-<report_files/figure-latex/cor-marital-1.pdf, id=230, 469.755pt x 325.215pt>
+[10 <./report_files/figure-latex/age-outliers-1.pdf>]
+<report_files/figure-latex/cor-marital-1.pdf, id=249, 469.755pt x 325.215pt>
 File: report_files/figure-latex/cor-marital-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/cor-marital-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/cor-marital-1.pdf  used on input line 330.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/age-marital-1.pdf, id=233, 469.755pt x 325.215pt>
+<report_files/figure-latex/age-marital-1.pdf, id=252, 469.755pt x 325.215pt>
 File: report_files/figure-latex/age-marital-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/age-marital-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/age-marital-1.pdf  used on input line 338.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[10 <./report_files/figure-latex/box-age-1.pdf>] [11 <./report_files/figure-latex/cor-marital-1.pdf>] [12 <./report_files/figure-latex/age-marital-1.pdf>]
-<report_files/figure-latex/mis-percentage-1.pdf, id=264, 469.755pt x 325.215pt>
+[11 <./report_files/figure-latex/box-age-1.pdf>] [12 <./report_files/figure-latex/cor-marital-1.pdf>] [13 <./report_files/figure-latex/age-marital-1.pdf>]
+<report_files/figure-latex/mis-percentage-1.pdf, id=284, 469.755pt x 325.215pt>
 File: report_files/figure-latex/mis-percentage-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/mis-percentage-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/mis-percentage-1.pdf  used on input line 359.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13 <./report_files/figure-latex/mis-percentage-1.pdf>]
-<report_files/figure-latex/res-pattern-1.pdf, id=279, 469.755pt x 325.215pt>
+[14 <./report_files/figure-latex/mis-percentage-1.pdf>]
+<report_files/figure-latex/res-pattern-1.pdf, id=299, 469.755pt x 325.215pt>
 File: report_files/figure-latex/res-pattern-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/res-pattern-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/res-pattern-1.pdf  used on input line 367.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./report_files/figure-latex/res-pattern-1.pdf>] [15]
-<report_files/figure-latex/lw-outcome-1.pdf, id=307, 469.755pt x 325.215pt>
-File: report_files/figure-latex/lw-outcome-1.pdf Graphic file (type pdf)
-<use report_files/figure-latex/lw-outcome-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/lw-outcome-1.pdf  used on input line 466.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/lw-outcome-2.pdf, id=308, 469.755pt x 325.215pt>
-File: report_files/figure-latex/lw-outcome-2.pdf Graphic file (type pdf)
-<use report_files/figure-latex/lw-outcome-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/lw-outcome-2.pdf  used on input line 466.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[15 <./report_files/figure-latex/res-pattern-1.pdf>] [16]
 
-Underfull \hbox (badness 10000) in paragraph at lines 466--467
-[][]
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[16] [17 <./report_files/figure-latex/lw-outcome-1.pdf>]
-<report_files/figure-latex/dens-single-1.pdf, id=325, 469.755pt x 325.215pt>
+[17]
+<report_files/figure-latex/dens-single-1.pdf, id=340, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-single-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-single-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-single-1.pdf  used on input line 468.
+Package pdftex.def Info: report_files/figure-latex/dens-single-1.pdf  used on input line 513.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/dens-single-2.pdf, id=326, 469.755pt x 325.215pt>
+<report_files/figure-latex/dens-single-2.pdf, id=341, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-single-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-single-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-single-2.pdf  used on input line 468.
+Package pdftex.def Info: report_files/figure-latex/dens-single-2.pdf  used on input line 513.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 468--469
+Underfull \hbox (badness 10000) in paragraph at lines 513--514
 [][]
  []
 
-[18 <./report_files/figure-latex/lw-outcome-2.pdf>] [19 <./report_files/figure-latex/dens-single-1.pdf>]
-<report_files/figure-latex/dens-multiple-1.pdf, id=349, 469.755pt x 325.215pt>
+[18 <./report_files/figure-latex/dens-single-1.pdf>]
+<report_files/figure-latex/dens-multiple-1.pdf, id=356, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-multiple-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-multiple-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-multiple-1.pdf  used on input line 470.
+Package pdftex.def Info: report_files/figure-latex/dens-multiple-1.pdf  used on input line 515.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/dens-multiple-2.pdf, id=350, 469.755pt x 325.215pt>
+<report_files/figure-latex/dens-multiple-2.pdf, id=357, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-multiple-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-multiple-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-multiple-2.pdf  used on input line 470.
+Package pdftex.def Info: report_files/figure-latex/dens-multiple-2.pdf  used on input line 515.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-1.pdf, id=351, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-1.pdf, id=358, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-1.pdf  used on input line 471.
+Package pdftex.def Info: report_files/figure-latex/convergence-1.pdf  used on input line 516.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-2.pdf, id=352, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-2.pdf, id=359, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-2.pdf  used on input line 471.
+Package pdftex.def Info: report_files/figure-latex/convergence-2.pdf  used on input line 516.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-3.pdf, id=353, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-3.pdf, id=360, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-3.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-3.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-3.pdf  used on input line 471.
+Package pdftex.def Info: report_files/figure-latex/convergence-3.pdf  used on input line 516.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-4.pdf, id=354, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-4.pdf, id=361, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-4.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-4.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-4.pdf  used on input line 471.
+Package pdftex.def Info: report_files/figure-latex/convergence-4.pdf  used on input line 516.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-5.pdf, id=355, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-5.pdf, id=362, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-5.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-5.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-5.pdf  used on input line 471.
+Package pdftex.def Info: report_files/figure-latex/convergence-5.pdf  used on input line 516.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 []
  []
 
-[20 <./report_files/figure-latex/dens-single-2.pdf>] [21 <./report_files/figure-latex/dens-multiple-1.pdf>] [22 <./report_files/figure-latex/dens-multiple-2.pdf>] [23 <./report_files/figure-latex/convergence-1.pdf>] [24 <./report_files/figure-latex/convergence-2.pdf>] [25 <./report_files/figure-latex/convergence-3.pdf>] [26 <./report_files/figure-latex/convergence-4.pdf>]
-<report_files/figure-latex/convergence-6.pdf, id=430, 469.755pt x 325.215pt>
+[19 <./report_files/figure-latex/dens-single-2.pdf>] [20 <./report_files/figure-latex/dens-multiple-1.pdf>] [21 <./report_files/figure-latex/dens-multiple-2.pdf>] [22 <./report_files/figure-latex/convergence-1.pdf>] [23 <./report_files/figure-latex/convergence-2.pdf>] [24 <./report_files/figure-latex/convergence-3.pdf>] [25 <./report_files/figure-latex/convergence-4.pdf>]
+<report_files/figure-latex/convergence-6.pdf, id=438, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-6.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-6.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-6.pdf  used on input line 477.
+Package pdftex.def Info: report_files/figure-latex/convergence-6.pdf  used on input line 522.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[27 <./report_files/figure-latex/convergence-5.pdf>] [28 <./report_files/figure-latex/convergence-6.pdf>] [29] [30]
+[26 <./report_files/figure-latex/convergence-5.pdf>] [27 <./report_files/figure-latex/convergence-6.pdf>] [28] [29]
 
-LaTeX Warning: Float too large for page by 22.58662pt on input line 655.
+LaTeX Warning: Float too large for page by 22.58662pt on input line 700.
 
-[31] [32] [33] [34] [35] (./report.aux)
+[30] [31] [32] [33] [34] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-18>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 1A2651E23EDD088CA9893549790E214D;3103.
+(rerunfilecheck)             Checksum: 4FF5B7A86C2B20E5402B7BCAF9A901AF;3561.
  ) 
 Here is how much of TeX's memory you used:
- 12887 strings out of 476102
- 205423 string characters out of 5791771
+ 12889 strings out of 476102
+ 204924 string characters out of 5791771
  1959994 words of memory out of 5000000
- 34607 multiletter control sequences out of 15000+600000
+ 34602 multiletter control sequences out of 15000+600000
  616068 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,1445b,475s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,1445b,487s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (35 pages, 618348 bytes).
+Output written on report.pdf (34 pages, 613815 bytes).
 PDF statistics:
- 614 PDF objects out of 1000 (max. 8388607)
- 506 compressed objects within 6 object streams
- 119 named destinations out of 1000 (max. 500000)
- 290 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 623 PDF objects out of 1000 (max. 8388607)
+ 520 compressed objects within 6 object streams
+ 126 named destinations out of 1000 (max. 500000)
+ 304 words of extra memory for PDF output out of 10000 (max. 10000000)
 

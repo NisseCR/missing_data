@@ -499,21 +499,40 @@ dep_means <- function(data, description) {
   means <- data %>% 
     select(dep2, dep3, dep5, dep6, dep8, dep9) %>%
     colMeans(na.rm = TRUE) %>%
-    as.data.frame.list()
+    as.data.frame.list() %>%
+    mutate_if(is.numeric, round, digits = 3)
   cbind('data' = description, means)
 }
 
 # Bind two mean tables together into one.
-dep_comparison <- function(org, imp) {
+dep_mean_comparison <- function(org, imp, imp_desc = 'result') {
   dep_means_org <- dep_means(org, 'original')
-  dep_means_imp <- dep_means(imp, 'imputed')
+  dep_means_imp <- dep_means(imp, imp_desc)
   rbind(dep_means_org, dep_means_imp)
+}
+
+# Create depression variance table.
+dep_vars <- function(data, description) {
+  vars <- data %>% 
+    select(dep2, dep3, dep5, dep6, dep8, dep9) %>%
+    sapply(var, na.rm = TRUE) %>%
+    as.data.frame.list() %>%
+    mutate_if(is.numeric, round, digits = 3)
+  cbind('data' = description, vars)
+}
+
+# Bind two variance tables together into one.
+dep_var_comparison <- function(org, imp, imp_desc = 'result') {
+  dep_vars_org <- dep_vars(org, 'original')
+  dep_vars_imp <- dep_vars(imp, imp_desc)
+  rbind(dep_vars_org, dep_vars_imp)
 }
 ```
 
 Four imputed datasets were created for our analysis models. The imputed values of interest were `drink_regularly`, `dep2`, `dep3`, `dep5`, `dep6`, `dep8`, `dep9`.
 
-## List-wise deletion
+## List-wise deletion {#lw}
+
 ```{r lw-results, echo = FALSE}
 # n rows
 main_n <- nrow(main_data)
@@ -522,17 +541,52 @@ lw_n <- nrow(data_lw)
 # outcome ratios
 ratio_main <- outcome_ratio(main_data)
 ratio_lw <- outcome_ratio(data_lw)
-ratio_change <- perc(1 - ratio_lw / ratio_main)
+ratio_change_lw <- perc(ratio_lw / ratio_main - 1)
 
-# depression means
-deps_lw <- dep_comparison(main_data, data_lw)
+# depression stats
+dep_mean_lw <- dep_mean_comparison(main_data, data_lw)
+dep_var_lw <- dep_var_comparison(main_data, data_lw)
 ```
 
-The data before applying list-wise deletion had `r main_n` cases. After performing the deletion-based treatment, the resulting dataset had `r lw_n` cases left. The ratio of "yes" to "no" cases in the outcome variable `drink_regularly` changed from `r ratio_main` to `r ratio_lw`, hence decreasing by `r decrease`%. The change in the mean of the depression levels can be seen in Figure @\ref(fig:dep-means-lw).
+The data before applying list-wise deletion had `r main_n` cases. After performing the deletion-based treatment, the resulting dataset had `r lw_n` cases left. The ratio of "yes" to "no" cases in the outcome variable `drink_regularly` changed from `r ratio_main` to `r ratio_lw`, hence decreasing by `r ratio_change_lw`%.  
+
+Figure \@ref(tab:dep-means-lw) shows the means of the multiple depression levels in the original data set and the resulting dataset from list-wise deletion. It was observed that the mean values of `dep8` and `dep9` decreased by half in the resulting dataset, suggesting that this missing data treatment deleted cases with higher `dep8` and `dep9` values due to missing values in either `drink_regularly` or the depression levels. The mean values of the remaining levels stayed roughly the same, showing no significant increase or decrease. \@ref(tab:dep-vars-lw) shows the change of variance across the multiple depression levels. Similar to the affect on mean values, variances of depression only showed significant changes in `dep8` and `dep9`, furthermore suggesting that missing data was present in other variables for particular `dep8` and `dep9` values respectively. The other depression levels showed only small increases or decrease in variance, which is due to the sampling variability as a consequence of list-wise deletion.
+Lastly, the depression values were still discrete - the values ranged from 0 to 3. This was expected, since this missing data treatment doesn't change / impute the values of the dataset.
 
 ```{r dep-means-lw, echo = FALSE}
-show_table(deps_lw, "Depression means for list-wise deletion")
+show_table(dep_mean_lw, "Depression means for list-wise deletion", scale = FALSE)
 ```
+
+```{r dep-vars-lw, echo = FALSE}
+show_table(dep_var_lw, "Depression variance for list-wise deletion", scale = FALSE)
+```
+
+## Mean imputation
+
+```{r mi-results, echo = FALSE}
+# n rows
+main_n <- nrow(main_data)
+mi_n <- nrow(data_mi)
+
+# outcome ratios
+ratio_main <- outcome_ratio(main_data)
+ratio_mi <- outcome_ratio(data_mi)
+ratio_change_mi <- perc(ratio_mi / ratio_main - 1)
+
+# depression stats
+dep_mean_mi <- dep_mean_comparison(main_data, data_mi)
+dep_var_mi <- dep_var_comparison(main_data, data_mi)
+```
+Mode imputation was applied to the missing values in `drink_regularly`. As mentioned in Section \@ref(data-proc), "yes" was the most occuring case in the outcome variable, therefore missing values were replaced by "yes". This resulted in the ratio of "yes" to "no" cases changing from `r ratio_main` to `r ratio_mi`, increasing by `r ratio_change_mi`%. It is worthy to note that this is a `r abs(ratio_change_mi - ratio_change_lw)`% total increase compared to the ratio of list-wise deletion mentioned in Section \@ref(lw).
+As for the depression levels, mean imputation did not change the mean values. The overall variance of the depression levels decreased, which is an expected result of mean imputation - imputing missing data with the same value attenuates the variance of the data.
+
+## Stochastic regression
+
+...
+
+## Multiple imputation
+
+...
 
 ```{r dens-single, echo = FALSE, warning = FALSE}
 # depression levels
