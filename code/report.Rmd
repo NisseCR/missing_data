@@ -86,7 +86,8 @@ data <- sub_select(main_data)
 ```
 
 ```{r set-seed, echo = FALSE}
-set.seed(0)
+# setting the seed number for stochastic and multiple imputation
+set.seed(62368)
 ```
 
 \newpage
@@ -125,30 +126,30 @@ The demographic variables - that being `sex`, `age`, `ethnicity`, `education` an
 
 ## Software
 
-All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and list-wise deletion and mean imputation, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab] and *gtsummary* was used to produce the summary tables for the two final models [@gtsummary].
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and implementation of missing data treatments, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab] and *gtsummary* was used to produce the summary tables for the two final models [@gtsummary].
 
 ## Data processing {#data-proc}
-After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)). 
+After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)), the results for variables used only for imputation are presented in Appendix [number]. 
 
-Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable against observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. 
+Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable against observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. The results for variables of interest were presented in Section \@ref(MDM) and for variables used for imputation in Appendix [number]. 
 
 Four solutions to the missing data problem were implemented: list-wise deletion, mean imputation, stochastic regression imputation and multiple imputation.
 
-For list-wise deletion, all cases with one or more missing values were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. 
+For list-wise deletion, all cases with one or more missing values  in the subset dataset of only variables of interest were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. 
 
-The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means even further skewed the distribution towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. 
+The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means even further skewed the distribution towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. Only missing variables in the subset dataset were imputed, as the imputation is independent of the other variables and only these variables are used in the modeling, thus, the additional variables in the full dataset can remain incomplete.  
 
-Stochastic regression imputation 
+The stochastic regression imputation is a relatively smarter way of dealing with missing data than the previous methods [@FIMD]. A model is built based on the full observed data and then it is used to predict values for incomplete cases with the addition of noise to reduce correlation bias [@FIMD]. To implement it the 'mice' package was used with a single imputation and iteration, seed number of '62368', and methods 'norm.nob' (linear regression ignoring model error) and 'logreg' (Bayesian logistic regression) used to impute the depression items and 'drink_regularly' respectively. In principle 'norm.nob' is the standard method to implement stochastic regression imputation, however, it uses a linear model and is only applicable to numeric data. Therefore, 'logreg' was used for the binary variable 'drink_regularly'. It creates a Bayesian logistic regression model and predicts scores accordingly, however, the additional noise of stochastic regression is missing. Changes in the distributions of the variables following the missing data treatment were discussed in Section [number]. 
 
-Multiple imputation
+Lastly, multiple imputation, the most complex  missing data treatment in this paper, was performed [@FIMD]. The multiple imputation method relays on the idea that single imputations are never correct, as they ignore the inherent uncertainty of the imputation [@FIMD]. Therefore, the values are first iteratively imputed a number of time and create separate datasets that the statistical analysis is performed on [@FIMD]. Then the results of the analysis are pooled and the uncertainty of the results is calculated [@FIMD]. Multiple imputation was performed with default mice settings, therefore: '5' imputations, '5' iterations,  predictive mean matching ('pmm') used to impute 'dep' items and Bayesian logistic regression ('logreg') used for 'drink_regularly'. The default predictor matrix was used, therefore all variables, but the specific currently imputed variable, were used to impute each variable. The seed number was set to '62368'. The convergence of the imputation and plausibility of imputations were evaluated with 'mice' visualizations, including trace, density, strip, auto-correlation and potential scale reduction factor plots, in Section [number]. [Actions taken to ensure convergence] Changes in the distributions of the variables following the multiple imputation were discussed in Section [number]. 
 
-Following each missing data treatment, the values for the depression questions were summed up to create an overall depression score for each individual case. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
+Following each missing data treatment, the values for the depression questions were summed up to create an overall depression score for each individual case. In case of the multiple imputations, this is effectively an impute then transform (ITT) approach to imputing with derived variables. Since the overall depression score was not part of the original dataset and would have to be manually computed anyways, this approach was found to be more convenient. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
 
 To conclude, the different missing data treatments created three complete datasets and a single MIDS object that were then used for statistical analysis. 
 
 ## Modelling methodology
 
-Including all of the variables in the two complete data sets was motivated by theoretical findings, since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create two logistical models including all of the variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors following the aforementioned model-building methods, it was decided to keep all the predictor variables and therefore have a more complex model. Following model creation, the two logistics models were compared, where the impact of the two different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurrence of regular drinking was considered the "successful" outcome.
+Including all of the variables of interest from the complete datasets in the model was motivated by theoretical findings, since other researchers found a relationship between them and drinking habits. Therefore, verifying the significance of these predictors and their relative importance in the presence of other variables was important. Thus, a decision was made to create four logistical models including all of the subset variables, instead of a top down or bottom up approach to model building. As opposed to removing the non-significant predictors following the aforementioned model-building methods, it was decided to keep all the predictor variables and therefore have a more complex model. For the multiple imputation the models were implemented on the five separate imputations and then pooled. Following model creation, the four logistics models were compared, where the impact of the four different missing data treatments was evaluated. For easier interpretation the model coefficients were exponentiated. Occurrence of regular drinking was considered the "successful" outcome.
 
 # EDA Results {#EDA}
 
@@ -599,6 +600,17 @@ Overall, it was concluded from both models that `depression` and `ethnicity` can
 
 # (APPENDIX) Appendix {-} 
 
+
+# Appendix {#vartabfull}
+
+```{r, full-vars-desc, echo = FALSE}
+
+#Read full variable description file and create a table from it
+descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
+   as_tibble()
+ show_table(descs, "Variable descriptions")
+```
+
 # Appendix
 
 ```{r data-sum, echo=FALSE}
@@ -632,13 +644,3 @@ as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, in
 ```
 
 \newpage
-
-# Appendix {#vartabfull}
-
-```{r, full-vars-desc, echo = FALSE}
-
-#Read full variable description file and create a table from it
-descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
-   as_tibble()
- show_table(descs, "Variable descriptions")
-```
