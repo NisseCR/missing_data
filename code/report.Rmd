@@ -529,7 +529,7 @@ dep_var_comparison <- function(org, imp, imp_desc = 'result') {
 }
 ```
 
-Four imputed datasets were created for our analysis models. The imputed values of interest were `drink_regularly`, `dep2`, `dep3`, `dep5`, `dep6`, `dep8`, `dep9`.
+Four imputed datasets were created for the analysis models. The imputed values of interest were `drink_regularly`, `dep2`, `dep3`, `dep5`, `dep6`, `dep8`, `dep9`.
 
 ## List-wise deletion {#lw}
 
@@ -550,26 +550,27 @@ dep_var_lw <- dep_var_comparison(main_data, data_lw)
 
 The data before applying list-wise deletion had `r main_n` cases. After performing the deletion-based treatment, the resulting dataset had `r lw_n` cases left. The ratio of "yes" to "no" cases in the outcome variable `drink_regularly` changed from `r ratio_main` to `r ratio_lw`, hence decreasing by `r ratio_change_lw`%.  
 
-Figure \@ref(tab:dep-means-lw) shows the means of the multiple depression levels in the original data set and the resulting dataset from list-wise deletion. It was observed that the mean values of `dep8` and `dep9` decreased by half in the resulting dataset, suggesting that this missing data treatment deleted cases with higher `dep8` and `dep9` values due to missing values in either `drink_regularly` or the depression levels. The mean values of the remaining levels stayed roughly the same, showing no significant increase or decrease. \@ref(tab:dep-vars-lw) shows the change of variance across the multiple depression levels. Similar to the affect on mean values, variances of depression only showed significant changes in `dep8` and `dep9`, furthermore suggesting that missing data was present in other variables for particular `dep8` and `dep9` values respectively. The other depression levels showed only small increases or decrease in variance, which is due to the sampling variability as a consequence of list-wise deletion.
-Lastly, the depression values were still discrete - the values ranged from 0 to 3. This was expected, since this missing data treatment didn't change / impute the values of the dataset.
+Table \@ref(tab:dep-means-lw) shows the means of the multiple depression levels in the original data set and the resulting dataset from list-wise deletion. It was observed that the mean values of `dep8` and `dep9` decreased by half in the resulting dataset, suggesting that this missing data treatment deleted cases with higher `dep8` and `dep9` values due to missing values in either `drink_regularly` or the depression levels. The mean values of the remaining levels stayed roughly the same, showing no significant increase or decrease. 
 
 ```{r dep-means-lw, echo = FALSE}
 show_table(dep_mean_lw, "Depression means for list-wise deletion", scale = FALSE)
 ```
 
+Table \@ref(tab:dep-vars-lw) shows the change of variance across the multiple depression levels. Similar to the affect on mean values, variances of depression only showed significant changes in `dep8` and `dep9`, furthermore suggesting that missing data was present in other variables for particular `dep8` and `dep9` values respectively. The other depression levels showed only small increases or decrease in variance, which is due to the sampling variability as a consequence of list-wise deletion. Although `dep8` and `dep9` were assumed to be MCAR in Section \@ref(MDM), these did in fact show the most substantial changes in their distribution.
+
 ```{r dep-vars-lw, echo = FALSE}
 show_table(dep_var_lw, "Depression variance for list-wise deletion", scale = FALSE)
 ```
 
+TODO: explain the above, why?!
+
+Lastly, the depression values were still discrete - the values ranged from 0 to 3. This was expected, since this missing data treatment didn't change / impute the values of the dataset.
+
+
 ## Mean imputation
 
 ```{r mi-results, echo = FALSE}
-# n rows
-main_n <- nrow(main_data)
-mi_n <- nrow(data_mi)
-
 # outcome ratios
-ratio_main <- outcome_ratio(main_data)
 ratio_mi <- outcome_ratio(data_mi)
 ratio_change_mi <- perc(ratio_mi / ratio_main - 1)
 
@@ -582,17 +583,36 @@ As for the depression levels, mean imputation did not change the mean values. Th
 
 ## Stochastic regression
 
-```{r dens-single, echo = FALSE, warning = FALSE}
-# depression levels
-densityplot(imp_single)
+```{r si-results, echo = FALSE}
+# outcome ratios
+ratio_si <- outcome_ratio(comp_single)
+ratio_change_si <- perc(ratio_si / ratio_main - 1)
 
-# drink_regularly
-ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
-  geom_histogram(stat = 'count') +
-  facet_wrap(~.imp)
+# depression stats
+dep_mean_si <- dep_mean_comparison(main_data, comp_single)
+dep_var_si <- dep_var_comparison(main_data, comp_single)
+
+# min max range
+dep2_min_si <- round(min(comp_single$dep2), 2)
+dep2_max_si <- round(max(comp_single$dep2), 2)
 ```
 
-...
+The 3rd imputation method utilised a single stochastic regression model to treat the missing. The ratio of "yes" to "no" cases in the outcome variable `drink_regularly` showed minimal change when observing the imputed data, with the original and imputed data having a ratio of `r ratio_main` and `r ratio_si` respectively.  
+Due to the nature of the stochastic regression model, the range of 0 to 3 with increments of 1 no longer held. To illustrate, `dep2` had a minimum value of `r dep2_min_si` and a maximum value of `r dep2_max_si`, with values other than 0, 1, 2 or 3 existing within the variable. This also caused the variance of the assumed MAR depression levels to increase, as can be seen in Table \@ref(tab:dep-vars-si). The assumed MCAR depression variables - namely `dep8` and `dep9` - showed non-substantial increases in their variance. The proportional change in the mean values was also only present in `dep2`, `dep3`, `dep5` and `dep6`, whilst the assumed MCAR levels once again showed minimal change, as shown in Table \@ref(tab:dep-means-si).  
+
+```{r dep-means-si, echo = FALSE}
+show_table(dep_mean_si, "Depression means for stochastic regression", scale = FALSE)
+```
+
+```{r dep-vars-si, echo = FALSE}
+show_table(dep_var_si, "Depression variance for stochastic regression", scale = FALSE)
+```
+
+The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputation results. It was observed that the assumed MCAR (`dep8` and `dep9`) depression levels had very similar distributions to the observed data, more so than the assumed MAR levels that clearly showed higher variances and mean values. This is how the imputed values should behave, and therefore the resulting imputations were accepted.
+
+```{r dens-si, fig.cap="Density plots for single stochastic regression", echo = FALSE, warning = FALSE}
+densityplot(imp_single)
+```
 
 ## Multiple imputation
 
@@ -601,11 +621,6 @@ ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
 ```{r dens-multiple, echo = FALSE, warning = FALSE}
 # depression levels
 densityplot(imp_multiple)
-
-# drink_regularly
-ggmice(imp_multiple, aes(drink_regularly, fill = .imp)) +
-  geom_histogram(stat = 'count') +
-  facet_wrap(~.imp)
 ```
 
 ```{r convergence, echo = FALSE}
