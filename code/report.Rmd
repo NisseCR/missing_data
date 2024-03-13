@@ -415,18 +415,16 @@ The outcomes of the Fisher test are presented in Table \@ref(tab:fisher-test). L
 
 In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR.
 
-# Modelling
-
-## Interpretation of the two models {#interpret}
-
-TODO: determine derived variable imputation (in our case the sum of all the depression levels).
+# Imputation results {#imputation}
 
 ```{r combine-dep, echo = FALSE}
 # Combine imputed levels of depression into one depression score.
 combine_dep <- function(data) {
   data %>%
-    mutate(dep = dep1 + dep2 + dep3 + dep4 + dep5 + dep6 + dep7 + dep8 + dep9) %>%
-    select(-c(dep1, dep2, dep3, dep4, dep5, dep6, dep7,  dep8, dep9))
+    mutate(dep = dep1 + dep2 + dep3 + dep4 + dep5 + dep6 + dep7 + dep8 + dep9)
+    
+    # In hindsight we want to keep the original depression levels for analysis.
+    # select(-c(dep1, dep2, dep3, dep4, dep5, dep6, dep7,  dep8, dep9))
 }
 ```
 
@@ -455,54 +453,8 @@ comp_multiple <- complete(imp_multiple, "long", include = TRUE)
 comp_multiple <- combine_dep(comp_multiple)
 
 # Convert back to mids object
-imp_multiple_dev <- as.mids(comp_multiple)
+imp_multiple_def <- as.mids(comp_multiple)
 ```
-
-```{r model-creation-1, echo = FALSE}
-# Single imputation model.
-fit_single <- glm(
-  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
-  family = binomial, 
-  data = comp_single
-)
-
-# Multiple imputation model.
-fit_multiple <- with(
-  data = imp_multiple_dev, 
-  glm(
-    drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
-    family = binomial 
-  ))
-
-fit_pool <- pool(fit_multiple)
-```
-
-```{r method-single, echo = FALSE}
-imp_single$method
-```
-
-```{r dens-single, echo = FALSE, warning = FALSE}
-# depression levels
-densityplot(imp_single)
-
-# drink_regularly
-ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
-  geom_histogram(stat = 'count')
-```
-
-```{r conv, echo = FALSE}
-plot(imp_multiple)
-```
-
-```{r dens-multiple, echo = FALSE, warning = FALSE}
-# depression levels
-densityplot(imp_multiple)
-
-# drink_regularly
-ggmice(imp_multiple, aes(drink_regularly, fill = .imp)) +
-  geom_histogram(stat = 'count')
-```
-
 
 ```{r mean-imp, echo = FALSE, warning = FALSE, message = FALSE, results = 'hide'}
 # Perform mean imputation on the data. Mode imputation is used for drink_regularly.
@@ -529,7 +481,111 @@ data_lw <- data[complete.cases(data), ]
 data_lw <- combine_dep(data_lw)
 ```
 
-```{r model-creation, echo = FALSE}
+```{r outcome-ratio, echo = FALSE}
+# Calculate the ratio between "yes" and "no" outcome cases.
+outcome_ratio <- function(data) {
+  ratio <- sum(data$drink_regularly == "yes", na.rm = TRUE) / 
+    sum(data$drink_regularly == "no", na.rm = TRUE)
+  round(ratio, 2)
+}
+
+# Percentage conversion.
+perc <- function(value) {
+  round(value * 100, 2)
+}
+
+# Create depression means table.
+dep_means <- function(data, description) {
+  means <- data %>% 
+    select(dep2, dep3, dep5, dep6, dep8, dep9) %>%
+    colMeans(na.rm = TRUE) %>%
+    as.data.frame.list()
+  cbind('data' = description, means)
+}
+
+# Bind two mean tables together into one.
+dep_comparison <- function(org, imp) {
+  dep_means_org <- dep_means(org, 'original')
+  dep_means_imp <- dep_means(imp, 'imputed')
+  rbind(dep_means_org, dep_means_imp)
+}
+```
+
+Four imputed datasets were created for our analysis models. The imputed values of interest were `drink_regularly`, `dep2`, `dep3`, `dep5`, `dep6`, `dep8`, `dep9`.
+
+## List-wise deletion
+```{r lw-results, echo = FALSE}
+# n rows
+main_n <- nrow(main_data)
+lw_n <- nrow(data_lw)
+
+# outcome ratios
+ratio_main <- outcome_ratio(main_data)
+ratio_lw <- outcome_ratio(data_lw)
+ratio_change <- perc(1 - ratio_lw / ratio_main)
+
+# depression means
+deps_lw <- dep_comparison(main_data, data_lw)
+```
+
+The data before applying list-wise deletion had `r main_n` cases. After performing the deletion-based treatment, the resulting dataset had `r lw_n` cases left. The ratio of "yes" to "no" cases in the outcome variable `drink_regularly` changed from `r ratio_main` to `r ratio_lw`, hence decreasing by `r decrease`%. The change in the mean of the depression levels can be seen in Figure @\ref(fig:dep-means-lw).
+
+```{r dep-means-lw, echo = FALSE}
+show_table(deps_lw, "Depression means for list-wise deletion")
+```
+
+```{r dens-single, echo = FALSE, warning = FALSE}
+# depression levels
+densityplot(imp_single)
+
+# drink_regularly
+ggmice(imp_single, aes(drink_regularly, fill = .imp)) +
+  geom_histogram(stat = 'count') +
+  facet_wrap(~.imp)
+```
+
+```{r dens-multiple, echo = FALSE, warning = FALSE}
+# depression levels
+densityplot(imp_multiple)
+
+# drink_regularly
+ggmice(imp_multiple, aes(drink_regularly, fill = .imp)) +
+  geom_histogram(stat = 'count')
+```
+```{r convergence, echo = FALSE}
+plot(imp_multiple)
+
+conv <- convergence(imp_multiple)
+ggplot(conv, aes(x = .it, y = ac)) +
+  geom_hline(yintercept = 0, color = "grey", linetype = "dashed") +
+  geom_line() + 
+  facet_wrap(~vrb, scales = "free") + 
+  theme_classic() + 
+  labs(x = "Iteration", y = "Auto-correlation")
+```
+
+# Modelling
+
+```{r model-creation-1, echo = FALSE}
+# Single imputation model.
+fit_single <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+  family = binomial, 
+  data = comp_single
+)
+
+# Multiple imputation model.
+fit_multiple <- with(
+  data = imp_multiple_def, 
+  glm(
+    drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+    family = binomial 
+  ))
+
+fit_pool <- pool(fit_multiple)
+```
+
+```{r model-creation-2, echo = FALSE}
 # Listwise deletion model creation.
 fit_lw <- glm(
   drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
@@ -544,6 +600,8 @@ fit_mi <- glm(
   data = data_mi
 )
 ```
+
+## Interpretation of the two models {#interpret}
 
 ```{r model-compare, echo = FALSE}
 # Obtain residual deviance statistic from model.
