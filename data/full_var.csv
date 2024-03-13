@@ -1,0 +1,35 @@
+Role;Variable;Further Description;Name;Type;Characteristics;Target
+Outcome;Drink regularly;at least 12 drinks in a year;drink_regularly;Categorical;Binary, yes and no;m/f, age 20-150
+Predictor;Sex;;sex;Categorical;Binary, male and female;m/f, age 0-150
+Predictor;Age;years at screening;age;Numeric;Discrete;m/f, age 0-150
+Predictor;Ethnicity;;ethnicity;Categorical;Nominal, 5 categories;m/f, age 0-150
+Predictor;Education;;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
+Predictor;Marital status;;marital;Categorical;Nominal, 5 categories;m/f, age 20-150
+Predictor;household income;annual in USD;household_income;Categorical;Nominal, 12 categories;m/f, age 0-150
+Predictor;No interest in activity;;dep1;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling depressed;;dep2;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Sleeping issues;;dep3;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling tired;;dep4;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Eating issues;;dep5;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Feeling bad about yourself;;dep6;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Concentrating issues;;dep7;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Moving and speaking issues;;dep8;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Predictor;Suicidial thoughts;;dep9;Categorical;Ordinal, 1-3 scale;m/f, age 18-150
+Imputation;Household size;number of people;household_size;Numeric;Discrete;m/f, age 0-150
+Imputation;Weight;in kg;weight;Numeric;Continious ;m/f, age 0-150
+Imputation;Height;standing in cm;height;Numeric;Continious ;m/f, age 2-150
+Imputation;Body Mass Index;in kg/m^2;bmi;Numeric;Continious ;m/f, age 2-150
+Imputation;Pulse;beats per minute;pulse;Numeric;Discrete;m/f, age 8-150
+Imputation;Systolic blood pressure;1st reading, in mm Hg;bp_sys1;Numeric;Discrete;m/f, age 8-150
+Imputation;Diastolic blood pressure;1st reading, in mm Hg;bp_dia1;Numeric;Discrete;m/f, age 8-150
+Imputation;Systolic blood pressure;2nd reading, in mm Hg;bp_sys2;Numeric;Discrete;m/f, age 8-150
+Imputation;Diastolic blood pressure;2nd reading, in mm Hg;bp_dia2;Numeric;Discrete;m/f, age 8-150
+Imputation;Vigorous work activity;;vig_work;Categorical;Binary, yes and no;m/f, age 12-150
+Imputation;Moderate work activity;;mod_work;Categorical;Binary, yes and no;m/f, age 12-150
+Imputation;Walking or cycling;;walk_cycle;Categorical;Binary, yes and no;m/f, age 12-150
+Imputation;Vigorous sport activity;;vig_rec;Categorical;Binary, yes and no;m/f, age 12-150
+Imputation;Moderate sport activity;;mod_rec;Categorical;Binary, yes and no;m/f, age 12-150
+Imputation;Sedentary activity;in minutes;time_sed;Numeric;Discrete;m/f, age 12-150
+Imputation;Number of sex;in a year;n_sex_year;Categorical;Nominal, 7 categories;m/f, age 20-59
+Imputation;Frequency of unsafe sex ;in a year;n_unsafe_sex_year;Categorical;Nominal, 5 categories;m/f, age 20-59
+Imputation;Number of days drinking aclohol ;;days_drinking;Numeric;Discrete;m/f, age 20-150
