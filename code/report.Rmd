@@ -614,7 +614,7 @@ descs <- read.csv("../data/full_var.csv", header = TRUE, sep = ";") %>%
 
 \newpage
 
-# Appendix  {#apEDA}
+# Appendix {#apEDA}
 
 ```{r data-sum, echo=FALSE}
 sumtable(data, title = "Summary statistics of variables of intrest", fit.page = TRUE)
@@ -646,9 +646,100 @@ imp_data <- main_data %>%
 sumtable(imp_data, title = "Summary statistics of varaibles used only for imputation", fit.page = TRUE)
 ```
 
+```{r tile-cor, echo = FALSE}
+num_data <- dplyr::select_if(main_data, is.numeric)
+cormatrix <- cor(num_data, use="complete.obs") %>% round(digits = 2)
 
+
+get_lower_tri<-function(cormatrix){
+    cormatrix[upper.tri(cormatrix)] <- NA
+    return(cormatrix)
+  }
+lower_tri <- get_lower_tri(cormatrix)
+
+library(reshape2)
+melted_cormatrix <- melt(lower_tri, na.rm = TRUE)
+library(ggplot2)
+
+cortile <- ggplot(melted_cormatrix, aes(y = Var2, x = Var1, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+    name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 90, vjust = 1, 
+    size = 12, hjust = 1), axis.text.y  = element_text(
+    size = 12))+
+ coord_fixed()
+  
+print(cortile)
+```
+```{r box-drink, fig.cap = "Correlations of days_drinking vs. drink regularly", echo = FALSE}
+ggplot(main_data, aes(days_drinking, drink_regularly, colour = drink_regularly)) +
+  geom_boxplot()
+```
 
 \newpage
+
+# Appendix {#apmissing}
+```{r imp-t-test, echo=FALSE}
+# Make a table with outcomes of the t-test for variables only used for imputation of the missing variables:
+col1 <- c("days_drinking",
+    "time_sed",
+    "bp_dia2",
+    "bp_sys2",
+    "bp_dia1",
+    "bp_sys1",
+    "pulse",
+    "bmi",
+    "height",
+    "weight",
+    "household_size",
+    "age")
+col2 <- c(dependency_test(var = main_data$days_drinking, mis_vector = mdrink), dependency_test(var = main_data$time_sed, mis_vector = mdrink), dependency_test(var = main_data$bp_dia2, mis_vector = mdrink), dependency_test(var = main_data$bp_sys2, mis_vector = mdrink), dependency_test(var = main_data$bp_dia1, mis_vector = mdrink), dependency_test(var = main_data$bp_sys1, mis_vector = mdrink), dependency_test(var = main_data$pulse, mis_vector = mdrink), dependency_test(var = main_data$bmi, mis_vector = mdrink), dependency_test(var = main_data$height, mis_vector = mdrink), dependency_test(var = main_data$weight, mis_vector = mdrink), dependency_test(var = main_data$ household_size, mis_vector = mdrink), dependency_test(var = main_data$age, mis_vector = mdrink))
+col3 <- c(dependency_test(var = main_data$days_drinking, mis_vector = mdep2), dependency_test(var = main_data$time_sed, mis_vector =  mdep2),  dependency_test(var = main_data$bp_dia2, mis_vector = mdep2),  dependency_test(var = main_data$bp_sys2, mis_vector = mdep2), dependency_test(var = main_data$bp_dia1, mis_vector =  mdep2),  dependency_test(var = main_data$bp_sys1, mis_vector = mdep2), dependency_test(var = main_data$pulse, mis_vector = mdep2), dependency_test(var = main_data$bmi, mis_vector =  mdep2), dependency_test(var = main_data$height, mis_vector =  mdep2), dependency_test(var = main_data$weight, mis_vector =  mdep2), dependency_test(var = main_data$household_size, mis_vector =  mdep2), dependency_test(var = main_data$age, mis_vector =  mdep2))
+col4 <- c(dependency_test(var = main_data$days_drinking, mis_vector = mdep8), dependency_test(var = main_data$time_sed, mis_vector =  mdep8), dependency_test(var = main_data$bp_dia2, mis_vector =  mdep8), dependency_test(var = main_data$bp_sys2, mis_vector =  mdep8), dependency_test(var = main_data$bp_dia1, mis_vector =  mdep8), dependency_test(var = main_data$bp_sys1, mis_vector =  mdep8), dependency_test(var = main_data$pulse, mis_vector =  mdep8), dependency_test(var = main_data$bmi, mis_vector =  mdep8), dependency_test(var = main_data$height, mis_vector =  mdep8), dependency_test(var = main_data$weight, mis_vector =  mdep8), dependency_test(var = main_data$household_size, mis_vector =  mdep8), dependency_test(var = main_data$age, mis_vector =  mdep8))
+col5 <- c(dependency_test(var = main_data$days_drinking, mis_vector = mdep9), dependency_test(var = main_data$time_sed, mis_vector =  mdep9), dependency_test(var = main_data$bp_dia2, mis_vector =  mdep9), dependency_test(var = main_data$bp_sys2, mis_vector =  mdep9), dependency_test(var = main_data$bp_dia1, mis_vector =  mdep9), dependency_test(var = main_data$bp_sys1, mis_vector =  mdep9), dependency_test(var = main_data$pulse, mis_vector =  mdep9), dependency_test(var = main_data$bmi, mis_vector =  mdep9), dependency_test(var = main_data$height, mis_vector =  mdep9), dependency_test(var = main_data$weight, mis_vector =  mdep9), dependency_test(var = main_data$household_size, mis_vector =  mdep9), dependency_test(var = main_data$age, mis_vector =  mdep9))
+
+
+table_test <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test) <- c("numerical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+show_table(as_tibble(table_test), "Dependency t-test: mean comparison in numerical variables across missing values and observed values in the other variables")
+```
+```{r}
+# Make a table with outcomes of the chi-squared:
+col1 <- c("vig_work",
+"mod_work",
+"walk_cycle",
+"vig_rec",
+"mod_rec",
+"n_sex_year",
+"n_unsafe_sex_year")
+
+col2 <- c(dependency_chitest(var = main_data$vig_work, mis_vector = mdrink), dependency_chitest(var = main_data$mod_work, mis_vector = mdrink), dependency_chitest(var = main_data$walk_cycle, mis_vector = mdrink), dependency_chitest(var = main_data$vig_rec, mis_vector = mdrink), dependency_chitest(var = main_data$mod_rec, mis_vector = mdrink), dependency_chitest(var = main_data$n_sex_year, mis_vector = mdrink), dependency_chitest(var = main_data$n_unsafe_sex_year, mis_vector = mdrink))
+
+col3 <- c(dependency_chitest(var = main_data$vig_work, mis_vector = mdep2), dependency_chitest(var = main_data$mod_work, mis_vector =  mdep2), dependency_chitest(var = main_data$walk_cycle, mis_vector = mdep2), dependency_chitest(var = main_data$vig_rec, mis_vector =  mdep2), dependency_chitest(var = main_data$mod_rec, mis_vector =  mdep2), dependency_chitest(var = main_data$n_sex_year, mis_vector =  mdep2), dependency_chitest(var = main_data$n_unsafe_sex_year, mis_vector =  mdep2))
+
+col4 <- c(dependency_chitest(var = main_data$vig_work, mis_vector = mdep8), dependency_chitest(var = main_data$mod_work, mis_vector =  mdep8), dependency_chitest(var = main_data$walk_cycle, mis_vector =  mdep8), dependency_chitest(var = main_data$vig_rec, mis_vector =  mdep8), dependency_chitest(var = main_data$mod_rec, mis_vector =  mdep8), dependency_chitest(var = main_data$n_sex_year, mis_vector =  mdep8), dependency_chitest(var = main_data$n_unsafe_sex_year, mis_vector =  mdep8) )
+
+col5 <- c(dependency_chitest(var = main_data$vig_work, mis_vector = mdep9), dependency_chitest(var = main_data$mod_work, mis_vector =  mdep9), dependency_chitest(var = main_data$walk_cycle, mis_vector =  mdep9), dependency_chitest(var = main_data$vig_rec, mis_vector =  mdep9), dependency_chitest(var = main_data$mod_rec, mis_vector =  mdep9), dependency_chitest(var = main_data$n_sex_year, mis_vector =  mdep9), dependency_chitest(var = main_data$n_unsafe_sex_year, mis_vector =  mdep9))
+
+table_test2 <-as.data.frame(cbind(col1, col2, col3, col4, col5))
+
+names(table_test2) <- c("categorical variable", 
+    "missing drink_regularly",
+    "missing dep2/3/5/6",
+    "missing dep8",
+    "missing dep9")
+
+show_table(table_test2, "Independency Chi-squared test")
+```
+
 
 # Appendix
 
