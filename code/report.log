@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  13 MAR 2024 16:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  13 MAR 2024 16:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -635,95 +635,94 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <report_files/figure-latex/dens-single-1.pdf, id=340, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-single-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-single-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-single-1.pdf  used on input line 513.
+Package pdftex.def Info: report_files/figure-latex/dens-single-1.pdf  used on input line 506.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 <report_files/figure-latex/dens-single-2.pdf, id=341, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-single-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-single-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/dens-single-2.pdf  used on input line 513.
+Package pdftex.def Info: report_files/figure-latex/dens-single-2.pdf  used on input line 506.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 513--514
-[][]
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
+[]
  []
 
-[18 <./report_files/figure-latex/dens-single-1.pdf>]
-<report_files/figure-latex/dens-multiple-1.pdf, id=356, 469.755pt x 325.215pt>
+[18] [19]
+Overfull \vbox (25.78995pt too high) has occurred while \output is active []
+
+[20 <./report_files/figure-latex/dens-single-1.pdf> <./report_files/figure-latex/dens-single-2.pdf>]
+<report_files/figure-latex/dens-multiple-1.pdf, id=372, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-multiple-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-multiple-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/dens-multiple-1.pdf  used on input line 515.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/dens-multiple-2.pdf, id=357, 469.755pt x 325.215pt>
+<report_files/figure-latex/dens-multiple-2.pdf, id=373, 469.755pt x 325.215pt>
 File: report_files/figure-latex/dens-multiple-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/dens-multiple-2.pdf>
 Package pdftex.def Info: report_files/figure-latex/dens-multiple-2.pdf  used on input line 515.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-1.pdf, id=358, 469.755pt x 325.215pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
+[][]
+ []
+
+[21 <./report_files/figure-latex/dens-multiple-1.pdf>]
+<report_files/figure-latex/convergence-1.pdf, id=387, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-1.pdf  used on input line 516.
+Package pdftex.def Info: report_files/figure-latex/convergence-1.pdf  used on input line 517.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-2.pdf, id=359, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-2.pdf, id=388, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-2.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-2.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-2.pdf  used on input line 516.
+Package pdftex.def Info: report_files/figure-latex/convergence-2.pdf  used on input line 517.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-3.pdf, id=360, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-3.pdf, id=389, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-3.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-3.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-3.pdf  used on input line 516.
+Package pdftex.def Info: report_files/figure-latex/convergence-3.pdf  used on input line 517.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-4.pdf, id=361, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-4.pdf, id=390, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-4.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-4.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-4.pdf  used on input line 516.
+Package pdftex.def Info: report_files/figure-latex/convergence-4.pdf  used on input line 517.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<report_files/figure-latex/convergence-5.pdf, id=362, 469.755pt x 325.215pt>
+<report_files/figure-latex/convergence-5.pdf, id=391, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-5.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-5.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-5.pdf  used on input line 516.
+Package pdftex.def Info: report_files/figure-latex/convergence-5.pdf  used on input line 517.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 []
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 515--517
-[]
- []
-
-[19 <./report_files/figure-latex/dens-single-2.pdf>] [20 <./report_files/figure-latex/dens-multiple-1.pdf>] [21 <./report_files/figure-latex/dens-multiple-2.pdf>] [22 <./report_files/figure-latex/convergence-1.pdf>] [23 <./report_files/figure-latex/convergence-2.pdf>] [24 <./report_files/figure-latex/convergence-3.pdf>] [25 <./report_files/figure-latex/convergence-4.pdf>]
-<report_files/figure-latex/convergence-6.pdf, id=438, 469.755pt x 325.215pt>
+[22 <./report_files/figure-latex/dens-multiple-2.pdf>] [23 <./report_files/figure-latex/convergence-1.pdf>] [24 <./report_files/figure-latex/convergence-2.pdf>] [25 <./report_files/figure-latex/convergence-3.pdf>] [26 <./report_files/figure-latex/convergence-4.pdf>]
+<report_files/figure-latex/convergence-6.pdf, id=442, 469.755pt x 325.215pt>
 File: report_files/figure-latex/convergence-6.pdf Graphic file (type pdf)
 <use report_files/figure-latex/convergence-6.pdf>
-Package pdftex.def Info: report_files/figure-latex/convergence-6.pdf  used on input line 522.
+Package pdftex.def Info: report_files/figure-latex/convergence-6.pdf  used on input line 523.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[26 <./report_files/figure-latex/convergence-5.pdf>] [27 <./report_files/figure-latex/convergence-6.pdf>] [28] [29]
+[27 <./report_files/figure-latex/convergence-5.pdf>] [28 <./report_files/figure-latex/convergence-6.pdf>] [29] [30]
 
-LaTeX Warning: Float too large for page by 22.58662pt on input line 700.
+LaTeX Warning: Float too large for page by 22.58662pt on input line 701.
 
-[30] [31] [32] [33] [34] (./report.aux)
+[31] [32] [33] [34] [35] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-18>
@@ -732,18 +731,18 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 4FF5B7A86C2B20E5402B7BCAF9A901AF;3561.
  ) 
 Here is how much of TeX's memory you used:
- 12889 strings out of 476102
- 204924 string characters out of 5791771
+ 12890 strings out of 476102
+ 204931 string characters out of 5791771
  1959994 words of memory out of 5000000
  34602 multiletter control sequences out of 15000+600000
  616068 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,10n,79p,1445b,487s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/nisse/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (34 pages, 613815 bytes).
+Output written on report.pdf (35 pages, 614516 bytes).
 PDF statistics:
- 623 PDF objects out of 1000 (max. 8388607)
- 520 compressed objects within 6 object streams
- 126 named destinations out of 1000 (max. 500000)
+ 628 PDF objects out of 1000 (max. 8388607)
+ 524 compressed objects within 6 object streams
+ 127 named destinations out of 1000 (max. 500000)
  304 words of extra memory for PDF output out of 10000 (max. 10000000)
 
