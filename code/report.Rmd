@@ -431,8 +431,12 @@ combine_dep <- function(data) {
 ```
 
 ```{r imp-single, echo = FALSE}
-# Default already applies pmm to numeric and logistic regression to binary variables.
-imp_single <- mice(main_data, m = 1, print = FALSE)
+# Change default for numeric from pmm to norm.nob and impute data.
+imp_single <- mice(
+  main_data, m = 1, 
+  defaultMethod = c("norm.nob", "logreg", "polyreg", "polr"), 
+  print = FALSE
+)
 
 # Create complete dataset.
 comp_single <- complete(imp_single)
@@ -471,6 +475,10 @@ fit_multiple <- with(
   ))
 
 fit_pool <- pool(fit_multiple)
+```
+
+```{r method-single, echo = FALSE}
+imp_single$method
 ```
 
 ```{r dens-single, echo = FALSE, warning = FALSE}
