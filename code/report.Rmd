@@ -699,31 +699,50 @@ RD <- function(model) {
 
 # Create AIC, BIC and D table for all the models.
 comp_df <- data.frame(
-  model = c('listwise deletion', 'mean imputation'),
-  AIC = c(AIC(fit_lw), AIC(fit_mi)),
-  BIC = c(BIC(fit_lw), BIC(fit_mi)),
-  Residual_Deviance = c(RD(fit_lw), RD(fit_mi))
+  model = c('listwise deletion', 'mean imputation', 'single imputation'),
+  AIC = c(AIC(fit_lw), AIC(fit_mi), AIC(fit_single)),
+  BIC = c(BIC(fit_lw), BIC(fit_mi), BIC(fit_single)),
+  Residual_Deviance = c(RD(fit_lw), RD(fit_mi), RD(fit_single))
 )
-
+str(fit_pool)
 show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
 ```
 
+```{r mul-compare, echo=FALSE}
+show_table(select(fit_pool$glanced, c('AIC', 'BIC', 'deviance')), caption = "Model fit statistics", scale = FALSE)
+```
+
 ```{r varprep, echo = FALSE, message=FALSE, warning = FALSE, results='hide'}
+sum_mul <- summary(fit_pool, conf.int = TRUE)
+nsum_mul <- sum_mul[, -1]
+rownames(nsum_mul) <- sum_mul[, 1]
+
 plw <- coef(summary(fit_lw), digits = 3)[,'Pr(>|z|)']
 pmi <- coef(summary(fit_mi))[,'Pr(>|z|)']
+psi <- coef(summary(fit_single))[,'Pr(>|z|)']
+pmul <- sum_mul %>% pull(p.value, term)
 
 co_lw <- coef(summary(fit_lw))[, 'Estimate']
 co_mi <- coef(summary(fit_mi))[, 'Estimate']
+co_si <- coef(summary(fit_single))[, 'Estimate']
+co_mul <- sum_mul %>% pull(estimate, term)
 
 OR_lw <- round(exp(co_lw), digits = 2)
 OR_mi <- round(exp(co_mi), digits = 2)
+OR_si <- round(exp(co_si), digits = 2)
+OR_mul <- round(exp(co_mul), digits = 2)
+
+pcon_mul <- select(nsum_mul, c('2.5 %','97.5 %'))
 
 con_lw <- round(exp(confint(fit_lw, level = 0.95)), digits = 2)
 con_mi <- round(exp(confint(fit_mi, level = 0.95)), digits = 2)
+con_si <- round(exp(confint(fit_single, level = 0.95)), digits = 2)
+con_mul <- round(exp(pcon_mul), digits = 2)
 
+ con_mul['sexfemale',]
 ```
 
-Two logistic models were created, one for each of the imputed datasets that resulted from both the ad-hoc mean imputation and listwise deletion missing  data methods. The interpretation below only includes significant predictors, since most of the model's predictors were non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model) in Appendix A.
+Four logistic models were created, one for each of the imputed datasets that resulted from ad-hoc mean imputation, listwise deletion, stochastic regression imputation and multiple imputation missing  data methods. The interpretation below only includes the significant predictors, since most of the model's predictors were non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model) in Appendix A.
 
 Looking at the listwise deletion model, only sex ( _p_ `r style_pvalue(plw['sexfemale'])`) and the marital category `divorced` ( _p_ `r style_pvalue(plw['maritaldivorced'])` ) were significant predictors, whilst all the other predictors (including the intercept) were insignificant. The odds ratio of females drinking regularly compared to males was `r OR_lw['sexfemale']`[`r con_lw['sexfemale',]`], meaning they were `r OR_lw['sexfemale']` times as likely to drink regularly compared to males. The odds ratio of `divorced` respondents compared to those who were `married` was
 `r OR_lw['maritaldivorced']`[`r con_lw['maritaldivorced',]`],
@@ -737,7 +756,20 @@ meaning they were `r OR_mi['sexfemale']` times as likely to drink compared to ma
 `r OR_mi['maritaldivorced']`[`r con_mi['maritaldivorced',]`],
 meaning divorced people were `r OR_mi['maritaldivorced']` times as likely to drink regularly compared to married people. If all predictor variables were in their reference state, the baseline odds ratio was
 `r OR_mi['(Intercept)']`[`r con_mi['(Intercept)',]`]. 
-Looking at the model fit statistics, the listwise deletion model performed better with a lower AIC, BIC and residual deviance value, as is shown in Table \@ref(tab:model-compare).
+
+In the stochastic regression imputation model, just like the listwise deletion model, only `sex` (_p_ `r style_pvalue(psi['sexfemale'])`) and `divorced` 
+(_p_ = `r style_pvalue(psi['maritaldivorced'])`) were significant. The odds ratio of females drinking regularly compared to males was
+`r OR_si['sexfemale']`[`r con_si['sexfemale',]`] meaning they were `r OR_si['sexfemale']` as likely to drink regularly compared to males. The odds ratio of `divorced` respondents compared to those who were `married` was
+`r OR_si['maritaldivorced']`[`r con_si['maritaldivorced',]`],
+meaning divorced people were `r OR_si['maritaldivorced']` as likely to drink regularly compared to those who were married.
+
+The multiple imputation model also had just `sex` (_p_ `r style_pvalue(pmul['sexfemale'])`) and `divorced` (_p_ `r style_pvalue(pmul['maritaldivorced'])`) were significant predictors. The odds ratio of females drinking regularly compared to males was
+`r OR_mul['sexfemale']`[`r con_mul['sexfemale',]`] meaning they were `r OR_mul['sexfemale']` as likely to drink regularly compared to males. The odds ratio of `divorced` respondents compared to those who were `married` was
+`r OR_mul['maritaldivorced']`[`r con_mul['maritaldivorced',]`],
+meaning divorced people were `r OR_mul['maritaldivorced']` as likely to drink regularly compared to those who were married.
+
+Looking at the model fit statistics, the listwise deletion model performed the best with a lower AIC, BIC and residual deviance value, as is shown in Table \@ref(tab:model-compare). Looking at the AIC, BIC and residual deviance scores of the individual analysis models they, on average score better than the single imputation model but worse than the listwise deletion and mean imputation model, see \@ref(tab:model-compare) and \@ref(tab:mul-compare)
+
 
 ## Results comparison ad-hoc methods
 
