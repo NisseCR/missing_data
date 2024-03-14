@@ -455,8 +455,6 @@ pred[ , "bmi"] <- 0
 
 # Default already applies pmm to numeric and logistic regression to binary variables.
 imp_multiple <- mice(main_data, m = 5, print = FALSE, predictorMatrix = pred)
-pred <- imp_multiple$predictorMatrix
-pred
 
 
 
@@ -620,31 +618,31 @@ show_table(dep_mean_si, "Depression means for stochastic regression", scale = FA
 show_table(dep_var_si, "Depression variance for stochastic regression", scale = FALSE)
 ```
 
-The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputation results. It was observed that the assumed MCAR (`dep8` and `dep9`) depression levels had very similar distributions to the observed data, more so than the assumed MAR levels that clearly showed higher variances and mean values. This is how the imputed values should behave, and therefore the resulting imputations were accepted.
+The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputation results. It was observed that the assumed MCAR (`dep8` and `dep9`) depression levels had very similar distributions to the observed data, more so than the assumed MAR levels that clearly showed higher variances and mean values. This is how the imputed values should behave, and therefore the resulting imputations were accepted.  
 
 ```{r dens-si, fig.cap="Density plots for single stochastic regression", echo = FALSE, warning = FALSE}
 densityplot(imp_single)
 ```
 
-## Multiple imputation
+## Multiple imputation {#mi}
 
-...
+The 4th and last imputation model generated 5 imputed datasets. From Figure \@ref(tab:ratio-outcome-mi) it was observed that the ratio of "yes" to "no" cases in the imputed outcome variable `drink_regularly` followed the original ratio closely. The resulting data in each of the 5 datasets therefore showed little changes in the distribution of the outcome variable.  
 
-```{r dens-multiple, echo = FALSE, warning = FALSE}
-# depression levels
+
+```{r ratio-outcome-mi, fig.cap = "Frequency distribution of imputation models", echo = FALSE}
+ggmice(imp_multiple, aes(drink_regularly)) +
+  geom_bar() +
+  facet_wrap(~.imp)
+```
+Figure \@ref(fig:dens-multiple) shows the density plots for the continuous variables in the dataset. Similar to the stochastic regression analysis, the imputed values for the continuous
+
+```{r dens-multiple, fig.cap="Density plots for multiple imputation", echo = FALSE, warning = FALSE}
 densityplot(imp_multiple)
 ```
+When first observing the convergence of the imputation models, it was ascertained that `weight` and `bmi` did not converge. Specifically, the mean values of `weight` throughout the 5 iterations of imputing did not intermingle with one another, similar observations were made for `bmi`. In this case, `bmi` is a derived variable based on `weight` 
 
 ```{r convergence, echo = FALSE}
 plot(imp_multiple)
-
-conv <- convergence(imp_multiple)
-ggplot(conv, aes(x = .it, y = ac)) +
-  geom_hline(yintercept = 0, color = "grey", linetype = "dashed") +
-  geom_line() + 
-  facet_wrap(~vrb, scales = "free") + 
-  theme_classic() + 
-  labs(x = "Iteration", y = "Auto-correlation")
 ```
 
 - bmi no converge
