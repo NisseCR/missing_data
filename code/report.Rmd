@@ -438,6 +438,10 @@ imp_single <- mice(
   print = FALSE
 )
 
+# Save predictor matrix for MI
+pred <- imp_single$predictorMatrix
+pred
+
 # Create complete dataset.
 comp_single <- complete(imp_single)
 
@@ -446,8 +450,14 @@ comp_single <- combine_dep(comp_single)
 ```
 
 ```{r imp-multiple, echo = FALSE}
+# Remove BMI as predictor for missing data.
+pred[ , "bmi"] <- 0
+
 # Default already applies pmm to numeric and logistic regression to binary variables.
-imp_multiple <- mice(main_data, m = 5, print = FALSE)
+imp_multiple <- mice(main_data, m = 5, print = FALSE, predictorMatrix = pred)
+pred <- imp_multiple$predictorMatrix
+pred
+
 
 
 # Combine depression levels post-hoc (might not be the best method).
@@ -636,6 +646,11 @@ ggplot(conv, aes(x = .it, y = ac)) +
   theme_classic() + 
   labs(x = "Iteration", y = "Auto-correlation")
 ```
+
+- bmi no converge
+- weight no intermingle
+- remove bmi as pred, justify with table in MDM (no sign predictor for missing vectors of variables of interest)
+
 
 # Modelling
 
