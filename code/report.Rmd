@@ -704,7 +704,7 @@ comp_df <- data.frame(
   BIC = c(BIC(fit_lw), BIC(fit_mi), BIC(fit_single)),
   Residual_Deviance = c(RD(fit_lw), RD(fit_mi), RD(fit_single))
 )
-str(fit_pool)
+
 show_table(comp_df, caption = "Model fit statistics", scale = FALSE)
 ```
 
@@ -739,7 +739,6 @@ con_mi <- round(exp(confint(fit_mi, level = 0.95)), digits = 2)
 con_si <- round(exp(confint(fit_single, level = 0.95)), digits = 2)
 con_mul <- round(exp(pcon_mul), digits = 2)
 
- con_mul['sexfemale',]
 ```
 
 Four logistic models were created, one for each of the imputed datasets that resulted from ad-hoc mean imputation, listwise deletion, stochastic regression imputation and multiple imputation missing  data methods. The interpretation below only includes the significant predictors, since most of the model's predictors were non-significant. That said, they are still reported in the model summary tables, as can be seen Table \@ref(tab:lw-model) and Table \@ref(tab:mi-model) in Appendix A.
@@ -773,15 +772,21 @@ Looking at the model fit statistics, the listwise deletion model performed the b
 
 ## Results comparison ad-hoc methods
 
-Following Section \@ref(interpret), the answer to the research question will differ depending on the ad-hoc method used to treat the missing data. Said difference is comprised of: the number of significant predictors, the odds ratios, standard errors and the fitness statistics. The SE of the mean imputation model was lower than the listwise deletion model, which can be see in Table \@ref(tab:mi-model) and \@ref(tab:lw-model).  
+Following Section \@ref(interpret), the answer to the research question will differ depending on method used to treat the missing data. Said difference is comprised of: the number of significant predictors, the odds ratios, standard errors and the fitness statistics. The SE of the listwise deletion model was on average higher than the other models that showed no substantial difference between them, as can be see in Table \@ref(tab:mi-model), \@ref(tab:lw-model), \@ref(tab:si-model) and \@ref(tab:mul-model).  
 
-It was concluded that the missing data treating methods caused biased results within each model, since these methods assume the missingness to be MCAR. This assumption does not hold, in case the data is assumed to be MAR - as was described in Section \@ref(MDM). In the specific case of logistic regression - which was utilised in this study - listwise deletion could still give unbiased results even if the missingness isn’t MCAR, but only if the missing values are either in the predictor variables or in the outcome variable. From the EDA and missing data specification it was observed that both predictor _and_ outcome variables contained missing data, hence the results were biased as well.
 
-When listwise deletion is used on a dataset where the missingness isn’t MCAR, it will result in a bias in the regression coefficients, with standard errors that are too large. As the models in this study were logistic regression models, the regression coefficients were transformed into odds ratios instead. Another negative of listwise deletion is that it is wasteful, a lot of data goes unused. This is also the case in this study, as 263 out of a total of 525 cases were deleted or in other words only half the cases were used. This might explain why the listwise deletion model has a lower $D$ value; there is just a lot less data that might not fit in the model. Another consequence of removing so much data from the dataset is that it becomes more difficult to find effects, this is a possible explanation for why the listwise deletion model had less significant predictors. 
+It was concluded that at least the listwise deletion and mean imputation methods of treating missing data resulted in models with bias as the missingness in the used dataset was assumed to be MAR (see Section \@ref(MDM)) and these two methods assume MCAR. Stochastic regression and multiple imputation also work if the missingness is MAR and so are assumed to give more accurate results. In the specific case of logistic regression - which was utilised in this study - listwise deletion could still give unbiased results even if the missingness isn’t MCAR, but only if the missing values are either in the predictor variables _or_ in the outcome variable. From the EDA and missing data specification it was observed that both predictor _and_ outcome variables contained missing data, hence the results were biased as well.
 
-Using mean imputation on a dataset where the missingness isn’t MCAR will give biased results and underestimated standard errors. It is indeed the case that the standard errors in the mean imputation model are lower than those in the listwise deletion model. As listwise deletion usually overestimates the standard errors, the real values are probably somewhere in between.
+When listwise deletion is used on a dataset where the missingness isn’t MCAR, it will result in a bias in the regression coefficients. It also in general tends overestimate the standard error. The standard errors in the listwise deletion model are indeed larger than those in the other models. As the models in this study were logistic regression models, the regression coefficients were transformed into odds ratios instead. Another negative of listwise deletion is that it is wasteful, a lot of data goes unused. This is also the case in this study, as 263 out of a total of 525 cases were deleted or in other words only half the cases were used. This might explain why the listwise deletion model has a lower $D$ value; there is just a lot less data that might not fit in the model. Another consequence of removing so much data from the dataset is that it becomes more difficult to find effects, this is a possible explanation for why the listwise deletion model had less significant predictors than the mean imputation model. The estimated odds ratios are also substantially different than those in the other models.
 
-So as both methods were used on data where the missingness wasn't MCAR,  the created models were biased in multiple ways.
+Mean imputation biases estimates of the regression weights and correlation even if the missingness is MCAR and if the data is MAR it also biases the estimated means. Unlike listwise deletion, mean imputation generally underestimates the standard error. Looking at the mean imputation model, see Table X, it is the only model with four significant predictors, all the other models have only two. This indicates that the mean imputation model probably overestimates the number of significant predictors. The standard errors are smaller than the standard errors in the listwise deletion model but similar to those in the other two models. 
+
+As stated above, unlike listwise deletion and mean imputation, stochastic regression can yield unbiased results even if the missingness is MAR as it is in the used dataset, including the estimated odds ratios. Using stochastic regression tends to result in too low standard errors. As can be seen in Table ref the standard errors are lower than those in the listwise deletion and similar to those in the mean imputation model which also tends to produce lower standard errors. Another strength of stochastic regression imputation over the two methods discussed above is that it also doesn’t bias the correlation between variables.
+
+Last but certainly not least is the multiple imputation method. As stated in ref this is the most complex method used. This complexity is also perhaps the main disadvantage of this model, as this makes it hard to implement and computationally heavy. The strength of multiple imputation is that compared to the other used methods it takes the inherent uncertainty of the imputed values into account and the pooled estimates are unbiased. Multiple imputation, in contrast to all the other methods, doesn’t bias the standard errors. Looking at table ref, it can be seen that although the standard errors aren’t substantially different they, on average, are higher than those in the mean and stochastic regression imputation models (which tend to underestimate the standard errors) and lower than those in the listwise deletion model (which tends to overestimate the standard errors).
+
+So the listwise deletion model and mean imputation model differ substantially compared to the stochastic regression and multiple imputation models: either in the estimated odds ratios and standard errors or in the number of significant predictors. This is unsurprising as both methods are expected to result in biased results. Stochastic regression and multiple imputation give similar results that are probably more accurate.
+
 
 # Conclusion
 
@@ -969,7 +974,7 @@ as_kable_extra(tbl_regression(fit_mi, conf.level = 0.95, exponentiate = TRUE, in
 
 \newpage
 
-```{r single-model, echo = FALSE}
+```{r si-model, echo = FALSE}
 # Make table of the glm output
 as_kable_extra(tbl_regression(fit_single, conf.level = 0.95, exponentiate = TRUE, intercept = TRUE) %>%
   add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Single imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
@@ -982,7 +987,7 @@ as_kable_extra(tbl_regression(fit_single, conf.level = 0.95, exponentiate = TRUE
 
 \newpage
 
-```{r multiple-model, echo = FALSE}
+```{r mul-model, echo = FALSE}
 # Make table of the glm output
 as_kable_extra(tbl_regression(fit_multiple, conf.level = 0.95, exponentiate = TRUE, intercept = TRUE) %>%
   add_significance_stars(hide_p = FALSE), escape = FALSE, addtl_fmt = TRUE, caption = "Multiple imputation model", format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
