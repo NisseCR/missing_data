@@ -16,6 +16,8 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
+library(reshape2)
+library(ggplot2)
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -127,7 +129,7 @@ The demographic variables - that being `sex`, `age`, `ethnicity`, `education` an
 
 ## Software
 
-All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and implementation of missing data treatments, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab] and *gtsummary* was used to produce the summary tables for the two final models [@gtsummary].
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and implementation of missing data treatments, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab], *gtsummary* was used to produce the summary tables for the two final models [@gtsummary], *ggplot2* was used to create some of the graphs [@ggplot2] and *reshape2* was used to transform data for one of the graphs in the Appendix [@reshape2].
 
 ## Data processing {#data-proc}
 After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)), the results for variables used only for imputation are presented in Appendix [number]. 
@@ -800,20 +802,25 @@ sumtable(imp_data, title = "Summary statistics of varaibles used only for imputa
 ```
 
 ```{r tile-cor, echo = FALSE}
+# select only numerical variables
 num_data <- dplyr::select_if(main_data, is.numeric)
+
+# the following code was taken from http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization 
+
+# compute the correlations across variables
 cormatrix <- cor(num_data, use="complete.obs") %>% round(digits = 2)
 
-
+# take only half of the correlation matrix to not have repeated values
 get_lower_tri<-function(cormatrix){
     cormatrix[upper.tri(cormatrix)] <- NA
     return(cormatrix)
   }
 lower_tri <- get_lower_tri(cormatrix)
 
-library(reshape2)
+# removes the NA values
 melted_cormatrix <- melt(lower_tri, na.rm = TRUE)
-library(ggplot2)
 
+# make the tile graph
 cortile <- ggplot(melted_cormatrix, aes(y = Var2, x = Var1, fill = value))+
  geom_tile(color = "white")+
  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
