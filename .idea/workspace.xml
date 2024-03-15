@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b444debb-cefe-4e8e-9890-c971f88a2d3d" name="Changes" comment="Resolve conflicts">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/references.bib" beforeDir="false" afterPath="$PROJECT_DIR$/code/references.bib" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/report.Rmd" beforeDir="false" afterPath="$PROJECT_DIR$/code/report.Rmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/report.log" beforeDir="false" afterPath="$PROJECT_DIR$/code/report.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/code/report.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +34,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "Merging get-mcaried",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Projects/R/missing_data",
+    "last_opened_file_path": "M:/Docs/Projects/R/missing_data",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
