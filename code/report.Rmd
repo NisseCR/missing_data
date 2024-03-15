@@ -490,7 +490,6 @@ imp_single <- mice(
 
 # Save predictor matrix for MI
 pred <- imp_single$predictorMatrix
-pred
 
 # Create complete dataset.
 comp_single <- complete(imp_single)
@@ -500,13 +499,14 @@ comp_single <- combine_dep(comp_single)
 ```
 
 ```{r imp-multiple, echo = FALSE}
+# Old imputation model for analysis
+imp_multiple_old <- mice(main_data, m = 5, print = FALSE)
+
 # Remove BMI as predictor for missing data.
 pred[ , "bmi"] <- 0
 
 # Default already applies pmm to numeric and logistic regression to binary variables.
 imp_multiple <- mice(main_data, m = 5, print = FALSE, predictorMatrix = pred)
-pred <- imp_multiple$predictorMatrix
-pred
 
 
 
@@ -671,36 +671,40 @@ show_table(dep_mean_si, "Depression means for stochastic regression", scale = FA
 show_table(dep_var_si, "Depression variance for stochastic regression", scale = FALSE)
 ```
 
-The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputation results. It was observed that the assumed MCAR (`dep8` and `dep9`) depression levels had very similar distributions to the observed data, more so than the assumed MAR levels that clearly showed higher variances and mean values. This is how the imputed values should behave, and therefore the resulting imputations were accepted.
+The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputation results. It was observed that the assumed MCAR (`dep8` and `dep9`) depression levels had very similar distributions to the observed data, more so than the assumed MAR levels that clearly showed higher variances and mean values. This is how the imputed values should behave, and therefore the resulting imputations were accepted.  
 
 ```{r dens-si, fig.cap="Density plots for single stochastic regression", echo = FALSE, warning = FALSE}
 densityplot(imp_single)
 ```
 
 ## Multiple imputation {#mulimp}
+When first observing the convergence of the imputation models, it was ascertained that `weight`, `height` and `bmi` did not converge. Specifically, the mean and standard deviation values of of these variables throughout the 5 iterations of imputing did not intermingle with one another, as can be seen in Figure \@ref(fig:convergence-1).  
 
-...
+```{r convergence-1, fig.cap="Multiple imputation trace plots using original predictor matrix", echo = FALSE}
+plot_trace(imp_multiple_old, c("weight", "height", "bmi"))
+```
 
-```{r dens-multiple, echo = FALSE, warning = FALSE}
-# depression levels
+It was assumed this was caused by `bmi` being a derived variable, with the imputation model being unaware of the relation between `weight`, `height` and `bmi` respectively. As a result, the second imputation approach used a modified predictor matrix, ignoring `bmi` specifically when imputing the data, justified by the fact that `bmi` was a non-significant predictor for the missing data of the variables of interest as mentioned in Section \@ref(MDM).  
+Using the adjusted predictor matrix, it was concluded that the imputation models converged. As opposed to the earlier approach of MI, excluding `bmi` as a predictor had a clear affect on the intermingling of the mean / standard deviation valus for `weight`, `height` and `bmi`, as can be seen in Figure \@ref(fig:convergence-2).
+
+```{r convergence-2, fig.cap="Multiple imputation trace plots using adjusted predictor matrix", echo = FALSE}
+plot_trace(imp_multiple, c("weight", "height", "bmi"))
+```
+
+The 4th and last imputation model generated 5 imputed datasets. From Figure \@ref(fig:ratio-outcome-mi) it was observed that the ratio of "yes" to "no" cases in the imputed outcome variable `drink_regularly` followed the original ratio closely. The resulting data in each of the 5 datasets therefore showed little changes in the distribution of the outcome variable, similar to the single stochastic regression approach. 
+
+```{r ratio-outcome-mi, fig.cap = "Frequency distribution of imputation models", echo = FALSE}
+ggmice(imp_multiple, aes(drink_regularly)) +
+  geom_bar() +
+  facet_wrap(~.imp)
+```
+
+Figure \@ref(fig:dens-multiple) shows the density plots for the continuous variables in the dataset. For the non-depression level variables, the density lines of the imputed values do not strictly match that of the observed data and at the same time do not completely diverge from the original distribution. Therefore the imputed data for these variables was accepted.  
+As for the depression variables, it was noted that that the discrete nature of the variable was preserved even after imputation, as opposed to the stochastic regression approach. This is due to the predictive mean matching method used for the continuous variables, which samples from the observed data. As a result of this, all depression levels retained their range of 0 to 3 with value increments of 1. Out of all the depression levels, `dep9` showed sharp peaks within the density line of the imputed data. This was most likely due to the low variability of `dep9`, as most entries had a value of 0 as mentioned in Section \@ref(EDA). Lastly, the assumed MCAR variables `dep8` and `dep9` followed the observed data density kernels more closely than the remaining MAR depression levels, which was the expected behaviour due to the assumed missing data mechanisms.
+
+```{r dens-multiple, fig.cap="Density plots for multiple imputation", echo = FALSE, warning = FALSE}
 densityplot(imp_multiple)
 ```
-
-```{r convergence, echo = FALSE}
-plot(imp_multiple)
-
-conv <- convergence(imp_multiple)
-ggplot(conv, aes(x = .it, y = ac)) +
-  geom_hline(yintercept = 0, color = "grey", linetype = "dashed") +
-  geom_line() + 
-  facet_wrap(~vrb, scales = "free") + 
-  theme_classic() + 
-  labs(x = "Iteration", y = "Auto-correlation")
-```
-
-- bmi no converge
-- weight no intermingle
-- remove bmi as pred, justify with table in MDM (no sign predictor for missing vectors of variables of interest)
 
 
 # Modelling
