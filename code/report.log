@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.26)  15 MAR 2024 12:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.26)  15 MAR 2024 14:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -726,26 +726,26 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [37]
 
-LaTeX Warning: Float too large for page by 22.58662pt on input line 1252.
+LaTeX Warning: Float too large for page by 22.58662pt on input line 1256.
 
 <report_files/figure-latex/tile-cor-1.pdf, id=567, 469.755pt x 325.215pt>
 File: report_files/figure-latex/tile-cor-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/tile-cor-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/tile-cor-1.pdf  used on input line 1324.
+Package pdftex.def Info: report_files/figure-latex/tile-cor-1.pdf  used on input line 1328.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 <report_files/figure-latex/box-drink-1.pdf, id=568, 469.755pt x 325.215pt>
 File: report_files/figure-latex/box-drink-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/box-drink-1.pdf>
-Package pdftex.def Info: report_files/figure-latex/box-drink-1.pdf  used on input line 1325.
+Package pdftex.def Info: report_files/figure-latex/box-drink-1.pdf  used on input line 1329.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1324--1326
+Underfull \hbox (badness 10000) in paragraph at lines 1328--1330
 [][]
  []
 
 [38] [39] [40] [41 <./report_files/figure-latex/tile-cor-1.pdf>] [42 <./report_files/figure-latex/box-drink-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1362.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1366.
 [43] [44] [45] [46] [47] [48] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
@@ -763,7 +763,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  75i,10n,79p,1685b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on report.pdf (48 pages, 686414 bytes).
+Output written on report.pdf (48 pages, 686993 bytes).
 PDF statistics:
  735 PDF objects out of 1000 (max. 8388607)
  611 compressed objects within 7 object streams
