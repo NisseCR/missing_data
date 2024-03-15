@@ -16,6 +16,8 @@ library(mice)
 library(Hmisc)
 library(vtable)
 library(gtsummary)
+library(reshape2)
+library(ggplot2)
 ```
 
 ```{r helper-functions, echo=FALSE}
@@ -121,28 +123,29 @@ show_table(descs, "Variable descriptions")
 ```
 
 Table \@ref(tab:vars-desc) lists the variables used in the subset selection, which were utilized for the model in question. The table for the "full" dataset can be found in the Appendix \@ref(vartabfull). 
-The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were asked to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
+
+The predictor variables $[dep1...dep9]$ were sourced from the same Depression Screener, where respondents of age 18 to 150 were ought to assign a number (1 to 3) regarding their mental and physical state within the last 2 weeks. Multiple signs of depression were measured this way, which can be combined to create an overall depression score.  
 
 The demographic variables - that being `sex`, `age`, `ethnicity`, `education` and `income` - were taken from the same screening component as well. The original authors of the dataset topcoded the variable `age` at the value `80`  for the respondents who were older than 80 years. Similarly, `education` was targeted at respondents of age `20` to `150`, thus excluding younger participants. This was due to the fact that this question included responses such as `AA degree` and `College Graduate`. The variable `marital` was also targeted at respondents of age `20` to `150`. Lastly, the variable `income` was ordinal, rather than continuous.  As for the remaining demographic variables, namely `sex`, `age`, `ethnicity` and `income`, these were retrieved from target age `0` to `150`. Finally, the `drink_regularly` variable was obtained from an Alcohol Use questionnaire targeted at ages 20 and up.
 
 ## Software
 
-All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packages were used for missing data visualizations and implementation of missing data treatments, the *kableExtra* package was used for table styling [@kables], the *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab] and *gtsummary* was used to produce the summary tables for the two final models [@gtsummary].
+All of the data cleaning, processing and modeling was performed in R version 4.3.2 [@Rversion]. The following packages were used: *tidyverse* was used for data manipulation [@tidyverse], the *mice* [@mice] and *ggmice* [@ggmice] packaged were used for missing data visualizations and implementation of missing data treatments, the *kableExtra* package was used for table styling [@kables], *naniar* package was used to make the visualization of missing data percentages (Figure \@ref(fig:mis-percentage)) [@nan], *Hmisc* was utilized for mode imputation, *vtable* helped with the summary statistic table in the Appendix [@vtab], *gtsummary* was used to produce the summary tables for the two final models [@gtsummary], *ggplot2* was used to create some of the graphs [@ggplot2] and *reshape2* was used to transform data for one of the graphs in the Appendix [@reshape2].
 
 ## Data processing {#data-proc}
-After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)), the results for variables used only for imputation are presented in Appendix [number]. 
+After arriving at the subset dataset, an Exploratory Data Analysis was performed. The distributions of the variables were investigated and the presence of missing data was found in the outcome variable and some of the depression questions. No outliers were found during the EDA. Additionally, the missingness seemed to be more prevalent among younger individuals, which gave a first indication of a lacking MCAR mechanism. The important findings of this step are presented in EDA Results (Section \@ref(EDA)), the results for variables used only for imputation are presented in Appendix \@ref(apEDA). 
 
-Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable against observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR were not met, MAR was assumed. The results for variables of interest are presented in Section \@ref(MDM) and for variables used for imputation in Appendix [number]. 
+Following the EDA, the missing data problem was addressed. The extend, distributions and patterns of missingness were investigated. Testing was done to verify the missing data mechanism. This included performing a global test - Little MCAR test [@Little_1986] and testing of the dependencies between missing values in one variable against observed values of other variables. The latter was done using t-tests for continuous variables, whilst categorical variables were checked via Chi-squared test and Fisher test [@Soetewey]. The Fisher test with simulated p-values was used to verify outcomes for combinations of variables that included an expected frequency lower than 5, thus not meeting the assumptions of Chi-squared test [@Soetewey]. When the assumptions of MCAR was not met, MAR was assumed. The results for variables of interest were presented in Section \@ref(MDM) and for variables used for imputation in Appendix \@ref(apmissing). 
 
 Four solutions to the missing data problem were implemented: list-wise deletion, mean imputation, stochastic regression imputation and multiple imputation.
 
-For list-wise deletion, all cases with one or more missing values  in the subset dataset of only variables of interest were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. 
+For list-wise deletion, all cases with one or more missing values  in the subset dataset of only variables of interest were excluded from the modeling. Thus, the dateset was reduced by half to 263 observation. A more in depth analysis of changes in distribution of variables following the list-wise deletion are presented in Section \@ref(lw).
 
-The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means skewed the distribution even further towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. Only missing variables in the subset dataset were imputed, as the imputation is independent of the other variables and only these variables are used in the modeling, thus, the additional variables in the full dataset can remain incomplete.  
+The mean imputation method was implemented in the following way: For the missing depression questions, the mean of the observed values within the variable was computed and then the missing values were replaced by said mean value. This approach was taken, since treating ordinal variables on a Likert scale as continuous variables instead was appropriate [@enders]. As found in the EDA (Section \@ref(desc-stats)), all of the depression item distributions are heavily skewed towards 0. Because of that,  '0.28', '0.53', '0.31', '0.20', '0.20' and '0.067' were imputed for 'dep2', 'dep3', 'dep5', 'dep6', 'dep8' and 'dep9' respectively. In turn, these low means even further skewed the distribution towards lower values. For `drink_regularly` - the outcome variable - the mode was computed rather than the mean. This was motivated by the need for a binary outcome variable in the logistic regression model that was utilized to answer the research question. The EDA suggested significantly more "yes" than "no" values in `drink_regularly`, hence the missing values were replaces by "yes". The 'drink_regularly' variable went from '397' 'yes' answers to '476', with '139' 'no' answers remaining unchanged. Therefore, after this data treatment the outcome ratio of the logistic regression was even more imbalanced, which could negatively affect the accuracy of the model. A more in depth analysis of changes in distribution of variables following the list-wise deletion are presented in Section \@ref(mean-imp). Only missing variables in the subset dataset were imputed, as the imputation is independent of the other variables and only these variables are used in the modeling, thus, the additional variables in the full dataset can remain incomplete.  
 
-The stochastic regression imputation is a relatively smarter way of dealing with missing data than the previous methods [@FIMD]. A model is built based on the full observed data and then it is used to predict values for incomplete cases with the addition of noise to reduce correlation bias [@FIMD]. To implement it the 'mice' package was used with a single imputation and iteration, seed number of ``r  format(seed, scientific=FALSE)`, and methods 'norm.nob' (linear regression ignoring model error) and 'logreg' (Bayesian logistic regression) used to impute the depression items and 'drink_regularly' respectively. In principle 'norm.nob' is the standard method to implement stochastic regression imputation, however, it uses a linear model and is only applicable to numeric data. Therefore, 'logreg' was used for the binary variable 'drink_regularly'. It creates a Bayesian logistic regression model and predicts scores accordingly, however, the additional noise of stochastic regression is missing. Changes in the distributions of the variables following the missing data treatment were discussed in Section [number]. 
+The stochastic regression imputation is a relatively smarter way of dealing with missing data than the previous methods [@FIMD]. A model is built based on the full observed data and then it is used to predict values for incomplete cases with the addition of noise to reduce correlation bias [@FIMD]. To implement it the `mice` package was used with a single imputation and iteration, seed number of ``r  format(seed, scientific=FALSE)``, and  `norm.nob` (linear regression ignoring model error) method was used to impute the numerical variables (including the depression items). However, `norm.nob` - the standard method to implement stochastic regression imputation -  uses a linear model that is only applicable to numeric data. Therefore, other methods had to be used to impute the binary and categorical variables. For binary variables, including `drink_regularly`, `logreg` (Bayesian logistic regression) was used. The method can also be considered as a stochastic regression, as it creates logistic models and predicts values to impute based on them. However, the source of noise is different, as it stems from sampling of the slopes and intercepts for the logistic models before the prediction happens. The defualt mice methods were used for imputing missing categorical variables with more than 2 levels, as they did not include variables of interest. Polytomous regression imputation (`polyreg`) was used for unordered categorical data and proportional odds model (`polr`) was the method for ordered categorical data. Changes in the distributions of the variables following the missing data treatment were discussed in Section \@ref(sto). 
 
-Lastly, multiple imputation, the most complex  missing data treatment in this paper, was performed [@FIMD]. The multiple imputation method relies on the idea that single imputations are never correct, as they ignore the inherent uncertainty of the imputation [@FIMD]. Therefore, the values are first iteratively imputed a number of times and create separate datasets that the statistical analysis is performed on [@FIMD]. Then the results of the analysis are pooled and the uncertainty of the results is calculated [@FIMD]. Multiple imputation was performed with default mice settings, therefore: '5' imputations, '5' iterations,  predictive mean matching ('pmm') was used to impute 'dep' items and Bayesian logistic regression ('logreg') was used for 'drink_regularly'. The default predictor matrix was used, therefore all variables, but the specific currently imputed variable, were used to impute each variable. The seed number was set to `r  format(seed, scientific=FALSE)`. The convergence of the imputation and plausibility of imputations were evaluated with 'mice' visualizations, including trace, density, strip, auto-correlation and potential scale reduction factor plots, in Section [number]. [Actions taken to ensure convergence] Changes in the distributions of the variables following the multiple imputation were discussed in Section [number]. 
+Lastly, multiple imputation, the most complex  missing data treatment in this paper, was performed [@FIMD]. The multiple imputation method relays on the idea that single imputations are never correct, as they ignore the inherent uncertainty of the imputation [@FIMD]. Therefore, the values are first iteratively imputed a number of time and create separate datasets that the statistical analysis is performed on [@FIMD]. Then the results of the analysis are pooled and the uncertainty of the results is calculated [@FIMD]. Multiple imputation was performed with default mice settings, therefore: '5' imputations, '5' iterations,  predictive mean matching ('pmm')  used to impute numeric variables (including 'dep' items), Bayesian logistic regression ('logreg') used binary variables (including 'drink_regularly '), polytomous regression imputation (`polyreg`)  used for unordered categorical data and proportional odds model (`polr`) used for ordered categorical data. Initially, the default predictor matrix was used, therefore all variables, but the specific currently imputed variable, were used to impute each variable. The seed number was set to `r  format(seed, scientific=FALSE)`. The convergence of the imputation and plausibility of imputations were evaluated with 'mice' visualizations, including trace, density, strip, auto-correlation and potential scale reduction factor plots, in Section \@ref(mulimp). Following the investigation, it was found that the simultaneous presence of `height`, `weight` and their derived variable `bmi` as predictors in the imputations prevented the model from convergence. Thus, `bmi` was removed from the predictor matix and the imputation and verifying convergence was performed again. Convergence was met. Changes in the distributions of the variables following the final multiple imputation were discussed in Section \@ref(imputation). 
 
 Following each missing data treatment, the values for the depression questions were summed up to create an overall depression score for each individual case. In case of the multiple imputations, this is effectively an impute then transform (ITT) approach to imputing with derived variables. Since the overall depression score was not part of the original dataset and would have to be manually computed anyways, this approach was found to be more convenient. A sum was used - as opposed to other methods of aggregation (e.g. mean) - as it preserved a convenient interpretation of a unit increase in a depression score. This overall score was used for modeling as opposed to the individual depression levels. 
 
@@ -246,12 +249,57 @@ show_table(table(data$marital, data$drink_regularly), "Contingency table of mari
 
 ## Correlations
 
-```{r box-age, fig.cap = "Correlations of age vs. drink regularly", echo = FALSE}
+```{r tile-cor, fig.cap = "Tile graph of correlations among numerical variables", echo = FALSE}
+# select only numerical variables
+num_data <- dplyr::select_if(main_data, is.numeric)
+
+# the following code was taken from http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization 
+
+# compute the correlations across variables
+cormatrix <- cor(num_data, use="complete.obs") %>% round(digits = 2)
+
+# take only half of the correlation matrix to not have repeated values
+get_lower_tri<-function(cormatrix){
+    cormatrix[upper.tri(cormatrix)] <- NA
+    return(cormatrix)
+  }
+lower_tri <- get_lower_tri(cormatrix)
+
+# removes the NA values
+melted_cormatrix <- melt(lower_tri, na.rm = TRUE)
+
+# make the tile graph
+cortile <- ggplot(melted_cormatrix, aes(y = Var2, x = Var1, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+    name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 90, vjust = 1, 
+    size = 12, hjust = 1), axis.text.y  = element_text(
+    size = 12))+
+ coord_fixed()
+  
+print(cortile)
+```
+
+Figure \@ref(fig:tile-cor) presents the correlations among the numerical variables in the full dataset. Notably, quite strong positive correlations within depression items can be seen. Additionally, the blood pressure variables are very strongly and positively correlated with each other.  
+
+
+```{r box-age, fig.cap = "Relationship between age and drink regularly", echo = FALSE}
 ggplot(data, aes(age, drink_regularly, colour = drink_regularly)) +
   geom_boxplot()
 ```
 
 Figure \@ref(fig:box-age) shows the distributions of `age` over the outcome variable `drink_regularly` in a boxplot. Not considering the NA values, `age` did not seem to be strongly correlated with `drink_regularly`, with "no" cases having only slightly higher ages than its counterpart.  It should however be noted that the NA values of `drink_regularly` were primarily present in younger participants, therefore possibly attenuating the correlation effect between these two variables. For example, a large amount of missing values belonging to "yes" could shift the distribution of these cases towards lower `age` values, hence increasing the difference in distributions for each `drink_regularly` outcome.  
+
+
+```{r box-drink, fig.cap = "Relationship of days_drinking and drink regularly", echo = FALSE}
+ggplot(main_data, aes(days_drinking, drink_regularly, colour = drink_regularly)) +
+  geom_boxplot()
+```
+
+Figure \@ref(fig:box-drink) shows the distributions of `days_drinking` over the outcome variable `drink_regularly` in a boxplot. The the distribution of `days_drinking` is drastically different across the `drink_regularly` categories. Considering that drinking in more than 12 days should theoretically imply drinking more than 12 drinks, the NA values should be mostly `yes` for `drink_regularly`. 
 
 Contingency tables and frequency distribution plots (including NA values) were used to observe the correlation between the categorical predictors and the outcome variable. From these, it was observed that `sex` seemed to be highly correlated with `drink_regularly`; 172 cases of `male` drank regularly, whilst only 39 didn't. Compared to the 135 cases of `female` of "yes" and 100 cases of "no", this ratio seemed to differ greatly per `sex` category. The missingness of `drink_regularly` was evenly distributed across both `male` and `female` cases.  
 
@@ -415,7 +463,9 @@ show_table(table_test3, "Fisher test")
   
 The outcomes of the Fisher test are presented in Table \@ref(tab:fisher-test). Like in the case of Chi-squared test, only `martial` with missingness of `drink_regularly` and `marital` with missingness of `dep2`, `dep3`, `dep5` and `dep6` were significant. Therefore, it was concluded the dependence of missingness in these variables on multiple other observed variables and rejected MCAR in their case.
 
-In all of the tests above, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR.
+The t-test and Chi-squared test were also performed with variables used only for stochastic and multiple imputation. The results of the tests are included in Appendix \@ref(apmissing).
+
+In all of the tests, `dep8` and `dep9` did not seem to be dependent on any of the observed variables. Thus, perhaps MCAR could be assumed for these variables. However, since the depression scores will be collapsed into a single depression score ('dep') and other depression questions were MAR, the overall score was also assumed to be MAR.
 
 # Imputation results {#imputation}
 
@@ -579,7 +629,7 @@ TODO: explain the above, why?!
 Lastly, the depression values were still discrete - the values ranged from 0 to 3. This was expected, since this missing data treatment didn't change / impute the values of the dataset.
 
 
-## Mean imputation
+## Mean imputation {#mean-imp}
 
 ```{r mi-results, echo = FALSE}
 # outcome ratios
@@ -593,7 +643,7 @@ dep_var_mi <- dep_var_comparison(main_data, data_mi)
 Mode imputation was applied to the missing values in `drink_regularly`. As mentioned in Section \@ref(data-proc), "yes" was the most occuring case in the outcome variable, therefore missing values were replaced by "yes". This resulted in the ratio of "yes" to "no" cases changing from `r ratio_main` to `r ratio_mi`, increasing by `r ratio_change_mi`%. It is worth mentioning that this is a `r abs(ratio_change_mi - ratio_change_lw)`% total increase compared to the ratio of list-wise deletion mentioned in Section \@ref(lw).
 As for the depression levels, mean imputation did not change the mean values. The overall variance of the depression levels decreased, which is an expected result of mean imputation - imputing missing data with the same value attenuates the variance of the variable.
 
-## Stochastic regression
+## Stochastic regression {#sto}
 
 ```{r si-results, echo = FALSE}
 # outcome ratios
@@ -627,7 +677,7 @@ The density plots of Figure \@ref(fig:dens-si) were used to evaluate the imputat
 densityplot(imp_single)
 ```
 
-## Multiple imputation
+## Multiple imputation {#mulimp}
 
 ...
 
@@ -797,6 +847,13 @@ Last but certainly not least is the multiple imputation method. As stated in Sec
 So the listwise deletion model and mean imputation model differ substantially compared to the stochastic regression and multiple imputation models: either in the estimated odds ratios and standard errors or in the number of significant predictors. This is unsurprising as both methods are expected to result in biased results. Stochastic regression and multiple imputation give similar results that are probably more accurate.
 
 
+# Extensions
+
+Multiple imputation is the most academically acclaimed method to treat missing data, however, this paper only utilized it in its most default version. Other imputation methods with potential for better results  or more optimized computation were not explored. For example, @Buuren_2023 suggests that predictive mean matching can be used to impute binary variables with reduced computer processing time and very similar outcomes to logistic regression. 
+
+Additionally, the number of imputed datasets was 5, which is the default value that follows early recommendations for datasets with not very high amount of missing information and estimating unbiased regression coefficients [@Buuren_mice]. However, according to @Buuren_mice, to generate both meaningful regression coefficients and standard erorrs that minimally vary with repeated analysis, 20 to 100 imputed datasets should be generated. Thus, to improve the missing data treatment in this paper the number of imputations could be increased. 
+
+
 # Conclusion
 
 The research question was \textbf{To what extent can the occurrence of regular alcohol consumption (12 or more in a year) be predicted by the variables: depression level, age, sex, ethnicity, marital status and household income?} Here, it was expected that sex `male`, ethnicity `non-hispanic_white` and marital status `married` would exhibit a positive relation with drinking regularly, whilst age and depression would have a negative relation with said outcome variable.  
@@ -864,38 +921,6 @@ imp_data <- main_data %>%
 sumtable(imp_data, title = "Summary statistics of varaibles used only for imputation", fit.page = TRUE)
 ```
 
-```{r tile-cor, echo = FALSE}
-num_data <- dplyr::select_if(main_data, is.numeric)
-cormatrix <- cor(num_data, use="complete.obs") %>% round(digits = 2)
-
-
-get_lower_tri<-function(cormatrix){
-    cormatrix[upper.tri(cormatrix)] <- NA
-    return(cormatrix)
-  }
-lower_tri <- get_lower_tri(cormatrix)
-
-library(reshape2)
-melted_cormatrix <- melt(lower_tri, na.rm = TRUE)
-library(ggplot2)
-
-cortile <- ggplot(melted_cormatrix, aes(y = Var2, x = Var1, fill = value))+
- geom_tile(color = "white")+
- scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-   midpoint = 0, limit = c(-1,1), space = "Lab", 
-    name="Pearson\nCorrelation") +
-  theme_minimal()+ 
- theme(axis.text.x = element_text(angle = 90, vjust = 1, 
-    size = 12, hjust = 1), axis.text.y  = element_text(
-    size = 12))+
- coord_fixed()
-  
-print(cortile)
-```
-```{r box-drink, fig.cap = "Correlations of days_drinking vs. drink regularly", echo = FALSE}
-ggplot(main_data, aes(days_drinking, drink_regularly, colour = drink_regularly)) +
-  geom_boxplot()
-```
 
 \newpage
 
@@ -929,7 +954,7 @@ names(table_test) <- c("numerical variable",
     "missing dep9")
 show_table(as_tibble(table_test), "Dependency t-test: mean comparison in numerical variables across missing values and observed values in the other variables")
 ```
-```{r}
+```{r imp-chi-test, echo=FALSE, warning=FALSE, message=FALSE}
 # Make a table with outcomes of the chi-squared:
 col1 <- c("vig_work",
 "mod_work",
@@ -960,7 +985,7 @@ show_table(table_test2, "Independency Chi-squared test")
 
 \newpage
 
-# Appendix
+# Appendix {#apmodeloutput}
 
 ```{r lw-model, echo = FALSE}
 # Make table of the glm output
