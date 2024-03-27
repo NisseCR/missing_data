@@ -793,6 +793,11 @@ fit_multiple <- with(
   ))
 
 fit_pool <- pool(fit_multiple)
+
+# FMI
+ls(fit_pool$pooled)
+fit_pool$pooled$fmi
+fit_pool$pooled$lambda
 ```
 
 ```{r model-creation-2, echo = FALSE}
