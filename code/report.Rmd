@@ -46,18 +46,29 @@ cor_plot <- function(plot, name) {
 # Load data
 source <- readRDS("../data/data.rds") %>%
   as_tibble()
+
+source_complete <- readRDS("../data/full_data.rds") %>%
+  as_tibble()
 ```
 
 ```{r relevel, echo = FALSE, warning = FALSE}
-# Imputation data
-main_data <- source %>%
-  select(-id)
+preprocess <- function(data) {
+  # Imputation data
+  data_ <- data %>%
+    select(-id)
+  
+  # Re-level outcome
+  data_$drink_regularly <- relevel(data_$drink_regularly, "no")
+  
+  # Rename household_income
+  data_ <- rename(data_, income = household_income)
+  
+  data_
+}
 
-# Re-level outcome
-main_data$drink_regularly <- relevel(source$drink_regularly, "no")
+main_data <- preprocess(source)
 
-# Rename household_income
-main_data <- rename(main_data, income = household_income)
+complete_data <- preprocess(source_complete)
 ```
 
 ```{r variable-selection, echo=FALSE}
@@ -85,6 +96,7 @@ sub_select <- function(data) {
 
 # Create a sub-selection of variables that are of interest to our model.
 data <- sub_select(main_data)
+data_complete <- sub_select(complete_data)
 ```
 
 ```{r set-seed, echo = FALSE}
@@ -796,6 +808,17 @@ fit_mi <- glm(
   drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
   family = binomial, 
   data = data_mi
+)
+```
+
+```{r model-creation-3, echo = FALSE}
+# Combine depression levels.
+data_complete <- combine_dep(data_complete)
+
+fit_complete <- glm(
+  drink_regularly ~ sex + age + ethnicity + education + marital + income + dep, 
+  family = binomial, 
+  data = data_complete
 )
 ```
 
